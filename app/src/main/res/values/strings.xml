@@ -23,8 +23,10 @@
     <string name="search_hint">search</string>
     <string name="action_search">Search</string>
     <string name="title_activity_search">Search Activity</string>
-    <string name="search_title">Search Menu</string>
+    <string name="search_title">Search</string>
     <string name="login_btn_text">Log in</string>
+    <string name="searchable_label">Search List</string>
+    <string name="searchable_hint">Who would you like to see</string>
 
 
 </resources>

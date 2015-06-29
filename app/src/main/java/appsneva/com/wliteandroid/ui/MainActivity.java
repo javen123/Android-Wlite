@@ -30,16 +30,7 @@ public class MainActivity extends BaseActivity {
 
         activateToolbar();
 
-        mButton = (Button)findViewById(R.id.button);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
+
 
         //check Parse User is current
         ParseUser currentUser = ParseUser.getCurrentUser();
