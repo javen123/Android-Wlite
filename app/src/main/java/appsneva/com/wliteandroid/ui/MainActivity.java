@@ -1,4 +1,4 @@
-package appsneva.com.wliteandroid;
+package appsneva.com.wliteandroid.ui;
 
 
 import android.app.Activity;
@@ -13,8 +13,11 @@ import android.widget.Button;
 
 import com.parse.ParseUser;
 
+import appsneva.com.wliteandroid.R;
+import appsneva.com.wliteandroid.SearchActivity;
 
-public class MainActivity extends Activity {
+
+public class MainActivity extends BaseActivity {
 
     protected Button mButton;
 
@@ -25,11 +28,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        activateToolbar();
+
         mButton = (Button)findViewById(R.id.button);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, YouTubeActivity.class);
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -73,6 +78,11 @@ public class MainActivity extends Activity {
         if (id == R.id.action_logout) {
             ParseUser.logOut();
             navigateToLogin();
+        }
+        if(id == R.id.menu_search){
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

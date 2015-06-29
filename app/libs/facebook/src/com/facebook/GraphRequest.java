@@ -82,7 +82,7 @@ public class GraphRequest {
     private static final String VIDEOS_SUFFIX = "/videos";
     private static final String ME = "me";
     private static final String MY_FRIENDS = "me/friends";
-    private static final String SEARCH = "search";
+    private static final String SEARCH = "search_activity";
     private static final String USER_AGENT_BASE = "FBAndroidSDK";
     private static final String USER_AGENT_HEADER = "User-Agent";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
@@ -366,16 +366,16 @@ public class GraphRequest {
     }
 
     /**
-     * Creates a new Request that is configured to perform a search for places near a specified
+     * Creates a new Request that is configured to perform a search_activity for places near a specified
      * location via the Graph API. At least one of location or searchText must be specified.
      *
      * @param accessToken    the access token to use, or null
-     * @param location       the location around which to search; only the latitude and longitude
+     * @param location       the location around which to search_activity; only the latitude and longitude
      *                       components of the location are meaningful
-     * @param radiusInMeters the radius around the location to search, specified in meters; this is
+     * @param radiusInMeters the radius around the location to search_activity, specified in meters; this is
      *                       ignored if no location is specified
      * @param resultsLimit   the maximum number of results to return
-     * @param searchText     optional text to search for as part of the name or type of an object
+     * @param searchText     optional text to search_activity for as part of the name or type of an object
      * @param callback       a callback that will be called when the request is completed to handle
      *                       success or error conditions
      * @return a Request that is ready to execute

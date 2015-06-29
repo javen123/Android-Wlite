@@ -45,7 +45,7 @@ public class AppEventsConstants {
     /** Log this event when the user has viewed a form of content in the app. */
     public static final String EVENT_NAME_VIEWED_CONTENT = "fb_mobile_content_view";
 
-    /** Log this event when the user has performed a search within the app. */
+    /** Log this event when the user has performed a search_activity within the app. */
     public static final String EVENT_NAME_SEARCHED = "fb_mobile_search";
 
     /**
@@ -128,7 +128,7 @@ public class AppEventsConstants {
      */
     public static final String EVENT_PARAM_CONTENT_ID = "fb_content_id";
 
-    /** Parameter key used to specify the string provided by the user for a search operation. */
+    /** Parameter key used to specify the string provided by the user for a search_activity operation. */
     public static final String EVENT_PARAM_SEARCH_STRING = "fb_search_string";
 
     /**
