@@ -41,7 +41,7 @@ import com.facebook.R;
  */
 
 public class LoginFragment extends Fragment {
-    static final String RESULT_KEY = "com.facebook.LoginFragment:Result";
+    static final String RESULT_KEY = "appsneva.facebook.LoginFragment:Result";
 
     private static final String TAG = "LoginFragment";
     private static final String NULL_CALLING_PKG_ERROR_MSG =

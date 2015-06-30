@@ -68,7 +68,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 /**
- * com.facebook.internal is solely for the use of other packages within the Facebook SDK for
+ * appsneva.facebook.internal is solely for the use of other packages within the Facebook SDK for
  * Android. Use of any of the classes in this package is unsupported, and they may be modified or
  * removed without warning at any time.
  */
@@ -78,9 +78,9 @@ public final class Utility {
     private static final String HASH_ALGORITHM_SHA1 = "SHA-1";
     private static final String URL_SCHEME = "https";
     private static final String APP_SETTINGS_PREFS_STORE =
-            "com.facebook.internal.preferences.APP_SETTINGS";
+            "appsneva.facebook.internal.preferences.APP_SETTINGS";
     private static final String APP_SETTINGS_PREFS_KEY_FORMAT =
-            "com.facebook.internal.APP_SETTINGS.%s";
+            "appsneva.facebook.internal.APP_SETTINGS.%s";
     private static final String APP_SETTING_SUPPORTS_IMPLICIT_SDK_LOGGING =
             "supports_implicit_sdk_logging";
     private static final String APP_SETTING_NUX_CONTENT = "gdpv4_nux_content";
@@ -715,10 +715,10 @@ public final class Utility {
         // setCookie acts differently when trying to expire cookies between builds of Android that
         // are using Chromium HTTP stack and those that are not. Using both of these domains to
         // ensure it works on both.
-        clearCookiesForDomain(context, "facebook.com");
-        clearCookiesForDomain(context, ".facebook.com");
-        clearCookiesForDomain(context, "https://facebook.com");
-        clearCookiesForDomain(context, "https://.facebook.com");
+        clearCookiesForDomain(context, "facebook.appsneva");
+        clearCookiesForDomain(context, ".facebook.appsneva");
+        clearCookiesForDomain(context, "https://facebook.appsneva");
+        clearCookiesForDomain(context, "https://.facebook.appsneva");
     }
 
     public static void logd(String tag, Exception e) {

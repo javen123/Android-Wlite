@@ -30,7 +30,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.facebook.appevents.AppEventsLogger;
 
 /**
- * com.facebook.internal is solely for the use of other packages within the Facebook SDK for
+ * appsneva.facebook.internal is solely for the use of other packages within the Facebook SDK for
  * Android. Use of any of the classes in this package is unsupported, and they may be modified or
  * removed without warning at any time.
  */
@@ -38,7 +38,7 @@ public class BoltsMeasurementEventListener extends BroadcastReceiver {
     private static BoltsMeasurementEventListener _instance;
 
     private final static String MEASUREMENT_EVENT_NOTIFICATION_NAME =
-            "com.parse.bolts.measurement_event";
+            "appsneva.parse.bolts.measurement_event";
     private final static String MEASUREMENT_EVENT_NAME_KEY = "event_name";
     private final static String MEASUREMENT_EVENT_ARGS_KEY = "event_args";
     private final static String BOLTS_MEASUREMENT_EVENT_PREFIX = "bf_";

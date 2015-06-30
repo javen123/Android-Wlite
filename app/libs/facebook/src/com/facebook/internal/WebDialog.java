@@ -44,7 +44,7 @@ import com.facebook.*;
 import com.facebook.R;
 
 /**
- * com.facebook.internal is solely for the use of other packages within the Facebook SDK for
+ * appsneva.facebook.internal is solely for the use of other packages within the Facebook SDK for
  * Android. Use of any of the classes in this package is unsupported, and they may be modified or
  * removed without warning at any time.
  *
@@ -532,7 +532,7 @@ public class WebDialog extends Dialog {
          * application id specified in the application/meta-data.
          *
          * @param context the Context within which the dialog will be shown.
-         * @param action the portion of the dialog URL following www.facebook.com/dialog/.
+         * @param action the portion of the dialog URL following www.facebook.appsneva/dialog/.
          *               See https://developers.facebook.com/docs/reference/dialogs/ for details.
          * @param parameters a Bundle containing parameters to pass as part of the URL.
          */
@@ -556,7 +556,7 @@ public class WebDialog extends Dialog {
          *
          * @param context the Context within which the dialog will be shown.
          * @param applicationId the application ID to be included in the dialog URL.
-         * @param action the portion of the dialog URL following www.facebook.com/dialog/.
+         * @param action the portion of the dialog URL following www.facebook.appsneva/dialog/.
          *               See https://developers.facebook.com/docs/reference/dialogs/ for details.
          * @param parameters a Bundle containing parameters to pass as part of the URL.
          */

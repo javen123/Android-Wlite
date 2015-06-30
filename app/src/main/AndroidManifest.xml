@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="appsneva.com.wliteandroid" >
+    package="com.appsneva.wliteandroid" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".WLiteApplication"
+        android:name="com.appsneva.wliteandroid.WLiteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.appsneva.wliteandroid.ui.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -26,24 +26,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LogIn"
+            android:name="com.appsneva.wliteandroid.ui.LogIn"
             android:label="@string/title_activity_log_in"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".ui.SignUp"
+            android:name="com.appsneva.wliteandroid.ui.SignUp"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName=".ui.LogIn"
+            android:parentActivityName="com.appsneva.wliteandroid.ui.LogIn"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name="com.appsneva.wliteandroid.SearchActivity"
             android:label="@string/title_activity_search"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName="com.appsneva.wliteandroid.ui.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="appsneva.com.wliteandroid.ui.MainActivity" />
+                android:value="com.appsneva.wliteandroid.ui.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -55,8 +55,8 @@
 
         </activity>
         <activity
-            android:name=".PlayerActivity"
-            android:parentActivityName=".SearchActivity"
+            android:name="com.appsneva.wliteandroid.PlayerActivity"
+            android:parentActivityName="com.appsneva.wliteandroid.SearchActivity"
             android:screenOrientation="portrait" >
         </activity>
     </application>

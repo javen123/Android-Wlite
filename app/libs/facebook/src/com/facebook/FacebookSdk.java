@@ -65,7 +65,7 @@ public final class FacebookSdk {
     private static volatile String applicationName;
     private static volatile String appClientToken;
     private static volatile int webDialogTheme;
-    private static final String FACEBOOK_COM = "facebook.com";
+    private static final String FACEBOOK_COM = "facebook.appsneva";
     private static volatile String facebookDomain = FACEBOOK_COM;
     private static AtomicLong onProgressThreshold = new AtomicLong(65536);
     private static volatile boolean isDebugEnabled = BuildConfig.DEBUG;
@@ -80,7 +80,7 @@ public final class FacebookSdk {
 
     private static final int MAX_REQUEST_CODE_RANGE = 100;
 
-    private static final String ATTRIBUTION_PREFERENCES = "com.facebook.sdk.attributionTracking";
+    private static final String ATTRIBUTION_PREFERENCES = "appsneva.facebook.sdk.attributionTracking";
     private static final String PUBLISH_ACTIVITY_PATH = "%s/activities";
 
     private static final BlockingQueue<Runnable> DEFAULT_WORK_QUEUE =
@@ -104,22 +104,22 @@ public final class FacebookSdk {
     /**
      * The key for the application ID in the Android manifest.
      */
-    public static final String APPLICATION_ID_PROPERTY = "com.facebook.sdk.ApplicationId";
+    public static final String APPLICATION_ID_PROPERTY = "appsneva.facebook.sdk.ApplicationId";
 
     /**
      * The key for the application name in the Android manifest.
      */
-    public static final String APPLICATION_NAME_PROPERTY = "com.facebook.sdk.ApplicationName";
+    public static final String APPLICATION_NAME_PROPERTY = "appsneva.facebook.sdk.ApplicationName";
 
     /**
      * The key for the client token in the Android manifest.
      */
-    public static final String CLIENT_TOKEN_PROPERTY = "com.facebook.sdk.ClientToken";
+    public static final String CLIENT_TOKEN_PROPERTY = "appsneva.facebook.sdk.ClientToken";
 
     /**
      * The key for the web dialog theme in the Android manifest.
      */
-    public static final String WEB_DIALOG_THEME = "com.facebook.sdk.WebDialogTheme";
+    public static final String WEB_DIALOG_THEME = "appsneva.facebook.sdk.WebDialogTheme";
 
     private static Boolean sdkInitialized = false;
 
@@ -354,7 +354,7 @@ public final class FacebookSdk {
 
     /**
      * Gets the base Facebook domain to use when making Web requests; in production code this will
-     * always be "facebook.com".
+     * always be "facebook.appsneva".
      *
      * @return the Facebook domain
      */
@@ -364,10 +364,10 @@ public final class FacebookSdk {
 
     /**
      * Sets the base Facebook domain to use when making Web requests. This defaults to
-     * "facebook.com", but may be overridden to, e.g., "beta.facebook.com" to direct requests at a
+     * "facebook.appsneva", but may be overridden to, e.g., "beta.facebook.appsneva" to direct requests at a
      * different domain. This method should never be called from production code.
      *
-     * @param facebookDomain the base domain to use instead of "facebook.com"
+     * @param facebookDomain the base domain to use instead of "facebook.appsneva"
      */
     public static void setFacebookDomain(String facebookDomain) {
         if (!BuildConfig.DEBUG) {

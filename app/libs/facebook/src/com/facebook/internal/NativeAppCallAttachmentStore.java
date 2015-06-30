@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * com.facebook.internal is solely for the use of other packages within the Facebook SDK for
+ * appsneva.facebook.internal is solely for the use of other packages within the Facebook SDK for
  * Android. Use of any of the classes in this package is unsupported, and they may be modified or
  * removed without warning at any time.
  *
@@ -47,7 +47,7 @@ import java.util.UUID;
  */
 public final class NativeAppCallAttachmentStore {
     private static final String TAG = NativeAppCallAttachmentStore.class.getName();
-    static final String ATTACHMENTS_DIR_NAME = "com.facebook.NativeAppCallAttachmentStore.files";
+    static final String ATTACHMENTS_DIR_NAME = "appsneva.facebook.NativeAppCallAttachmentStore.files";
     private static File attachmentsDirectory;
 
     private NativeAppCallAttachmentStore() {}

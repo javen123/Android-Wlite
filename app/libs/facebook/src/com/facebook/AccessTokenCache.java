@@ -31,7 +31,7 @@ import org.json.JSONObject;
 
 class AccessTokenCache {
     static final String CACHED_ACCESS_TOKEN_KEY
-            = "com.facebook.AccessTokenManager.CachedAccessToken";
+            = "appsneva.facebook.AccessTokenManager.CachedAccessToken";
 
     private final SharedPreferences sharedPreferences;
     private final SharedPreferencesTokenCachingStrategyFactory tokenCachingStrategyFactory;

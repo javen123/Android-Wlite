@@ -32,7 +32,7 @@ import com.facebook.internal.NativeProtocol;
  * notifications for photo upload operations that happen in the background.
  * <p/>
  * Applications may subclass this class and register it in their AndroidManifest.xml. The receiver
- * is listening the com.facebook.platform.AppCallResultBroadcast action.
+ * is listening the appsneva.facebook.platform.AppCallResultBroadcast action.
  */
 public class FacebookBroadcastReceiver extends BroadcastReceiver {
 

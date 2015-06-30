@@ -48,14 +48,14 @@ import java.util.UUID;
  * <p>If an application wishes to attach images that are stored in-memory within the application,
  * this content provider must be listed in the application's AndroidManifest.xml, and it should be
  * named according to the pattern
- * <code>"com.facebook.app.FacebookContentProvider{FACEBOOK_APP_ID}"</code>.
+ * <code>"appsneva.facebook.app.FacebookContentProvider{FACEBOOK_APP_ID}"</code>.
  * See the {@link FacebookContentProvider#getAttachmentUrl getContentProviderName} method.
  * </p>
  */
 public class FacebookContentProvider extends ContentProvider {
     private static final String TAG = FacebookContentProvider.class.getName();
     private static final String ATTACHMENT_URL_BASE =
-            "content://com.facebook.app.FacebookContentProvider";
+            "content://appsneva.facebook.app.FacebookContentProvider";
 
     public FacebookContentProvider() {
     }

@@ -37,7 +37,7 @@ import com.facebook.login.LoginFragment;
  * AndroidManifest.xml to ensure proper handling of Facebook SDK features.
  * <pre>
  * {@code
- * <activity android:name="com.facebook.FacebookActivity"
+ * <activity android:name="appsneva.facebook.FacebookActivity"
  *           android:theme="@android:style/Theme.Translucent.NoTitleBar"
  *           android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
  *           android:label="@string/app_name" />

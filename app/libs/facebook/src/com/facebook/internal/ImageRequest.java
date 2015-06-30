@@ -28,7 +28,7 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 
 /**
- * com.facebook.internal is solely for the use of other packages within the
+ * appsneva.facebook.internal is solely for the use of other packages within the
  * Facebook SDK for Android. Use of any of the classes in this package is
  * unsupported, and they may be modified or removed without warning at any time.
  */
@@ -46,7 +46,7 @@ public class ImageRequest {
     public static final int UNSPECIFIED_DIMENSION = 0;
 
     private static final String SCHEME = "https";
-    private static final String AUTHORITY = "graph.facebook.com";
+    private static final String AUTHORITY = "graph.facebook.appsneva";
     private static final String PATH = "%s/picture";
     private static final String HEIGHT_PARAM = "height";
     private static final String WIDTH_PARAM = "width";

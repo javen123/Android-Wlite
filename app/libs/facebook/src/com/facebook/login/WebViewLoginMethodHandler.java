@@ -46,7 +46,7 @@ import java.util.Locale;
 
 class WebViewLoginMethodHandler extends LoginMethodHandler {
     private static final String WEB_VIEW_AUTH_HANDLER_STORE =
-            "com.facebook.login.AuthorizationClient.WebViewAuthHandler.TOKEN_STORE_KEY";
+            "appsneva.facebook.login.AuthorizationClient.WebViewAuthHandler.TOKEN_STORE_KEY";
     private static final String WEB_VIEW_AUTH_HANDLER_TOKEN_KEY = "TOKEN";
 
     private WebDialog loginDialog;

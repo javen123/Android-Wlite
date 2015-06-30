@@ -1,4 +1,4 @@
-package appsneva.com.wliteandroid;
+package com.appsneva.wliteandroid;
 
 /**
  * Created by javen on 6/25/15.

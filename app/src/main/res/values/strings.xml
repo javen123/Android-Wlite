@@ -27,6 +27,7 @@
     <string name="login_btn_text">Log in</string>
     <string name="searchable_label">Search List</string>
     <string name="searchable_hint">Who would you like to see</string>
+    <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package appsneva.com.wliteandroid.ui;
+package com.appsneva.wliteandroid.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import appsneva.com.wliteandroid.R;
+import com.appsneva.wliteandroid.R;
 
 
 public class LogIn extends Activity {

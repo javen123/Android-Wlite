@@ -57,7 +57,7 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
- * com.facebook.share.internal is solely for the use of other packages within the
+ * appsneva.facebook.share.internal is solely for the use of other packages within the
  * Facebook SDK for Android. Use of any of the classes in this package is
  * unsupported, and they may be modified or removed without warning at any time.
  */

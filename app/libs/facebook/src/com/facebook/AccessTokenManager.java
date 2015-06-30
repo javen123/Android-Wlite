@@ -44,13 +44,13 @@ final class AccessTokenManager {
     static final String TAG = "AccessTokenManager";
 
     static final String ACTION_CURRENT_ACCESS_TOKEN_CHANGED =
-            "com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED";
+            "appsneva.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED";
     static final String EXTRA_OLD_ACCESS_TOKEN =
-            "com.facebook.sdk.EXTRA_OLD_ACCESS_TOKEN";
+            "appsneva.facebook.sdk.EXTRA_OLD_ACCESS_TOKEN";
     static final String EXTRA_NEW_ACCESS_TOKEN =
-            "com.facebook.sdk.EXTRA_NEW_ACCESS_TOKEN";
+            "appsneva.facebook.sdk.EXTRA_NEW_ACCESS_TOKEN";
     static final String SHARED_PREFERENCES_NAME =
-            "com.facebook.AccessTokenManager.SharedPreferences";
+            "appsneva.facebook.AccessTokenManager.SharedPreferences";
 
     // Token extension constants
     private static final int TOKEN_EXTEND_THRESHOLD_SECONDS = 24 * 60 * 60; // 1 day

@@ -1,8 +1,8 @@
-package appsneva.com.wliteandroid.ui;
+package com.appsneva.wliteandroid.ui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import appsneva.com.wliteandroid.R;
+import com.appsneva.wliteandroid.R;
 
 
 

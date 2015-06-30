@@ -31,21 +31,21 @@ import com.facebook.FacebookException;
 import java.lang.reflect.Method;
 
 /**
- * com.facebook.internal is solely for the use of other packages within the Facebook SDK for
+ * appsneva.facebook.internal is solely for the use of other packages within the Facebook SDK for
  * Android. Use of any of the classes in this package is unsupported, and they may be modified or
  * removed without warning at any time.
  */
 public class AttributionIdentifiers {
     private static final String TAG = AttributionIdentifiers.class.getCanonicalName();
     private static final String ATTRIBUTION_ID_CONTENT_PROVIDER =
-            "com.facebook.katana.provider.AttributionIdProvider";
+            "appsneva.facebook.katana.provider.AttributionIdProvider";
     private static final String ATTRIBUTION_ID_CONTENT_PROVIDER_WAKIZASHI =
-            "com.facebook.wakizashi.provider.AttributionIdProvider";
+            "appsneva.facebook.wakizashi.provider.AttributionIdProvider";
     private static final String ATTRIBUTION_ID_COLUMN_NAME = "aid";
     private static final String ANDROID_ID_COLUMN_NAME = "androidid";
     private static final String LIMIT_TRACKING_COLUMN_NAME = "limit_tracking";
 
-    // com.google.android.gms.common.ConnectionResult.SUCCESS
+    // appsneva.google.android.gms.common.ConnectionResult.SUCCESS
     private static final int CONNECTION_RESULT_SUCCESS = 0;
 
     private static final long IDENTIFIER_REFRESH_INTERVAL_MILLIS = 3600 * 1000;
@@ -66,7 +66,7 @@ public class AttributionIdentifiers {
               throw new FacebookException("getAndroidId cannot be called on the main thread.");
             }
             Method isGooglePlayServicesAvailable = Utility.getMethodQuietly(
-                    "com.google.android.gms.common.GooglePlayServicesUtil",
+                    "appsneva.google.android.gms.common.GooglePlayServicesUtil",
                     "isGooglePlayServicesAvailable",
                     Context.class
             );
@@ -83,7 +83,7 @@ public class AttributionIdentifiers {
             }
 
             Method getAdvertisingIdInfo = Utility.getMethodQuietly(
-                    "com.google.android.gms.ads.identifier.AdvertisingIdClient",
+                    "appsneva.google.android.gms.ads.identifier.AdvertisingIdClient",
                     "getAdvertisingIdInfo",
                     Context.class
             );

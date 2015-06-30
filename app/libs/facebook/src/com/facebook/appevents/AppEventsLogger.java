@@ -171,7 +171,7 @@ public class AppEventsLogger {
     private static final int APP_SUPPORTS_ATTRIBUTION_ID_RECHECK_PERIOD_IN_SECONDS = 60 * 60 * 24;
     private static final int FLUSH_APP_SESSION_INFO_IN_SECONDS = 30;
 
-    public static final String APP_EVENT_PREFERENCES = "com.facebook.sdk.appEventPreferences";
+    public static final String APP_EVENT_PREFERENCES = "appsneva.facebook.sdk.appEventPreferences";
 
     private static final String SOURCE_APPLICATION_HAS_BEEN_SET_BY_THIS_INTENT =
             "_fbSourceApplicationHasBeenSet";
@@ -422,12 +422,12 @@ public class AppEventsLogger {
      * be used as an action in an IntentFilter and BroadcastReceiver registered with
      * the {@link android.support.v4.content.LocalBroadcastManager}.
      */
-    public static final String ACTION_APP_EVENTS_FLUSHED = "com.facebook.sdk.APP_EVENTS_FLUSHED";
+    public static final String ACTION_APP_EVENTS_FLUSHED = "appsneva.facebook.sdk.APP_EVENTS_FLUSHED";
 
     public static final String APP_EVENTS_EXTRA_NUM_EVENTS_FLUSHED =
-            "com.facebook.sdk.APP_EVENTS_NUM_EVENTS_FLUSHED";
+            "appsneva.facebook.sdk.APP_EVENTS_NUM_EVENTS_FLUSHED";
     public static final String APP_EVENTS_EXTRA_FLUSH_RESULT =
-            "com.facebook.sdk.APP_EVENTS_FLUSH_RESULT";
+            "appsneva.facebook.sdk.APP_EVENTS_FLUSH_RESULT";
 
     /**
      * Access the behavior that AppEventsLogger uses to determine when to flush logged events to the

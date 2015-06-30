@@ -29,9 +29,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 final class ProfileCache {
-    static final String CACHED_PROFILE_KEY = "com.facebook.ProfileManager.CachedProfile";
+    static final String CACHED_PROFILE_KEY = "appsneva.facebook.ProfileManager.CachedProfile";
     static final String SHARED_PREFERENCES_NAME =
-            "com.facebook.AccessTokenManager.SharedPreferences";
+            "appsneva.facebook.AccessTokenManager.SharedPreferences";
 
     private final SharedPreferences sharedPreferences;
 

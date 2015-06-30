@@ -49,7 +49,7 @@ import bolts.AppLinks;
  *   &lt;application&gt; tag.
  *
  *   <pre>
- *    &lt;meta-data android:name="com.facebook.sdk.ApplicationId" android:value="YOUR_APP_ID"/&gt;
+ *    &lt;meta-data android:name="appsneva.facebook.sdk.ApplicationId" android:value="YOUR_APP_ID"/&gt;
  *   </pre>
  *
  * </p>
@@ -71,7 +71,7 @@ import bolts.AppLinks;
  *           &lt;intent-filter&gt;
  *             &lt;action android:name="android.intent.action.PICK" /&gt;
  *             &lt;category android:name="android.intent.category.DEFAULT"/&gt;
- *             &lt;category android:name="com.facebook.orca.category.PLATFORM_THREAD_20150311"/&gt;
+ *             &lt;category android:name="appsneva.facebook.orca.category.PLATFORM_THREAD_20150311"/&gt;
  *           &lt;/intent-filter&gt;
  *   </pre>
  *
@@ -84,21 +84,21 @@ public class MessengerUtils {
 
   private static final String TAG = "MessengerUtils";
 
-  public static final String PACKAGE_NAME = "com.facebook.orca";
+  public static final String PACKAGE_NAME = "appsneva.facebook.orca";
 
-  public static final String EXTRA_PROTOCOL_VERSION = "com.facebook.orca.extra.PROTOCOL_VERSION";
-  public static final String EXTRA_APP_ID = "com.facebook.orca.extra.APPLICATION_ID";
-  public static final String EXTRA_REPLY_TOKEN_KEY = "com.facebook.orca.extra.REPLY_TOKEN";
-  public static final String EXTRA_THREAD_TOKEN_KEY = "com.facebook.orca.extra.THREAD_TOKEN";
-  public static final String EXTRA_METADATA = "com.facebook.orca.extra.METADATA";
-  public static final String EXTRA_EXTERNAL_URI = "com.facebook.orca.extra.EXTERNAL_URI";
-  public static final String EXTRA_PARTICIPANTS = "com.facebook.orca.extra.PARTICIPANTS";
-  public static final String EXTRA_IS_REPLY = "com.facebook.orca.extra.IS_REPLY";
-  public static final String EXTRA_IS_COMPOSE = "com.facebook.orca.extra.IS_COMPOSE";
+  public static final String EXTRA_PROTOCOL_VERSION = "appsneva.facebook.orca.extra.PROTOCOL_VERSION";
+  public static final String EXTRA_APP_ID = "appsneva.facebook.orca.extra.APPLICATION_ID";
+  public static final String EXTRA_REPLY_TOKEN_KEY = "appsneva.facebook.orca.extra.REPLY_TOKEN";
+  public static final String EXTRA_THREAD_TOKEN_KEY = "appsneva.facebook.orca.extra.THREAD_TOKEN";
+  public static final String EXTRA_METADATA = "appsneva.facebook.orca.extra.METADATA";
+  public static final String EXTRA_EXTERNAL_URI = "appsneva.facebook.orca.extra.EXTERNAL_URI";
+  public static final String EXTRA_PARTICIPANTS = "appsneva.facebook.orca.extra.PARTICIPANTS";
+  public static final String EXTRA_IS_REPLY = "appsneva.facebook.orca.extra.IS_REPLY";
+  public static final String EXTRA_IS_COMPOSE = "appsneva.facebook.orca.extra.IS_COMPOSE";
   public static final int PROTOCOL_VERSION_20150314 = 20150314;
 
   public static final String ORCA_THREAD_CATEGORY_20150314 =
-      "com.facebook.orca.category.PLATFORM_THREAD_20150314";
+      "appsneva.facebook.orca.category.PLATFORM_THREAD_20150314";
 
   /**
    * Starts an intent to share a piece of media on Messenger using the messenger content platform.
@@ -254,14 +254,14 @@ public class MessengerUtils {
     try {
       startViewUri(context, "market://details?id=" + PACKAGE_NAME);
     } catch (ActivityNotFoundException anfe) {
-      startViewUri(context, "http://play.google.com/store/apps/details?id=" + PACKAGE_NAME);
+      startViewUri(context, "http://play.google.appsneva/store/apps/details?id=" + PACKAGE_NAME);
     }
   }
 
   private static Set<Integer> getAllAvailableProtocolVersions(Context context) {
     ContentResolver contentResolver = context.getContentResolver();
     Set<Integer> allAvailableVersions = new HashSet<Integer>();
-    Uri uri = Uri.parse("content://com.facebook.orca.provider.MessengerPlatformProvider/versions");
+    Uri uri = Uri.parse("content://appsneva.facebook.orca.provider.MessengerPlatformProvider/versions");
     String [] projection = new String[]{ "version" };
     Cursor c = contentResolver.query(uri, projection, null, null, null);
     if (c != null) {

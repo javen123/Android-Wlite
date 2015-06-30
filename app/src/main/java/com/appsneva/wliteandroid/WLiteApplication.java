@@ -1,4 +1,4 @@
-package appsneva.com.wliteandroid;
+package com.appsneva.wliteandroid;
 
 import android.app.Application;
 import com.parse.Parse;

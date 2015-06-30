@@ -29,11 +29,11 @@ import com.facebook.internal.Validate;
 
 final class ProfileManager {
     static final String ACTION_CURRENT_PROFILE_CHANGED =
-            "com.facebook.sdk.ACTION_CURRENT_PROFILE_CHANGED";
+            "appsneva.facebook.sdk.ACTION_CURRENT_PROFILE_CHANGED";
     static final String EXTRA_OLD_PROFILE =
-            "com.facebook.sdk.EXTRA_OLD_PROFILE";
+            "appsneva.facebook.sdk.EXTRA_OLD_PROFILE";
     static final String EXTRA_NEW_PROFILE =
-            "com.facebook.sdk.EXTRA_NEW_PROFILE";
+            "appsneva.facebook.sdk.EXTRA_NEW_PROFILE";
 
     private static volatile ProfileManager instance;
 

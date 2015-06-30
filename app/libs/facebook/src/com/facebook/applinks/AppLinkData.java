@@ -53,7 +53,7 @@ public class AppLinkData {
      * Key that should be used to pull out the UTC Unix tap-time from the arguments for this app
      * link.
      */
-    public static final String ARGUMENTS_TAPTIME_KEY = "com.facebook.platform.APPLINK_TAP_TIME_UTC";
+    public static final String ARGUMENTS_TAPTIME_KEY = "appsneva.facebook.platform.APPLINK_TAP_TIME_UTC";
     /**
      * Key that should be used to get the "referer_data" field for this app link.
      */
@@ -64,15 +64,15 @@ public class AppLinkData {
      * was deferred.
      */
     public static final String ARGUMENTS_NATIVE_CLASS_KEY =
-            "com.facebook.platform.APPLINK_NATIVE_CLASS";
+            "appsneva.facebook.platform.APPLINK_NATIVE_CLASS";
 
     /**
      * Key that should be used to pull out the native url that would have been used if the applink
      * was deferred.
      */
-    public static final String ARGUMENTS_NATIVE_URL = "com.facebook.platform.APPLINK_NATIVE_URL";
+    public static final String ARGUMENTS_NATIVE_URL = "appsneva.facebook.platform.APPLINK_NATIVE_URL";
 
-    static final String BUNDLE_APPLINK_ARGS_KEY = "com.facebook.platform.APPLINK_ARGS";
+    static final String BUNDLE_APPLINK_ARGS_KEY = "appsneva.facebook.platform.APPLINK_ARGS";
     private static final String BUNDLE_AL_APPLINK_DATA_KEY = "al_applink_data";
     private static final String APPLINK_BRIDGE_ARGS_KEY = "bridge_args";
     private static final String APPLINK_METHOD_ARGS_KEY = "method_args";

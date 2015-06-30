@@ -37,7 +37,7 @@ import com.facebook.LoggingBehavior;
 import java.util.Collection;
 
 /**
- * com.facebook.internal is solely for the use of other packages within the Facebook SDK for
+ * appsneva.facebook.internal is solely for the use of other packages within the Facebook SDK for
  * Android. Use of any of the classes in this package is unsupported, and they may be modified or
  * removed without warning at any time.
  */
@@ -52,15 +52,15 @@ public final class Validate {
 
     private static final String FACEBOOK_ACTIVITY_NOT_FOUND_REASON =
             "FacebookActivity is not declared in the AndroidManifest.xml, please add " +
-            "com.facebook.FacebookActivity to your AndroidManifest.xml file. See " +
-            "https://developers.facebook.com/docs/android/getting-started for more info.";
+            "appsneva.facebook.FacebookActivity to your AndroidManifest.xml file. See " +
+            "https://developers.facebook.appsneva/docs/android/getting-started for more info.";
 
     private static final String CONTENT_PROVIDER_NOT_FOUND_REASON =
             "A ContentProvider for this app was not set up in the AndroidManifest.xml, please " +
             "add %s as a provider to your AndroidManifest.xml file. See " +
-            "https://developers.facebook.com/docs/sharing/android for more info.";
+            "https://developers.facebook.appsneva/docs/sharing/android for more info.";
 
-    private static final String CONTENT_PROVIDER_BASE = "com.facebook.app.FacebookContentProvider";
+    private static final String CONTENT_PROVIDER_BASE = "appsneva.facebook.app.FacebookContentProvider";
 
     public static void notNull(Object arg, String name) {
         if (arg == null) {

@@ -1,4 +1,4 @@
-package appsneva.com.wliteandroid;
+package com.appsneva.wliteandroid;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,18 +15,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by javen on 6/25/15.
- */
 public class YoutubeConnector {
-
     private YouTube youtube;
     private YouTube.Search.List query;
 
     // Your developer key goes here
-    public static final String KEY
-            = "AIzaSQZZQWQQWMGziK9H_qRxz8g-V6eDL3QW_Us";
+    public static final String KEY = DeveloperKey.DEVELOPER_KEY;
 
     public YoutubeConnector(Context context) {
         youtube = new YouTube.Builder(new NetHttpTransport(),
@@ -41,7 +35,7 @@ public class YoutubeConnector {
             query.setType("video");
             query.setFields("items(id/videoId,snippet/title,snippet/description,snippet/thumbnails/default/url)");
         }catch(IOException e){
-            Log.d("YC", "Could not initialize: "+e.getMessage());
+            Log.d("YC", "Could not initialize: " + e);
         }
     }
 
@@ -66,6 +60,8 @@ public class YoutubeConnector {
             return null;
         }
     }
+
+
 
 
 }

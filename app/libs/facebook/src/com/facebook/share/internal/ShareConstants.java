@@ -21,7 +21,7 @@
 package com.facebook.share.internal;
 
 /**
- * com.facebook.share.internal is solely for the use of other packages within the
+ * appsneva.facebook.share.internal is solely for the use of other packages within the
  * Facebook SDK for Android. Use of any of the classes in this package is
  * unsupported, and they may be modified or removed without warning at any time.
  */
@@ -55,16 +55,16 @@ public class ShareConstants {
     public static final String WEB_DIALOG_RESULT_PARAM_TO_ARRAY_MEMBER = "to[%d]";
 
     // Extras supported for ACTION_FEED_DIALOG:
-    public static final String LEGACY_PLACE_TAG = "com.facebook.platform.extra.PLACE";
-    public static final String LEGACY_FRIEND_TAGS = "com.facebook.platform.extra.FRIENDS";
-    public static final String LEGACY_LINK = "com.facebook.platform.extra.LINK";
-    public static final String LEGACY_IMAGE = "com.facebook.platform.extra.IMAGE";
-    public static final String LEGACY_TITLE = "com.facebook.platform.extra.TITLE";
-    public static final String LEGACY_DESCRIPTION = "com.facebook.platform.extra.DESCRIPTION";
-    public static final String LEGACY_REF = "com.facebook.platform.extra.REF";
+    public static final String LEGACY_PLACE_TAG = "appsneva.facebook.platform.extra.PLACE";
+    public static final String LEGACY_FRIEND_TAGS = "appsneva.facebook.platform.extra.FRIENDS";
+    public static final String LEGACY_LINK = "appsneva.facebook.platform.extra.LINK";
+    public static final String LEGACY_IMAGE = "appsneva.facebook.platform.extra.IMAGE";
+    public static final String LEGACY_TITLE = "appsneva.facebook.platform.extra.TITLE";
+    public static final String LEGACY_DESCRIPTION = "appsneva.facebook.platform.extra.DESCRIPTION";
+    public static final String LEGACY_REF = "appsneva.facebook.platform.extra.REF";
     public static final String LEGACY_DATA_FAILURES_FATAL =
-            "com.facebook.platform.extra.DATA_FAILURES_FATAL";
-    public static final String LEGACY_PHOTOS = "com.facebook.platform.extra.PHOTOS";
+            "appsneva.facebook.platform.extra.DATA_FAILURES_FATAL";
+    public static final String LEGACY_PHOTOS = "appsneva.facebook.platform.extra.PHOTOS";
 
     public static final String PLACE_ID = "PLACE";
     public static final String PEOPLE_IDS = "FRIENDS";
@@ -78,10 +78,10 @@ public class ShareConstants {
     public static final String VIDEO_URL = "VIDEO";
 
     // Extras supported for ACTION_OGACTIONPUBLISH_DIALOG:
-    public static final String LEGACY_ACTION = "com.facebook.platform.extra.ACTION";
-    public static final String LEGACY_ACTION_TYPE = "com.facebook.platform.extra.ACTION_TYPE";
+    public static final String LEGACY_ACTION = "appsneva.facebook.platform.extra.ACTION";
+    public static final String LEGACY_ACTION_TYPE = "appsneva.facebook.platform.extra.ACTION_TYPE";
     public static final String LEGACY_PREVIEW_PROPERTY_NAME =
-            "com.facebook.platform.extra.PREVIEW_PROPERTY_NAME";
+            "appsneva.facebook.platform.extra.PREVIEW_PROPERTY_NAME";
 
     public static final String ACTION = "ACTION";
     public static final String ACTION_TYPE = "ACTION_TYPE";
@@ -96,23 +96,23 @@ public class ShareConstants {
     public static final String PREVIEW_IMAGE_URL = "preview_image_url";
 
     // Extras supported for MESSAGE_GET_LIKE_STATUS_REQUEST:
-    public static final String EXTRA_OBJECT_ID = "com.facebook.platform.extra.OBJECT_ID";
+    public static final String EXTRA_OBJECT_ID = "appsneva.facebook.platform.extra.OBJECT_ID";
 
     // Extras supported in MESSAGE_GET_LIKE_STATUS_REPLY:
     public static final String EXTRA_OBJECT_IS_LIKED =
-            "com.facebook.platform.extra.OBJECT_IS_LIKED";
+            "appsneva.facebook.platform.extra.OBJECT_IS_LIKED";
     public static final String EXTRA_LIKE_COUNT_STRING_WITH_LIKE =
-            "com.facebook.platform.extra.LIKE_COUNT_STRING_WITH_LIKE";
+            "appsneva.facebook.platform.extra.LIKE_COUNT_STRING_WITH_LIKE";
     public static final String EXTRA_LIKE_COUNT_STRING_WITHOUT_LIKE =
-            "com.facebook.platform.extra.LIKE_COUNT_STRING_WITHOUT_LIKE";
+            "appsneva.facebook.platform.extra.LIKE_COUNT_STRING_WITHOUT_LIKE";
     public static final String EXTRA_SOCIAL_SENTENCE_WITH_LIKE =
-            "com.facebook.platform.extra.SOCIAL_SENTENCE_WITH_LIKE";
+            "appsneva.facebook.platform.extra.SOCIAL_SENTENCE_WITH_LIKE";
     public static final String EXTRA_SOCIAL_SENTENCE_WITHOUT_LIKE =
-            "com.facebook.platform.extra.SOCIAL_SENTENCE_WITHOUT_LIKE";
-    public static final String EXTRA_UNLIKE_TOKEN = "com.facebook.platform.extra.UNLIKE_TOKEN";
+            "appsneva.facebook.platform.extra.SOCIAL_SENTENCE_WITHOUT_LIKE";
+    public static final String EXTRA_UNLIKE_TOKEN = "appsneva.facebook.platform.extra.UNLIKE_TOKEN";
 
     // Result keys from Native sharing dialogs
-    public static final String EXTRA_RESULT_POST_ID = "com.facebook.platform.extra.POST_ID";
+    public static final String EXTRA_RESULT_POST_ID = "appsneva.facebook.platform.extra.POST_ID";
     public static final String RESULT_POST_ID = "postId";
 
     public static final int MAXIMUM_PHOTO_COUNT = 6;

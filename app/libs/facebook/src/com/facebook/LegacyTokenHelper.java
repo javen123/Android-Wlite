@@ -44,50 +44,50 @@ final class LegacyTokenHelper {
      * The key used by AccessTokenCache to store the token value in the Bundle during
      * load and save.
      */
-    public static final String TOKEN_KEY = "com.facebook.TokenCachingStrategy.Token";
+    public static final String TOKEN_KEY = "appsneva.facebook.TokenCachingStrategy.Token";
 
     /**
      * The key used by AccessTokenCache to store the expiration date value in the Bundle
      * during load and save.
      */
     public static final String EXPIRATION_DATE_KEY =
-            "com.facebook.TokenCachingStrategy.ExpirationDate";
+            "appsneva.facebook.TokenCachingStrategy.ExpirationDate";
 
     /**
      * The key used by AccessTokenCache to store the last refresh date value in the
      * Bundle during load and save.
      */
     public static final String LAST_REFRESH_DATE_KEY =
-            "com.facebook.TokenCachingStrategy.LastRefreshDate";
+            "appsneva.facebook.TokenCachingStrategy.LastRefreshDate";
 
     /**
      * The key used by AccessTokenCache to store an enum indicating the source of the token
      * in the Bundle during load and save.
      */
     public static final String TOKEN_SOURCE_KEY =
-            "com.facebook.TokenCachingStrategy.AccessTokenSource";
+            "appsneva.facebook.TokenCachingStrategy.AccessTokenSource";
 
     /**
      * The key used by AccessTokenCache to store the list of permissions granted by the
      * token in the Bundle during load and save.
      */
-    public static final String PERMISSIONS_KEY = "com.facebook.TokenCachingStrategy.Permissions";
+    public static final String PERMISSIONS_KEY = "appsneva.facebook.TokenCachingStrategy.Permissions";
 
     /**
      * The key used by AccessTokenCache to store the list of permissions declined by the user in the token in
      * the Bundle during load and save.
      */
     public static final String DECLINED_PERMISSIONS_KEY =
-            "com.facebook.TokenCachingStrategy.DeclinedPermissions";
+            "appsneva.facebook.TokenCachingStrategy.DeclinedPermissions";
 
     public static final String APPLICATION_ID_KEY =
-            "com.facebook.TokenCachingStrategy.ApplicationId";
+            "appsneva.facebook.TokenCachingStrategy.ApplicationId";
 
     private static final long INVALID_BUNDLE_MILLISECONDS = Long.MIN_VALUE;
-    private static final String IS_SSO_KEY = "com.facebook.TokenCachingStrategy.IsSSO";
+    private static final String IS_SSO_KEY = "appsneva.facebook.TokenCachingStrategy.IsSSO";
 
     public static final String DEFAULT_CACHE_KEY =
-            "com.facebook.SharedPreferencesTokenCachingStrategy.DEFAULT_KEY";
+            "appsneva.facebook.SharedPreferencesTokenCachingStrategy.DEFAULT_KEY";
     private static final String TAG = LegacyTokenHelper.class.getSimpleName();
 
     private static final String JSON_VALUE_TYPE = "valueType";

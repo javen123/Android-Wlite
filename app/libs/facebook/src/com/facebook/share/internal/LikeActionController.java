@@ -55,21 +55,21 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * com.facebook.share.internal is solely for the use of other packages within the Facebook SDK for
+ * appsneva.facebook.share.internal is solely for the use of other packages within the Facebook SDK for
  * Android. Use of any of the classes in this package is unsupported, and they may be modified or
  * removed without warning at any time.
  */
 public class LikeActionController {
 
     public static final String ACTION_LIKE_ACTION_CONTROLLER_UPDATED =
-            "com.facebook.sdk.LikeActionController.UPDATED";
+            "appsneva.facebook.sdk.LikeActionController.UPDATED";
     public static final String ACTION_LIKE_ACTION_CONTROLLER_DID_ERROR =
-            "com.facebook.sdk.LikeActionController.DID_ERROR";
+            "appsneva.facebook.sdk.LikeActionController.DID_ERROR";
     public static final String ACTION_LIKE_ACTION_CONTROLLER_DID_RESET =
-            "com.facebook.sdk.LikeActionController.DID_RESET";
+            "appsneva.facebook.sdk.LikeActionController.DID_RESET";
 
     public static final String ACTION_OBJECT_ID_KEY =
-            "com.facebook.sdk.LikeActionController.OBJECT_ID";
+            "appsneva.facebook.sdk.LikeActionController.OBJECT_ID";
 
     public static final String ERROR_INVALID_OBJECT_ID = "Invalid Object Id";
     public static final String ERROR_PUBLISH_ERROR = "Unable to publish the like/unlike action";
@@ -83,13 +83,13 @@ public class LikeActionController {
     private static final int MAX_OBJECT_SUFFIX = 1000;
 
     private static final String LIKE_ACTION_CONTROLLER_STORE =
-            "com.facebook.LikeActionController.CONTROLLER_STORE_KEY";
+            "appsneva.facebook.LikeActionController.CONTROLLER_STORE_KEY";
     private static final String LIKE_ACTION_CONTROLLER_STORE_PENDING_OBJECT_ID_KEY =
             "PENDING_CONTROLLER_KEY";
     private static final String LIKE_ACTION_CONTROLLER_STORE_OBJECT_SUFFIX_KEY = "OBJECT_SUFFIX";
 
     private static final String JSON_INT_VERSION_KEY =
-            "com.facebook.share.internal.LikeActionController.version";
+            "appsneva.facebook.share.internal.LikeActionController.version";
     private static final String JSON_STRING_OBJECT_ID_KEY = "object_id";
     private static final String JSON_INT_OBJECT_TYPE_KEY = "object_type";
     private static final String JSON_STRING_LIKE_COUNT_WITH_LIKE_KEY =
@@ -559,7 +559,7 @@ public class LikeActionController {
         }
         return String.format(
                 Locale.ROOT,
-                "%s|%s|com.fb.sdk.like|%d",
+                "%s|%s|appsneva.fb.sdk.like|%d",
                 objectId,
                 Utility.coerceValueIfNullOrEmpty(accessTokenPortion, ""),
                 objectSuffix);
