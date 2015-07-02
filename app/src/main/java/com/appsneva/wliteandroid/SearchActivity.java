@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+
 import com.appsneva.wliteandroid.ui.BaseActivity;
 
 
@@ -28,11 +29,7 @@ public class SearchActivity extends BaseActivity {
         setContentView(R.layout.layout_search);
         activateToolbarWithjHomeEnabled();
 
-//        searchInput = (EditText) findViewById(R.id.search_input);
-//        videosFound = (ListView) findViewById(R.id.videos_found);
-
-
-    }
+     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

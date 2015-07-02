@@ -1,9 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/activity_main_background"
     tools:context="com.appsneva.wliteandroid.ui.LogIn">
 
     <EditText
@@ -13,6 +16,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:paddingLeft="@dimen/form_tbox_l_padding"
+        android:paddingTop="@dimen/form_tbox_t_padding"
+        android:paddingRight="@dimen/form_tbox_r_padding"
+        android:paddingBottom="@dimen/form_tbox_b_padding"
         android:hint="@string/userName" />
 
     <EditText
@@ -24,6 +31,10 @@
         android:layout_below="@+id/editTextUN"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:paddingLeft="@dimen/form_tbox_l_padding"
+        android:paddingTop="@dimen/form_tbox_t_padding"
+        android:paddingRight="@dimen/form_tbox_r_padding"
+        android:paddingBottom="@dimen/form_tbox_b_padding"
         android:hint="@string/password" />
 
     <Button
@@ -33,8 +44,34 @@
         android:id="@+id/btnLogIn"
         android:layout_below="@+id/editTextPW"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp" />
+        android:paddingLeft="@dimen/form_btn_l_padding"
+        android:paddingTop="@dimen/form_btn_t_padding"
+        android:paddingRight="@dimen/form_btn_r_padding"
+        android:paddingBottom="@dimen/form_btn_b_padding"
+        android:background="@color/login_btn_background"
+        android:textColor="@color/login_btn_textColor"
+        android:textSize="@dimen/login_btn_textSize"
+        android:layout_marginTop="@dimen/login_btn_t_marginLI"
+        android:textStyle="bold"
+        android:typeface="sans" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/signup_btn_text"
+        android:id="@+id/btnSignIn"
+        android:layout_below="@+id/editTextPW"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="@dimen/form_btn_l_padding"
+        android:paddingTop="@dimen/form_btn_t_padding"
+        android:paddingRight="@dimen/form_btn_r_padding"
+        android:paddingBottom="@dimen/form_btn_b_padding"
+        android:background="@color/login_btn_background"
+        android:textColor="@color/login_btn_textColor"
+        android:textSize="@dimen/login_sbtn_textSize"
+        android:layout_marginTop="@dimen/login_sbtn_t_margin" />
+
+    <!-- ORIGINAL TEXTVIEW LINK
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,4 +79,5 @@
         android:id="@+id/textViewBtnSignUp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+    -->
 </RelativeLayout>

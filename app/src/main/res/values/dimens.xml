@@ -2,4 +2,50 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">5dp</dimen>
     <dimen name="activity_vertical_margin">5dp</dimen>
+
+    <!--
+        Default button and textbox paddings. If an activity needs a specific style that is not
+        global, then they will be defined below this global section and will be labeled by the
+        activity: [activity]_[widget [_position(t,r,b,l)]]_[style]. The t,r,b,l comes from the
+        shorthand for CSS (it has become second nature to me) which is for Top, Right, Bottom,
+        Left. So for a login activity button specifically, as seen below, would be
+        login_btn_t_margin  = login - button - top (t) - margin. I think this way there
+        is a naming consistency. Also, each individual activity will have it's own section
+        after the global section here.
+    -->
+
+    <!-- login/sign-in buttons : btn_[position(t,r,b,l)_[style] -->
+    <dimen name="form_btn_t_padding">25dp</dimen>
+    <dimen name="form_btn_r_padding">15dp</dimen>
+    <dimen name="form_btn_b_padding">25dp</dimen>
+    <dimen name="form_btn_l_padding">15dp</dimen>
+    <dimen name="form_btn_t_margin">5dp</dimen>
+    <dimen name="form_btn_r_margin">5dp</dimen>
+    <dimen name="form_btn_b_margin">5dp</dimen>
+    <dimen name="form_btn_l_margin">5dp</dimen>
+
+    <!-- login/sign-in textboxes : tbox_[position(t,r,b,l)_[style] -->
+    <dimen name="form_tbox_t_padding">25dp</dimen>
+    <dimen name="form_tbox_r_padding">25dp</dimen>
+    <dimen name="form_tbox_b_padding">15dp</dimen>
+    <dimen name="form_tbox_l_padding">25dp</dimen>
+    <dimen name="form_tbox_t_margin">5dp</dimen>
+    <dimen name="form_tbox_r_margin">5dp</dimen>
+    <dimen name="form_tbox_b_margin">5dp</dimen>
+    <dimen name="form_tbox_l_margin">5dp</dimen>
+
+    <!-- login activity specifics -->
+    <dimen name="login_btn_t_marginLI">35dp</dimen>
+    <dimen name="login_btn_textSize">20dp</dimen>
+    <!-- login activity sign-up button -->
+    <dimen name="login_sbtn_t_margin">150dp</dimen>
+    <dimen name="login_sbtn_textSize">14dp</dimen>
+
+    <!-- sign-up activity specifics -->
+    <dimen name="signup_btn_t_margin">25dp</dimen>
+
+    <!-- main activity specifics -->
+
+    <!-- player activity specifics -->
+
 </resources>

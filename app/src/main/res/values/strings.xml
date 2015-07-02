@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">WLiteAndroid</string>
+    <!--
+        For the published version when ready, this will simply be "Wavlite". I am using this
+        so that I can have the multiple versions on my phone for comparisons (I'm using my
+        versioning numbers here just for my own brain, no rhyme or reason to it). This xml
+        document I expect will get rather unwieldy, but I'll organize that as it comes with
+        time. For now, I'm leaving it as is.
+    -->
+    <string name="app_name">WavliteV2.2</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -10,13 +17,13 @@
     <string name="signUpBtn">Sign Up</string>
     <string name="password">Password</string>
     <string name="userEmail">Email address</string>
-    <string name="signUpErrorMsg">Be sure to fill out the fields</string>
-    <string name="signUpErrorTitle">Oops</string>
+    <string name="signUpErrorMsg">Please fill out all fields</string>
+    <string name="signUpErrorTitle">Oops!</string>
     <string name="BtnUserLogOut">Log Out</string>
     <string name="search">Search</string>
     <string name="failed">Failed to initialize Youtube Player</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_actionLogOut">Log Out</string>
     <string name="PlayerTitle">Wavlite Player</string>
@@ -24,10 +31,11 @@
     <string name="action_search">Search</string>
     <string name="title_activity_search">Search Activity</string>
     <string name="search_title">Search</string>
-    <string name="login_btn_text">Log in</string>
+    <string name="login_btn_text">Login</string>
+    <string name="signup_btn_text">No Account? Sign Up Now!</string>
     <string name="searchable_label">Search List</string>
-    <string name="searchable_hint">Who would you like to see</string>
+    <string name="searchable_hint">Wavlite Media Search</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 
-
 </resources>
+

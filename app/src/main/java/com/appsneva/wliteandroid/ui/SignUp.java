@@ -1,3 +1,8 @@
+/**
+ * REGISTRATION CLASS (/java/appsneva.../ui/SignUp.java)
+ * -----------------------------------------------------------------------------
+ * @package com.appsneva.wliteandroid.ui
+ */
 package com.appsneva.wliteandroid.ui;
 
 import android.app.Activity;
@@ -15,17 +20,12 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.appsneva.wliteandroid.R;
 
-
-
-
 public class SignUp extends Activity {
 
     protected EditText mUsername;
     protected EditText mPassword;
     protected EditText mEmail;
     protected Button mSignupBtn;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class SignUp extends Activity {
                     dialog.show();
 
                 }
-                else{
+                else {
                     setProgressBarIndeterminateVisibility(true);
                     ParseUser newUser = new ParseUser();
                     newUser.setUsername(username);
@@ -74,7 +74,7 @@ public class SignUp extends Activity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }
-                            else{
+                            else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this);
                                 builder.setMessage(e.getMessage());
                                 builder.setTitle(getString(R.string.signUpErrorTitle));
@@ -82,19 +82,19 @@ public class SignUp extends Activity {
                                 AlertDialog dialog = builder.create();
                                 dialog.show();
                             }
-                        }
-                    });
-                }
-            }
-        });
-    }
+                        }  // done
+                    });  // newUser.signUpInBackground
+                }  // text field validation/processing IF-ELSE
+            }  // onClick
+        });  // mSignupBtn.setOnClickListener
+    }  // onCreate
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_sign_up, menu);
         return true;
-    }
+    }  // onCreateOptionsMenu
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -109,5 +109,5 @@ public class SignUp extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-}
+    }  // onOptionsItemSeleted
+}  // SignUp

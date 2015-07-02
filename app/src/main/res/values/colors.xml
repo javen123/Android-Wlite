@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    As with the dimens.xml, each activity will have it's own sub-section here for anything
+    that is specific to an activity that is not a global style
+-->
 <resources>
     <color name="primary">#2196F3</color>
     <color name="primary_dark">#1976D2</color>
     <color name="primary_light">#BBDEFB</color>
     <color name="accent">#9E9E9E</color>
-    <color name="primary_text">#212121</color>
+    <color name="primary_text">#ff0f1828</color>
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
+
+    <!-- Activity Backgrounds -->
+    <color name="activity_main_background">#fff5f5f5</color>
+
+    <!-- toolbar primary and secondary text -->
+    <color name="toolbar_text_primary">#FF323232</color>
+    <color name="toolbar_text_secondary">#FF323232</color>
+    <color name="toolbar_background">#ff8fd0eb</color>
+
+    <!-- login activity styles -->
+    <color name="login_btn_background">#FF253E66</color>
+    <color name="login_btn_textColor">#FFFFFFFF</color>
 </resources>

@@ -3,8 +3,10 @@ package com.appsneva.wliteandroid.ui;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +39,7 @@ public class MainActivity extends BaseActivity {
     /** The request code when calling startActivityForResult to recover from an API service error. */
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
-    private EditText searchInput;
+
     private ListView videosFound;
     private Handler handler;
 
@@ -69,6 +71,21 @@ public class MainActivity extends BaseActivity {
         }
 
         searchOnYoutube("new music");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(handler != null){
+
+            String query = getSavedPreferences(YOUTUBE_QUERY);
+            if(query.length() > 0) searchOnYoutube(query);
+        }
+    }
+
+    private String getSavedPreferences(String key){
+        SharedPreferences sharePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return sharePref.getString(key, "");
     }
 
     private void checkYouTubeApi() {
