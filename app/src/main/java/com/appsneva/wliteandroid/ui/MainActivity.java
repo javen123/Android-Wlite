@@ -2,6 +2,7 @@ package com.appsneva.wliteandroid.ui;
 
 
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,15 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appsneva.wliteandroid.AlertDialogFragment;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.api.services.youtube.model.SearchResult;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 import java.util.List;
@@ -42,6 +43,7 @@ public class MainActivity extends BaseActivity {
 
     private ListView videosFound;
     private Handler handler;
+    private Button addButton;
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -54,10 +56,15 @@ public class MainActivity extends BaseActivity {
 
         videosFound = (ListView)findViewById(R.id.videos_found);
         handler = new Handler();
+        addButton = (Button)findViewById(R.id.add_to_list_btn);
+
+
+    // add view items and controls
 
         addClickListener();
         activateToolbar();
         checkYouTubeApi();
+      //  addBtnListener();
 
 
 
@@ -133,6 +140,10 @@ public class MainActivity extends BaseActivity {
             startActivity(intent);
             return true;
         }
+        if(id == R.id.menu_my_lists){
+            Intent intent = new Intent(this, MyLists.class);
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -160,13 +171,15 @@ public class MainActivity extends BaseActivity {
                 }
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.title);
-                TextView description = (TextView) convertView.findViewById(R.id.video_description);
+//                TextView description = (TextView) convertView.findViewById(R.id.video_description);
 
                 VideoItem searchResult = searchResults.get(position);
 
+
+
                 Picasso.with(getApplicationContext()).load(searchResult.getThumbnail()).into(thumbnail);
                 title.setText(searchResult.getTitle());
-                description.setText(searchResult.getDescription());
+//                description.setText(searchResult.getDescription());
                 Log.i("YOU", "Update video");
                 return convertView;
             }
@@ -188,5 +201,17 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    // add dialog and button control for add item to list
+
+    private void addBtnListener(){
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

@@ -11,6 +11,13 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_search"
         android:orderInCategory="1"
-        wavlite:showAsAction="always"/>
+        wavlite:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/menu_my_lists"
+        android:orderInCategory="2"
+        android:showAsAction="ifRoom"
+        android:title="My Lists"
+        tools:ignore="AppCompatResource" />
+
 
 </menu>
