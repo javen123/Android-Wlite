@@ -25,6 +25,10 @@ import android.widget.Toast;
 import com.appsneva.wliteandroid.AlertDialogFragment;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 import java.util.List;
@@ -75,6 +79,20 @@ public class MainActivity extends BaseActivity {
         }
         else{
             Log.i(TAG, currentUser.getUsername());
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+            String userId = currentUser.getObjectId();
+            query.whereEqualTo("userRelation", currentUser);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if(e != null){
+                        Log.d("Error with list pull: ", e.getLocalizedMessage());
+                    }
+                    else {
+                        Log.d("User list: ", list.toString());
+                    }
+                }
+            });
         }
 
         searchOnYoutube("new music");
@@ -206,6 +224,7 @@ public class MainActivity extends BaseActivity {
     // add dialog and button control for add item to list
 
     private void addBtnListener(){
+        //TODO; connect button to video Id and add to user list. Creat dialog? to provide list choice and add
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override

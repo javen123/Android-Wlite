@@ -25,7 +25,7 @@ import java.util.List;
 
 public class MyLists extends BaseActivity {
 
-    private ListView myLists;
+    public ListView myLists;
     private Handler handler;
 
     @Override
@@ -75,7 +75,7 @@ public class MyLists extends BaseActivity {
     }
 
     private List<MyListItem> searchResults;
-
+    //TODO: connect parse user list pull to this array from mainActivity
     private void pullMyLists() {
         ArrayAdapter<MyListItem> adapter = new ArrayAdapter<MyListItem>(getApplicationContext(), R.layout.my_list_item, searchResults) {
             @Override
