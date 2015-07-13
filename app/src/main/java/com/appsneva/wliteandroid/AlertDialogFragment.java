@@ -16,8 +16,8 @@ public class AlertDialogFragment extends DialogFragment {
 
         Context context = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.addTitle))
-                .setMessage(context.getString(R.string.addMessage))
+                .setTitle("Oops!")
+                .setMessage("Something went wrong with the last action. Try again.")
                 .setPositiveButton(context.getString(R.string.errorOK), null);
         AlertDialog dialog = builder.create();
         return dialog;

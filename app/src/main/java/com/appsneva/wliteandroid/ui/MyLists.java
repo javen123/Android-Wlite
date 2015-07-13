@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.SearchActivity;
 import com.parse.ParseUser;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 
@@ -27,6 +29,8 @@ public class MyLists extends BaseActivity {
 
     public ListView myLists;
     private Handler handler;
+    protected Array myArrayTitles;
+    private TextView noLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +38,22 @@ public class MyLists extends BaseActivity {
 
         setContentView(R.layout.activity_my_lists);
 
-        myLists = (ListView)findViewById(R.id.myList);
-        handler = new Handler();
+        if(myLists != null){
+            myLists = (ListView)findViewById(R.id.myList);
+            handler = new Handler();
+        }
+        else {
+            noLists = (TextView) findViewById(R.id.no_list_text);
+        }
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_my_lists, menu);
+
         return true;
     }
 
@@ -92,19 +104,5 @@ public class MyLists extends BaseActivity {
         myLists.setAdapter(adapter);
     }
 
-    private void addClickListener(){
 
-        if(myLists != null){
-            myLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> av, View v, int pos,
-                                        long id) {
-                    Intent intent = new Intent(getApplicationContext(), DetailListView.class);
-//                    intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
-                    startActivity(intent);
-                }
-            });
-        }
-    }
 }

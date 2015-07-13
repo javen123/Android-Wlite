@@ -40,9 +40,10 @@
     <string name="title_activity_detail_list_view">Detail List View</string>
 
     // Alert Dialog strings
-    <string name="addTitle">Add to List</string>
-    <string name="addMessage">Choose or make new</string>
+
+
     <string name="errorOK">OK</string>
+    <string name="no_list_text">You have no lists at this time</string>
 
 </resources>
 

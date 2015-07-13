@@ -1,5 +1,7 @@
 package com.appsneva.wliteandroid;
 
+import android.widget.Button;
+
 /**
  * Created by javen on 6/25/15.
  */
@@ -9,6 +11,7 @@ public class VideoItem {
     private String description;
     private String thumbnail;
     private String id;
+
 
     public String getTitle() {
         return title;

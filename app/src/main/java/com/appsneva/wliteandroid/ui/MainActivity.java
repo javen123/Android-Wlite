@@ -3,6 +3,7 @@ package com.appsneva.wliteandroid.ui;
 
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ import com.appsneva.wliteandroid.SearchActivity;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 
 public class MainActivity extends BaseActivity {
 
@@ -47,7 +50,7 @@ public class MainActivity extends BaseActivity {
 
     private ListView videosFound;
     private Handler handler;
-    private Button addButton;
+
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -56,23 +59,17 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         videosFound = (ListView)findViewById(R.id.videos_found);
         handler = new Handler();
-        addButton = (Button)findViewById(R.id.add_to_list_btn);
 
-
-    // add view items and controls
-
-        addClickListener();
         activateToolbar();
-        checkYouTubeApi();
-      //  addBtnListener();
 
+        //confirm youTube API Check
+        checkYouTubeApi();
 
 
         //check Parse User is current
+
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null){
             navigateToLogin();
@@ -85,17 +82,17 @@ public class MainActivity extends BaseActivity {
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
-                    if(e != null){
+                    if (e != null) {
                         Log.d("Error with list pull: ", e.getLocalizedMessage());
-                    }
-                    else {
+                    } else {
                         Log.d("User list: ", list.toString());
                     }
                 }
             });
         }
 
-        searchOnYoutube("new music");
+
+        searchOnYoutube("new hit music");
     }
 
     @Override
@@ -121,7 +118,7 @@ public class MainActivity extends BaseActivity {
         } else if (errorReason != YouTubeInitializationResult.SUCCESS) {
             String errorMessage =
                     String.format(getString(R.string.error_player), errorReason.toString());
-            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, errorMessage, LENGTH_LONG).show();
         }
     }
 
@@ -187,17 +184,24 @@ public class MainActivity extends BaseActivity {
                 if (convertView == null) {
                     convertView = getLayoutInflater().inflate(R.layout.video_item, parent, false);
                 }
+
+                // row item tapped action
+                addRowClickListener();
+
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.title);
-//                TextView description = (TextView) convertView.findViewById(R.id.video_description);
+                Button button = (Button)convertView.findViewById(R.id.add_to_list_btn);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 VideoItem searchResult = searchResults.get(position);
 
-
-
                 Picasso.with(getApplicationContext()).load(searchResult.getThumbnail()).into(thumbnail);
                 title.setText(searchResult.getTitle());
-//                description.setText(searchResult.getDescription());
                 Log.i("YOU", "Update video");
                 return convertView;
             }
@@ -205,7 +209,7 @@ public class MainActivity extends BaseActivity {
         videosFound.setAdapter(adapter);
     }
 
-    private void addClickListener(){
+    private void addRowClickListener(){
 
         if(videosFound != null){
             videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -222,15 +226,17 @@ public class MainActivity extends BaseActivity {
     }
 
     // add dialog and button control for add item to list
+private void addItemToParseArray(String vidTitle, String vidId){
+    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    alert.setTitle("" + vidTitle);
+    alert.setMessage("will be added to your lists");
+    alert.setPositiveButton(context.getString(R.string.errorOK, parseAdd(vidId)));
+    alert.setNegativeButton("Not now", null);
 
-    private void addBtnListener(){
-        //TODO; connect button to video Id and add to user list. Creat dialog? to provide list choice and add
+}
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void parseAdd(String id){
 
-            }
-        });
     }
+
 }
