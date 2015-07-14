@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +35,9 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 import com.appsneva.wliteandroid.PlayerActivity;
@@ -94,7 +97,7 @@ public class MainActivity extends BaseActivity {
                         for (int i = 0; i < list.size(); i++) {
                             String vidId = list.toString();
                             MyLists.myArrayTitles.add(vidId);
-                        };
+                        }
                     }
                 }
             });
@@ -238,9 +241,10 @@ public class MainActivity extends BaseActivity {
     // add dialog and button control for add item to list
 private void addItemToParseArray(int loc){
 
-    String videoTitle = searchResults.get(loc).getTitle().toString();
+    final String videoTitle = searchResults.get(loc).getTitle().toString();
+    final String videoId = searchResults.get(loc).getId().toString();
     Log.d("PARSE PULLED TITLE:", videoTitle);
-    final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    AlertDialog.Builder alert = new AlertDialog.Builder(this);
     alert.setTitle("" + videoTitle);
     alert.setMessage("will be added to your lists");
     alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -253,12 +257,67 @@ private void addItemToParseArray(int loc){
                 public void done(List<ParseObject> list, ParseException e) {
                     if (e != null) {
                         Log.d("Error with list pull: ", e.getLocalizedMessage());
-                    } else if (list.isEmpty()) {
+                    } else {
+                        if (list.isEmpty()) {
+                            View v = getLayoutInflater().inflate(R.layout.first_list_title, null);
+                            final AlertDialog.Builder newTitle = new AlertDialog.Builder(MainActivity.this);
+//                            LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+                            newTitle.setView(v);
+                            final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
+                            newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String mTitle = userTitleView.getText().toString();
+                                    String[] array = {videoId};
+                                    ParseObject firstList = new ParseObject("Lists");
+                                    firstList.put("listTitle", mTitle);
+//                                    firstList.put("myLists", array);
+                                    // user relation
+                                    ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
+                                    relation.add(ParseUser.getCurrentUser());
+                                    firstList.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
+                                                success.setTitle("Congrats");
+                                                success.setMessage("You just saved yuour first list");
+                                                success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.cancel();
+                                                    }
+                                                });
+                                                AlertDialog alert = success.create();
+                                                alert.show();
+                                            } else {
+                                                final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
+                                                success.setTitle("Opps");
+                                                success.setMessage("" + e.getLocalizedMessage());
+                                                success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.cancel();
+                                                    }
+                                                });
+                                                AlertDialog alert = success.create();
+                                                alert.show();
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                            AlertDialog addTitle = newTitle.create();
+                            addTitle.show();
+
+                        } else {
+
+                        }
 
                     }
                 }
             });
-            ParseObject userAdd = new ParseObject("Lists");
+
 
         }
     });
