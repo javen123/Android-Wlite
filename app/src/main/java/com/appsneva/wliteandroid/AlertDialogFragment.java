@@ -11,13 +11,16 @@ import android.os.Bundle;
  */
 public class AlertDialogFragment extends DialogFragment {
 
+    public String alertTitle;
+    public String alertMessage;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         Context context = getActivity();
-        AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                .setTitle("Oops!")
-                .setMessage("Something went wrong with the last action. Try again.")
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle(alertTitle)
+                .setMessage(alertMessage)
                 .setPositiveButton(context.getString(R.string.errorOK), null);
         AlertDialog dialog = builder.create();
         return dialog;

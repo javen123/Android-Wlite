@@ -4,12 +4,15 @@ package com.appsneva.wliteandroid.ui;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,11 +21,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.Context;
 import com.appsneva.wliteandroid.AlertDialogFragment;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -47,7 +51,7 @@ public class MainActivity extends BaseActivity {
     /** The request code when calling startActivityForResult to recover from an API service error. */
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
-
+    protected String curUser;
     private ListView videosFound;
     private Handler handler;
 
@@ -75,17 +79,22 @@ public class MainActivity extends BaseActivity {
             navigateToLogin();
         }
         else{
+            // pull users lists if available
             Log.i(TAG, currentUser.getUsername());
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-            String userId = currentUser.getObjectId();
-            query.whereEqualTo("userRelation", currentUser);
+            curUser = currentUser.getObjectId();
+            query.whereEqualTo("userRelation", curUser);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
                     if (e != null) {
                         Log.d("Error with list pull: ", e.getLocalizedMessage());
                     } else {
-                        Log.d("User list: ", list.toString());
+                        Log.d("User's saved list: ", list.toString());
+                        for (int i = 0; i < list.size(); i++) {
+                            String vidId = list.toString();
+                            MyLists.myArrayTitles.add(vidId);
+                        };
                     }
                 }
             });
@@ -178,14 +187,14 @@ public class MainActivity extends BaseActivity {
         }.start();
     }
     private void updateVideosFound() {
-        ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults) {
+        final ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults) {
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
                     convertView = getLayoutInflater().inflate(R.layout.video_item, parent, false);
                 }
 
-                // row item tapped action
+                // row item tapped action / send to YouTube player
                 addRowClickListener();
 
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
@@ -194,9 +203,10 @@ public class MainActivity extends BaseActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        addItemToParseArray(position);
                     }
                 });
+
 
                 VideoItem searchResult = searchResults.get(position);
 
@@ -226,17 +236,42 @@ public class MainActivity extends BaseActivity {
     }
 
     // add dialog and button control for add item to list
-private void addItemToParseArray(String vidTitle, String vidId){
-    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-    alert.setTitle("" + vidTitle);
-    alert.setMessage("will be added to your lists");
-    alert.setPositiveButton(context.getString(R.string.errorOK, parseAdd(vidId)));
-    alert.setNegativeButton("Not now", null);
+private void addItemToParseArray(int loc){
 
+    String videoTitle = searchResults.get(loc).getTitle().toString();
+    Log.d("PARSE PULLED TITLE:", videoTitle);
+    final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    alert.setTitle("" + videoTitle);
+    alert.setMessage("will be added to your lists");
+    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+            query.whereEqualTo("userRelation", curUser);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e != null) {
+                        Log.d("Error with list pull: ", e.getLocalizedMessage());
+                    } else if (list.isEmpty()) {
+
+                    }
+                }
+            });
+            ParseObject userAdd = new ParseObject("Lists");
+
+        }
+    });
+    alert.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+        }
+    });
+    AlertDialog alertDialog = alert.create();
+    alertDialog.show();
 }
 
-    private void parseAdd(String id){
 
-    }
 
 }

@@ -76,6 +76,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.appsneva.wliteandroid.ui.MyLists" />
         </activity>
+        <activity
+            android:name=".ui.AlertNewList"
+            android:label="@string/title_activity_alert_new_list" >
+        </activity>
     </application>
 
 </manifest>

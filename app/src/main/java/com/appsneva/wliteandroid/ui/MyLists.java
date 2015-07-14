@@ -22,14 +22,15 @@ import com.appsneva.wliteandroid.SearchActivity;
 import com.parse.ParseUser;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MyLists extends BaseActivity {
 
-    public ListView myLists;
+    private ListView myLists;
     private Handler handler;
-    protected Array myArrayTitles;
+    public static ArrayList myArrayTitles;
     private TextView noLists;
 
     @Override

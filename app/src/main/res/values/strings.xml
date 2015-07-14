@@ -44,6 +44,10 @@
 
     <string name="errorOK">OK</string>
     <string name="no_list_text">You have no lists at this time</string>
+    <string name="new_list_title">Enter list name</string>
+    <string name="title_activity_alert_new_list">AlertNewList</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>
 
