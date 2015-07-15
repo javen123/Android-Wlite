@@ -29,8 +29,7 @@ import java.util.List;
 public class MyLists extends BaseActivity {
 
     private ListView myLists;
-    private Handler handler;
-    public static ArrayList myArrayTitles;
+    public static ArrayList<String> myArrayTitles = new ArrayList<String>();
     private TextView noLists;
 
     @Override
@@ -39,9 +38,9 @@ public class MyLists extends BaseActivity {
 
         setContentView(R.layout.activity_my_lists);
 
-        if(myLists != null){
-            myLists = (ListView)findViewById(R.id.myList);
-            handler = new Handler();
+        if(myArrayTitles != null){
+            updateListTitles();
+
         }
         else {
             noLists = (TextView) findViewById(R.id.no_list_text);
@@ -87,23 +86,12 @@ public class MyLists extends BaseActivity {
         startActivity(intent);
     }
 
-    private List<MyListItem> searchResults;
     //TODO: connect parse user list pull to this array from mainActivity
-    private void pullMyLists() {
-        ArrayAdapter<MyListItem> adapter = new ArrayAdapter<MyListItem>(getApplicationContext(), R.layout.my_list_item, searchResults) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = getLayoutInflater().inflate(R.layout.my_list_item, parent, false);
-                }
-                TextView title = (TextView) convertView.findViewById(R.id.list_title);
-//                TextView description = (TextView) convertView.findViewById(R.id.video_description);
+    private void updateListTitles() {
 
-                return convertView;
-            }
-        };
+        final String[] temp = myArrayTitles.toArray(new String[myArrayTitles.size()]);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_my_lists, temp);
+        myLists = (ListView)findViewById(R.id.my_list_titles);
         myLists.setAdapter(adapter);
     }
-
-
 }

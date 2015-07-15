@@ -32,6 +32,7 @@ import com.appsneva.wliteandroid.AlertDialogFragment;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -39,12 +40,16 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 import java.util.List;
 import com.appsneva.wliteandroid.PlayerActivity;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.SearchActivity;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
+
+import org.json.JSONArray;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -69,6 +74,7 @@ public class MainActivity extends BaseActivity {
         videosFound = (ListView)findViewById(R.id.videos_found);
         handler = new Handler();
 
+        // load toolbar
         activateToolbar();
 
         //confirm youTube API Check
@@ -83,10 +89,9 @@ public class MainActivity extends BaseActivity {
         }
         else{
             // pull users lists if available
-            Log.i(TAG, currentUser.getUsername());
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
             curUser = currentUser.getObjectId();
-            query.whereEqualTo("userRelation", curUser);
+            query.whereEqualTo("createdBy", curUser);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
@@ -94,16 +99,14 @@ public class MainActivity extends BaseActivity {
                         Log.d("Error with list pull: ", e.getLocalizedMessage());
                     } else {
                         Log.d("User's saved list: ", list.toString());
-                        for (int i = 0; i < list.size(); i++) {
-                            String vidId = list.toString();
-                            MyLists.myArrayTitles.add(vidId);
+                        for (ParseObject object : list) {
+                            String title = (object.get("listTitle").toString());
+                            MyLists.myArrayTitles.add(title);
                         }
                     }
                 }
             });
         }
-
-
         searchOnYoutube("new hit music");
     }
 
@@ -239,7 +242,9 @@ public class MainActivity extends BaseActivity {
     }
 
     // add dialog and button control for add item to list
-private void addItemToParseArray(int loc){
+
+
+    private void addItemToParseArray(int loc){
 
     final String videoTitle = searchResults.get(loc).getTitle().toString();
     final String videoId = searchResults.get(loc).getId().toString();
@@ -251,7 +256,7 @@ private void addItemToParseArray(int loc){
         @Override
         public void onClick(DialogInterface dialog, int which) {
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-            query.whereEqualTo("userRelation", curUser);
+            query.whereEqualTo("createdBy", curUser);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
@@ -261,18 +266,25 @@ private void addItemToParseArray(int loc){
                         if (list.isEmpty()) {
                             View v = getLayoutInflater().inflate(R.layout.first_list_title, null);
                             final AlertDialog.Builder newTitle = new AlertDialog.Builder(MainActivity.this);
-//                            LayoutInflater inflater = MainActivity.this.getLayoutInflater();
                             newTitle.setView(v);
                             final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
-                            newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            final AlertDialog.Builder builder = newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    //get user added title from alert dialog
                                     String mTitle = userTitleView.getText().toString();
-                                    String[] array = {videoId};
+
+                                    //instantiate new array for videoId to load to Parse
+                                    ArrayList<String> firstIdToAdd;
+                                    firstIdToAdd = new ArrayList<String>();
+                                    firstIdToAdd.add(videoId);
+
+                                    // initiate Parse object to being adding
                                     ParseObject firstList = new ParseObject("Lists");
                                     firstList.put("listTitle", mTitle);
-//                                    firstList.put("myLists", array);
-                                    // user relation
+                                    firstList.put("myLists", firstIdToAdd);
+
+                                    // create user relation
                                     ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
                                     relation.add(ParseUser.getCurrentUser());
                                     firstList.saveInBackground(new SaveCallback() {
@@ -311,14 +323,50 @@ private void addItemToParseArray(int loc){
                             addTitle.show();
 
                         } else {
+                            ArrayList<String> listTitles = new ArrayList<String>();
+                            for (ParseObject titles : list) {
+                                String title = (titles.get("listTitle").toString());
+                                listTitles.add(title);
+                            }
+                            final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
+
+
+                            final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
+                            success.setTitle("Add to ");
+                            success.setItems(titles, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    String titleTapped = titles[which].toString();
+
+                                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
+                                    query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                                    query1.whereEqualTo("listTitle", titleTapped);
+                                    query1.getFirstInBackground(new GetCallback<ParseObject>() {
+                                        @Override
+                                        public void done(ParseObject object, ParseException e) {
+                                            object.add("myLists", videoId);
+                                            object.saveInBackground(new SaveCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e != null) {
+                                                        // add error handling
+                                                    } else {
+                                                        //tell them how awesome they are and to use theLists page to manage their lists
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                            AlertDialog alert = success.create();
+                            alert.show();
 
                         }
-
                     }
                 }
             });
-
-
         }
     });
     alert.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
@@ -330,7 +378,6 @@ private void addItemToParseArray(int loc){
     AlertDialog alertDialog = alert.create();
     alertDialog.show();
 }
-
 
 
 }

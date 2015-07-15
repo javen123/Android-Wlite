@@ -7,7 +7,10 @@ import android.view.MenuItem;
 
 import com.appsneva.wliteandroid.R;
 
+import java.util.ArrayList;
+
 public class DetailListView extends ActionBarActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
