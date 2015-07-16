@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,22 +29,27 @@ import java.util.List;
 
 public class MyLists extends BaseActivity {
 
-    private ListView myLists;
+    private ListView myListView;
     public static ArrayList<String> myArrayTitles = new ArrayList<String>();
     private TextView noLists;
+    private ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_my_lists);
 
+        myListView = (ListView)findViewById(R.id.my_list_titles);
+        noLists = (TextView) findViewById(R.id.no_list_text);
+
         if(myArrayTitles != null){
+            noLists.setVisibility(noLists.INVISIBLE);
             updateListTitles();
 
         }
         else {
-            noLists = (TextView) findViewById(R.id.no_list_text);
+            noLists.setVisibility(noLists.VISIBLE);
+            myListView.setVisibility(myListView.INVISIBLE);
         }
 
 
@@ -86,12 +92,14 @@ public class MyLists extends BaseActivity {
         startActivity(intent);
     }
 
-    //TODO: connect parse user list pull to this array from mainActivity
+
     private void updateListTitles() {
 
-        final String[] temp = myArrayTitles.toArray(new String[myArrayTitles.size()]);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_my_lists, temp);
-        myLists = (ListView)findViewById(R.id.my_list_titles);
-        myLists.setAdapter(adapter);
+           String[] values = myArrayTitles.toArray(new String[myArrayTitles.size()]);
+
+            this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1,android.R.id.text1, values);
+            myListView.setVisibility(myListView.VISIBLE);
+            myListView.setAdapter(adapter);
+
     }
 }
