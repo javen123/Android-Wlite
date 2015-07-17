@@ -2,6 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.appsneva.wliteandroid.ui.DetailListView">
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/menu_create_list"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/menu_create_list"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom"/>
+
+
 </menu>

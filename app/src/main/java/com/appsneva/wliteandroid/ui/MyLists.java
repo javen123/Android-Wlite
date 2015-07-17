@@ -20,7 +20,13 @@ import android.widget.TextView;
 import com.appsneva.wliteandroid.MyListItem;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.SearchActivity;
+import com.appsneva.wliteandroid.VideoItem;
+import com.google.api.client.json.Json;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -30,9 +36,10 @@ import java.util.List;
 public class MyLists extends BaseActivity {
 
     private ListView myListView;
-    public static ArrayList<String> myArrayTitles = new ArrayList<String>();
+    public static ArrayList<ParseObject> myArrayTitles = new ArrayList<ParseObject>();
     private TextView noLists;
     private ArrayAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,8 @@ public class MyLists extends BaseActivity {
             myListView.setVisibility(myListView.INVISIBLE);
         }
 
+        activateToolbar();
+        addRowClickListener();
 
     }
 
@@ -95,11 +104,43 @@ public class MyLists extends BaseActivity {
 
     private void updateListTitles() {
 
-           String[] values = myArrayTitles.toArray(new String[myArrayTitles.size()]);
+        ArrayList<String> values = new ArrayList<String>();
+
+        for(ParseObject object : myArrayTitles){
+            String title = (object.get("listTitle").toString());
+            values.add(title);
+        }
+
 
             this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1,android.R.id.text1, values);
             myListView.setVisibility(myListView.VISIBLE);
             myListView.setAdapter(adapter);
 
+    }
+
+    private void addRowClickListener(){
+
+        if(myListView != null){
+            myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> av, View v, int pos,
+                                        long id) {
+                    ArrayList<String> temp = new ArrayList<String>();
+                    JSONArray myList = myArrayTitles.get(pos).getJSONArray("myLists");
+                    for(int i = 0; i < myList.length();i++){
+                        try {
+                            temp.add(myList.get(i).toString());
+                        }
+                        catch (JSONException e){
+
+                        }
+                    }
+                    Intent intent = new Intent(MyLists.this, DetailListView.class);
+                    intent.putStringArrayListExtra("myIdList", temp);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 }

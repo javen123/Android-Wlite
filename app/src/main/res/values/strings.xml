@@ -48,6 +48,7 @@
     <string name="title_activity_alert_new_list">AlertNewList</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="menu_create_list">Create List</string>
 
 </resources>
 

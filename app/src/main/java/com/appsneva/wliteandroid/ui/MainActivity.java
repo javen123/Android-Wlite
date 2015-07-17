@@ -100,8 +100,8 @@ public class MainActivity extends BaseActivity {
                     } else {
                         Log.d("User's saved list: ", list.toString());
                         for (ParseObject object : list) {
-                            String title = (object.get("listTitle").toString());
-                            MyLists.myArrayTitles.add(title);
+                            ParseObject temp = object;
+                            MyLists.myArrayTitles.add(object);
                         }
                     }
                 }
