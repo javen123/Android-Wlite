@@ -3,23 +3,20 @@ package com.appsneva.wliteandroid.ui;
 
 
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,8 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
-import com.appsneva.wliteandroid.AlertDialogFragment;
+
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.parse.FindCallback;
@@ -49,8 +45,6 @@ import com.appsneva.wliteandroid.SearchActivity;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
 
-import org.json.JSONArray;
-
 import static android.widget.Toast.LENGTH_LONG;
 
 
@@ -62,7 +56,7 @@ public class MainActivity extends BaseActivity {
     protected String curUser;
     private ListView videosFound;
     private Handler handler;
-
+    private List<VideoItem> searchResults;
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -177,7 +171,7 @@ public class MainActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private List<VideoItem> searchResults;
+
 
     private void searchOnYoutube(final String keywords){
         new Thread(){
@@ -205,14 +199,6 @@ public class MainActivity extends BaseActivity {
 
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.title);
-                Button button = (Button)convertView.findViewById(R.id.add_to_list_btn);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addItemToParseArray(position);
-                    }
-                });
-
 
                 VideoItem searchResult = searchResults.get(position);
 
@@ -236,6 +222,13 @@ public class MainActivity extends BaseActivity {
                     Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
                     intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
                     startActivity(intent);
+                }
+            });
+            videosFound.setOnItemLongClickListener(new OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    addItemToParseArray(position);
+                    return true;
                 }
             });
         }
@@ -264,7 +257,7 @@ public class MainActivity extends BaseActivity {
                         Log.d("Error with list pull: ", e.getLocalizedMessage());
                     } else {
                         if (list.isEmpty()) {
-                            View v = getLayoutInflater().inflate(R.layout.first_list_title, null);
+                            View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
                             final AlertDialog.Builder newTitle = new AlertDialog.Builder(MainActivity.this);
                             newTitle.setView(v);
                             final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
@@ -293,7 +286,7 @@ public class MainActivity extends BaseActivity {
                                             if (e == null) {
                                                 final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
                                                 success.setTitle("Congrats");
-                                                success.setMessage("You just saved yuour first list");
+                                                success.setMessage("You just saved your first list");
                                                 success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {

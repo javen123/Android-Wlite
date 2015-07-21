@@ -1,39 +1,39 @@
 package com.appsneva.wliteandroid.ui;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Toast;
 
-import com.appsneva.wliteandroid.MyListItem;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.SearchActivity;
-import com.appsneva.wliteandroid.VideoItem;
-import com.google.api.client.json.Json;
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
-
+import com.parse.SaveCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyLists extends BaseActivity {
+public class MyLists extends BaseActivity{
 
     private ListView myListView;
     public static ArrayList<ParseObject> myArrayTitles = new ArrayList<ParseObject>();
@@ -41,22 +41,22 @@ public class MyLists extends BaseActivity {
     private ArrayAdapter adapter;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_lists);
 
-        myListView = (ListView)findViewById(R.id.my_list_titles);
+        myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
 
-        if(myArrayTitles != null){
-            noLists.setVisibility(noLists.INVISIBLE);
-            updateListTitles();
+        if (myArrayTitles != null) {
+            noLists.setVisibility(View.INVISIBLE);
+            loadListNames();
 
-        }
-        else {
-            noLists.setVisibility(noLists.VISIBLE);
-            myListView.setVisibility(myListView.INVISIBLE);
+        } else {
+            noLists.setVisibility(View.VISIBLE);
+            myListView.setVisibility(View.INVISIBLE);
         }
 
         activateToolbar();
@@ -84,10 +84,15 @@ public class MyLists extends BaseActivity {
             ParseUser.logOut();
             navigateToLogin();
         }
-        if(id == R.id.menu_search){
+        if (id == R.id.menu_search) {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
+            finish();
             return true;
+        }
+        if (id == R.id.menu_create_list){
+            addNewItemToList();
+
         }
 
 
@@ -102,45 +107,255 @@ public class MyLists extends BaseActivity {
     }
 
 
-    private void updateListTitles() {
+    private void loadListNames() {
 
         ArrayList<String> values = new ArrayList<String>();
 
-        for(ParseObject object : myArrayTitles){
+        for (ParseObject object : myArrayTitles) {
             String title = (object.get("listTitle").toString());
             values.add(title);
         }
 
 
-            this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1,android.R.id.text1, values);
-            myListView.setVisibility(myListView.VISIBLE);
-            myListView.setAdapter(adapter);
+        this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        myListView.setVisibility(View.VISIBLE);
+        myListView.setAdapter(adapter);
 
     }
 
-    private void addRowClickListener(){
 
-        if(myListView != null){
+    private void addRowClickListener() {
+
+        if (myListView != null) {
             myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos,
                                         long id) {
                     ArrayList<String> temp = new ArrayList<String>();
+                    java.util.List<java.util.Map.Entry<String, String>> pairList= new java.util.ArrayList<>();
                     JSONArray myList = myArrayTitles.get(pos).getJSONArray("myLists");
-                    for(int i = 0; i < myList.length();i++){
-                        try {
-                            temp.add(myList.get(i).toString());
-                        }
-                        catch (JSONException e){
+                    if(myList == null){
 
-                        }
                     }
-                    Intent intent = new Intent(MyLists.this, DetailListView.class);
-                    intent.putStringArrayListExtra("myIdList", temp);
-                    startActivity(intent);
+                    else {
+                        for (int i = 0; i < myList.length(); i++) {
+                            try {
+                                temp.add(myList.get(i).toString());
+                            } catch (JSONException e) {
+
+                            }
+                        }
+
+                        if(!temp.isEmpty()){
+                            Intent intent = new Intent(MyLists.this, DetailListView.class);
+                            intent.putStringArrayListExtra("myIdList", temp);
+                            startActivity(intent);
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Must add videos", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }
+            });
+            myListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                    // create alert to give edit title options with long press
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyLists.this);
+                    builder.setTitle("" + myArrayTitles.get(position).get("listTitle").toString());
+
+                    // delete selected list
+                    builder.setNeutralButton("Delete List", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ParseObject deletedList = myArrayTitles.get(position);
+                            deletedList.deleteInBackground(new DeleteCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e != null) {
+                                        Log.d("Parse Error: ", e.getLocalizedMessage());
+                                    } else {
+                                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                                        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                                        query.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> list, ParseException e) {
+                                                if (e != null) {
+                                                    Log.d("Error with list pull: ", e.getLocalizedMessage());
+                                                } else {
+
+                                                    // clear current list and update with new material
+
+                                                    myArrayTitles.clear();
+                                                    for (ParseObject object : list) {
+
+                                                        MyLists.myArrayTitles.add(object);
+                                                    }
+                                                    loadListNames();
+                                                }
+                                            }
+                                        });
+
+                                    }
+                                }
+                            });
+                        }
+
+                        ;
+                    });
+                    builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // pull reusable alert from layouts
+                            View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
+                            final AlertDialog.Builder editTitle = new AlertDialog.Builder(MyLists.this);
+                            editTitle.setView(v);
+                            TextView editAlertTitle = (TextView) v.findViewById(R.id.alert_edit_title_text);
+                            final EditText newTitle = (EditText) v.findViewById(R.id.first_title);
+                            editAlertTitle.setText("Change title to:");
+
+                            editTitle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            editTitle.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    // grab new title name from user input
+                                    String mNewTitle = newTitle.getText().toString();
+
+                                    //grab parse object to update
+                                    ParseObject object = myArrayTitles.get(position);
+                                    object.put("listTitle", mNewTitle);
+                                    object.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e != null) {
+                                                Log.d("Parse: ", e.getLocalizedMessage());
+                                            } else {
+
+                                                // immediately grab new lists for new Listview
+
+                                                myArrayTitles.clear();
+                                                updatedListTitles();
+
+                                                //return alert dialog box of success
+                                                final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
+                                                success.setTitle("Updated");
+                                                success.setMessage("New list title has been saved");
+                                                success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                });
+                                                AlertDialog alert = success.create();
+                                                alert.show();
+                                            }
+                                        }
+                                    });
+                                }
+
+                            });
+                            AlertDialog editTapped = editTitle.create();
+                            editTapped.show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return true;
                 }
             });
         }
+    }
+
+    private void addNewItemToList () {
+        View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
+        final AlertDialog.Builder newTitle = new AlertDialog.Builder(MyLists.this);
+        newTitle.setView(v);
+
+        TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
+        newListAdd.setText("Add List title");
+        final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
+        newListTitleAdd.setHint("Enter new list");
+        newTitle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        newTitle.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final String mTitle = newListTitleAdd.getText().toString();
+                ParseObject newListTitle = new ParseObject("Lists");
+                newListTitle.put("listTitle", mTitle);
+                ParseRelation<ParseObject> relation = newListTitle.getRelation("createdBy");
+                relation.add(ParseUser.getCurrentUser());
+
+                newListTitle.saveInBackground(new SaveCallback() {
+
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+
+                        } else {
+                            final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
+                            success.setTitle("Added");
+                            success.setMessage("New list title has been saved");
+                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    updatedListTitles();
+                                }
+                            });
+                            AlertDialog alert = success.create();
+                            alert.show();
+                        }
+                    }
+                });
+            }
+        });
+        AlertDialog alert = newTitle.create();
+        alert.show();
+    }
+
+    public void updatedListTitles(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e != null) {
+                    Log.d("Error with list pull: ", e.getLocalizedMessage());
+                } else {
+
+                    // clear current list and update with new material
+
+                    myArrayTitles.clear();
+                    for (ParseObject object : list) {
+
+                        MyLists.myArrayTitles.add(object);
+                    }
+                    loadListNames();
+                }
+            }
+        });
     }
 }

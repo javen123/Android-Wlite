@@ -49,6 +49,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="menu_create_list">Create List</string>
+    <string name="edit_list_title">Edit</string>
 
 </resources>
 

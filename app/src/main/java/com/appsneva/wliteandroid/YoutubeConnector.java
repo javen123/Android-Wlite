@@ -20,6 +20,7 @@ import java.util.List;
 public class YoutubeConnector {
     private YouTube youtube;
     private YouTube.Search.List query;
+    private static final long MAX_RESULTS = 25;
 
     // Your developer key goes here
     public static final String KEY = DeveloperKey.DEVELOPER_KEY;
@@ -35,13 +36,14 @@ public class YoutubeConnector {
             query = youtube.search().list("id,snippet");
             query.setKey(KEY);
             query.setType("video");
-            query.setFields("items(id/videoId,snippet/title,snippet/description,snippet/thumbnails/default/url)");
+            query.setFields("items(id/videoId,snippet/title,snippet/thumbnails/default/url)");
         }catch(IOException e){
             Log.d("YC", "Could not initialize: " + e);
         }
     }
 
     public List<VideoItem> search(String keywords){
+        query.setMaxResults(MAX_RESULTS);
         query.setQ(keywords);
         try{
             SearchListResponse response = query.execute();
@@ -66,7 +68,11 @@ public class YoutubeConnector {
     public List<VideoItem> idSearch (String vidIds){
 
         try {
-            YouTube.Videos.List listVideoRequest = youtube.videos().list("snippet, recordingDetails").setId(vidIds);
+
+            YouTube.Videos.List listVideoRequest = youtube.videos().list("id,snippet").setId(vidIds);
+            listVideoRequest.setKey(KEY);
+            listVideoRequest.setFields("items(snippet/title,snippet/thumbnails/default/url)");
+
             VideoListResponse listResponse = listVideoRequest.execute();
 
             List<Video> results = listResponse.getItems();
@@ -79,16 +85,11 @@ public class YoutubeConnector {
                 item.setThumbnail(result.getSnippet().getThumbnails().getDefault().getUrl());
                 items.add(item);
             }
-
+            return items;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d("YC:", e.getLocalizedMessage());
+            return null;
         }
-
-        return null;
     }
-
-
-
-
 }
