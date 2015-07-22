@@ -12,36 +12,37 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.appsneva.wliteandroid.ListTuple;
 import com.appsneva.wliteandroid.PlayerActivity;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
-import com.parse.DeleteCallback;
-import com.parse.FindCallback;
+
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
+
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+
 import java.util.List;
 
 public class DetailListView extends ActionBarActivity {
 
-    ArrayList<String> passedIds = new ArrayList<String>();
+    private Bundle args;
     private List<VideoItem> searchResults;
     private Handler handler;
     private ListView detailList;
@@ -55,15 +56,19 @@ public class DetailListView extends ActionBarActivity {
         handler = new Handler();
         Intent intent = this.getIntent();
 
-        passedIds = intent.getExtras().getStringArrayList("myIdList");
+        //Grab intent
+        args = intent.getBundleExtra("myListids");
+
+        //convert intent ids to youtube searchable string
+        String ids = convertIntentToVideoIds(args);
+
         detailList = (ListView) findViewById(R.id.detail_list_view);
-        String ids = TextUtils.join(",", passedIds);
-        Log.d("ids", ids);
 
         YoutubeConnector yc = new YoutubeConnector(DetailListView.this);
         searchOnYoutube(ids);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -88,11 +93,10 @@ public class DetailListView extends ActionBarActivity {
     }
 
     private void searchOnYoutube(final String keywords) {
-        final String ids = TextUtils.join(",", passedIds);
         new Thread() {
             public void run() {
                 YoutubeConnector yc = new YoutubeConnector(DetailListView.this);
-                searchResults = yc.idSearch(ids);
+                searchResults = yc.idSearch(keywords);
                 handler.post(new Runnable() {
                     public void run() {
                         updateVideosFound();
@@ -110,7 +114,7 @@ public class DetailListView extends ActionBarActivity {
                     convertView = getLayoutInflater().inflate(R.layout.list_video_item, parent, false);
                 }
 
-                // row item tapped action / send to YouTube player
+                // row item tapped action / send to YouTube player / delete video on longPress
                 addRowClickListener();
 
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
@@ -142,9 +146,9 @@ public class DetailListView extends ActionBarActivity {
             });
             detailList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                     String videoTitle = searchResults.get(position).getTitle();
-                    final String videoId = searchResults.get(position).getId();
+                    final String listId = convertIntentToListId(args);
                     AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
                     builder.setTitle("" + videoTitle);
 
@@ -153,34 +157,18 @@ public class DetailListView extends ActionBarActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            ParseObject deletedVideo = new ParseObject("Lists");
-                            deletedVideo.removeAll("myLists", Arrays.asList(videoId));
-                            deletedVideo.deleteInBackground(new DeleteCallback() {
+                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                            query.whereEqualTo("objectId", listId);
+                            query.getFirstInBackground(new GetCallback<ParseObject>() {
                                 @Override
-                                public void done(ParseException e) {
-                                    if (e != null) {
-                                        Log.d("Parse Error: ", e.getLocalizedMessage());
-                                    } else {
-                                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                                        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-                                        query.findInBackground(new FindCallback<ParseObject>() {
-                                            @Override
-                                            public void done(List<ParseObject> list, ParseException e) {
-                                                if (e != null) {
-                                                    Log.d("Error with list pull: ", e.getLocalizedMessage());
-                                                } else {
+                                public void done(ParseObject object, ParseException e) {
+                                    if(e != null){
+                                        Log.d("Parse:", e.getLocalizedMessage());
+                                    }
+                                    else{
 
-                                                    // clear current list and update with new material
+                                        updateListView(args, position, object);
 
-                                                    searchResults.clear();
-                                                    for (ParseObject object : list) {
-
-                                                        MyLists.myArrayTitles.add(object);
-                                                    }
-                                                    loadVideoNames();
-                                                }
-                                            }
-                                        });
                                     }
                                 }
                             });
@@ -194,15 +182,38 @@ public class DetailListView extends ActionBarActivity {
         }
     }
 
-    private void loadVideoNames() {
 
-        ArrayList<String> values = new ArrayList<String>();
+     //: HELPERS
+    private String convertIntentToVideoIds(Bundle info) {
+        ArrayList<ListTuple> object = (ArrayList<ListTuple>) info.getSerializable("ArrayList");
+        ListTuple ids = object.get(0);
+        ArrayList vIds = ids.getVideoIds();
+        String mVIds = TextUtils.join(",",vIds);
+        return mVIds;
+    }
+    private String convertIntentToListId(Bundle info){
 
-        for (String ids : passedIds) {
-            String videoId = ids;
-            values.add(videoId);
+        ArrayList<ListTuple> object = (ArrayList<ListTuple>) info.getSerializable("ArrayList");
+        ListTuple ids = object.get(0);
+        String listId = ids.getObjectId();
+
+        return listId;
+    }
+    private void updateListView(Bundle info, int pos, ParseObject newList) {
+
+        // remove positionm from ListeViewDataArray
+        searchResults.remove(pos);
+
+        //Add back new array list
+        if(searchResults.size() ==0){
+            newList.put("myLists", JSONObject.NULL);
+            newList.saveInBackground();
+            this.finish();
         }
-//        this.adapter = new ArrayAdapter<String>(DetailListView.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        else {
+            newList.put("myLists", searchResults);
+            newList.saveInBackground();
+        }
         adapter.notifyDataSetChanged();
     }
 }

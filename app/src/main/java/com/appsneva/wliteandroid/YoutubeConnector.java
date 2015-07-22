@@ -71,7 +71,7 @@ public class YoutubeConnector {
 
             YouTube.Videos.List listVideoRequest = youtube.videos().list("id,snippet").setId(vidIds);
             listVideoRequest.setKey(KEY);
-            listVideoRequest.setFields("items(snippet/title,snippet/thumbnails/default/url)");
+            listVideoRequest.setFields("items(id,snippet/title,snippet/thumbnails/default/url)");
 
             VideoListResponse listResponse = listVideoRequest.execute();
 
@@ -83,6 +83,7 @@ public class YoutubeConnector {
                 item.setTitle(result.getSnippet().getTitle());
                 item.setDescription(result.getSnippet().getDescription());
                 item.setThumbnail(result.getSnippet().getThumbnails().getDefault().getUrl());
+                item.setId(result.getId());
                 items.add(item);
             }
             return items;

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Toast;
 
+import com.appsneva.wliteandroid.ListTuple;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.SearchActivity;
 import com.parse.DeleteCallback;
@@ -29,6 +30,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +53,15 @@ public class MyLists extends BaseActivity{
         myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
 
-        if (myArrayTitles != null) {
+        if (myArrayTitles.size() != 0) {
             noLists.setVisibility(View.INVISIBLE);
             loadListNames();
 
         } else {
-            noLists.setVisibility(View.VISIBLE);
-            myListView.setVisibility(View.INVISIBLE);
+            updatedListTitles();
+
+
+
         }
 
         activateToolbar();
@@ -118,6 +123,7 @@ public class MyLists extends BaseActivity{
 
 
         this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        noLists.setVisibility(View.INVISIBLE);
         myListView.setVisibility(View.VISIBLE);
         myListView.setAdapter(adapter);
 
@@ -132,33 +138,28 @@ public class MyLists extends BaseActivity{
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos,
                                         long id) {
-                    ArrayList<String> temp = new ArrayList<String>();
-                    java.util.List<java.util.Map.Entry<String, String>> pairList= new java.util.ArrayList<>();
+
+                    ArrayList<ListTuple> temp = new ArrayList<ListTuple>();
+                    String vid = myArrayTitles.get(pos).getObjectId();
                     JSONArray myList = myArrayTitles.get(pos).getJSONArray("myLists");
-                    if(myList == null){
+                    ArrayList xList = (ArrayList) myArrayTitles.get(pos).getList("myLists");
+                    ListTuple i;
+                    i = new ListTuple(vid, xList);
+                    temp.add(i);
 
-                    }
-                    else {
-                        for (int i = 0; i < myList.length(); i++) {
-                            try {
-                                temp.add(myList.get(i).toString());
-                            } catch (JSONException e) {
+                    if (xList != null) {
+                        Intent intent = new Intent(MyLists.this, DetailListView.class);
+                        Bundle args = new Bundle();
+                        args.putSerializable("ArrayList", temp);
+                        intent.putExtra("myListids", args);
+                        startActivity(intent);
 
-                            }
-                        }
-
-                        if(!temp.isEmpty()){
-                            Intent intent = new Intent(MyLists.this, DetailListView.class);
-                            intent.putStringArrayListExtra("myIdList", temp);
-                            startActivity(intent);
-                        }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Must add videos", Toast.LENGTH_LONG).show();
-                        }
-
+                    } else {
+                        Toast.makeText(getApplicationContext(), "This list is empty", Toast.LENGTH_LONG).show();
                     }
                 }
             });
+        }
             myListView.setOnItemLongClickListener(new OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -195,7 +196,13 @@ public class MyLists extends BaseActivity{
 
                                                         MyLists.myArrayTitles.add(object);
                                                     }
-                                                    loadListNames();
+                                                    if (myArrayTitles.size() == 0) {
+                                                        noLists.setVisibility(View.VISIBLE);
+                                                        myListView.setVisibility(View.INVISIBLE);
+                                                    }
+                                                    else {
+                                                        loadListNames();
+                                                    }
                                                 }
                                             }
                                         });
@@ -282,7 +289,6 @@ public class MyLists extends BaseActivity{
                 }
             });
         }
-    }
 
     private void addNewItemToList () {
         View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
@@ -353,7 +359,12 @@ public class MyLists extends BaseActivity{
 
                         MyLists.myArrayTitles.add(object);
                     }
-                    loadListNames();
+                    if (myArrayTitles.isEmpty()) {
+                        noLists.setVisibility(View.VISIBLE);
+                        myListView.setVisibility(View.INVISIBLE);
+                    } else {
+                        loadListNames();
+                    }
                 }
             }
         });

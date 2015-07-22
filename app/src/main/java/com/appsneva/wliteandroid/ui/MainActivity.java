@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,12 +38,18 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import java.util.Arrays;
 import java.util.List;
 import com.appsneva.wliteandroid.PlayerActivity;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.SearchActivity;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -316,6 +322,8 @@ public class MainActivity extends BaseActivity {
                             addTitle.show();
 
                         } else {
+
+                            // set up list titles for alert
                             ArrayList<String> listTitles = new ArrayList<String>();
                             for (ParseObject titles : list) {
                                 String title = (titles.get("listTitle").toString());
@@ -330,25 +338,66 @@ public class MainActivity extends BaseActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
+                                    // pull list title
                                     String titleTapped = titles[which].toString();
 
+                                    // convertid to Parse array type
+                                    final ArrayList<String> moreToAdd;
+                                    moreToAdd = new ArrayList<String>();
+                                    moreToAdd.add(videoId);
+
+                                    //query by list title
                                     ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
                                     query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
                                     query1.whereEqualTo("listTitle", titleTapped);
                                     query1.getFirstInBackground(new GetCallback<ParseObject>() {
                                         @Override
                                         public void done(ParseObject object, ParseException e) {
-                                            object.add("myLists", videoId);
-                                            object.saveInBackground(new SaveCallback() {
-                                                @Override
-                                                public void done(ParseException e) {
-                                                    if (e != null) {
-                                                        // add error handling
-                                                    } else {
-                                                        //tell them how awesome they are and to use theLists page to manage their lists
+//                                            Array id = new Array();
+                                            if (object.get("myLists") == null) {
+
+                                                object.put("myLists", moreToAdd);
+                                                object.saveInBackground(new SaveCallback() {
+                                                    @Override
+                                                    public void done(ParseException e) {
+                                                        if (e != null) {
+                                                            Log.d("Parse:", e.getLocalizedMessage());
+                                                        } else {
+                                                            Log.d("Parse:", "item was supposed to be saved");
+                                                            Toast.makeText(getApplicationContext(), "Video saved", LENGTH_LONG).show();
+                                                        }
+
+                                                    }
+
+                                                });
+                                            } else {
+                                                ArrayList<String> addMore = new ArrayList<String>();
+
+                                                JSONArray myList = object.getJSONArray("myLists");
+                                                for (int i = 0; i < myList.length(); i++) {
+                                                    try {
+                                                        addMore.add(myList.get(i).toString());
+                                                    } catch (JSONException e1) {
+                                                        e1.printStackTrace();
                                                     }
                                                 }
-                                            });
+                                                addMore.add(videoId);
+                                                object.put("myLists", addMore);
+                                                object.saveInBackground(new SaveCallback() {
+                                                    @Override
+                                                    public void done(ParseException e) {
+                                                        if (e != null) {
+                                                            Log.d("Parse:", e.getLocalizedMessage());
+                                                        } else {
+                                                            Log.d("Parse:", "item was supposed to be saved");
+                                                            Toast.makeText(getApplicationContext(), "Video saved", LENGTH_LONG).show();
+                                                        }
+
+                                                    }
+
+                                                });
+
+                                            }
                                         }
                                     });
                                 }
