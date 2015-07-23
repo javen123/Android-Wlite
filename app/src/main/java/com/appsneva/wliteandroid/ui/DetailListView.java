@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.appsneva.wliteandroid.ListTuple;
 import com.appsneva.wliteandroid.PlayerActivity;
 import com.appsneva.wliteandroid.R;
+import com.appsneva.wliteandroid.SearchActivity;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
 
@@ -31,6 +32,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -74,6 +76,8 @@ public class DetailListView extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_list_view, menu);
+
+
         return true;
     }
 
@@ -85,11 +89,25 @@ public class DetailListView extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            ParseUser.logOut();
+            navigateToLogin();
+        }
+        if (id == R.id.menu_search) {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+            finish();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void navigateToLogin() {
+        Intent intent = new Intent(this, LogIn.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void searchOnYoutube(final String keywords) {
@@ -211,7 +229,11 @@ public class DetailListView extends ActionBarActivity {
             this.finish();
         }
         else {
-            newList.put("myLists", searchResults);
+            ArrayList<String> temp = new ArrayList<>();
+            for(VideoItem x : searchResults){
+                temp.add(x.getId().toString());
+            }
+            newList.put("myLists", temp);
             newList.saveInBackground();
         }
         adapter.notifyDataSetChanged();
