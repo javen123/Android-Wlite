@@ -9,6 +9,14 @@
 
     <include android:id= "@+id/app_bar" layout="@layout/toolbar"/>
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,4 +25,5 @@
         android:dividerHeight="5dp"
         android:focusable="false"
         android:focusableInTouchMode="false"/>
+
 </RelativeLayout>

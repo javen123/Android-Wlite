@@ -1,5 +1,6 @@
 package com.appsneva.wliteandroid.ui;
 
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,15 +19,21 @@ import android.widget.ArrayAdapter;
 
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.appsneva.wliteandroid.DeveloperKey;
 import com.appsneva.wliteandroid.ListTuple;
+
 import com.appsneva.wliteandroid.PlayerActivity;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.SearchActivity;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
 
+import com.google.android.youtube.player.YouTubeIntents;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.google.api.services.youtube.YouTube;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -49,11 +56,15 @@ public class DetailListView extends ActionBarActivity {
     private Handler handler;
     private ListView detailList;
     private ArrayAdapter adapter;
+    private ProgressBar mProgressBar2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_list_view);
+
+        mProgressBar2 = (ProgressBar)findViewById(R.id.progressBar2);
+        mProgressBar2.setVisibility(View.INVISIBLE);
 
         handler = new Handler();
         Intent intent = this.getIntent();
@@ -67,6 +78,7 @@ public class DetailListView extends ActionBarActivity {
         detailList = (ListView) findViewById(R.id.detail_list_view);
 
         YoutubeConnector yc = new YoutubeConnector(DetailListView.this);
+        toggleProgressBar();
         searchOnYoutube(ids);
 
     }
@@ -117,6 +129,7 @@ public class DetailListView extends ActionBarActivity {
                 searchResults = yc.idSearch(keywords);
                 handler.post(new Runnable() {
                     public void run() {
+                        toggleProgressBar();
                         updateVideosFound();
                     }
                 });
@@ -157,8 +170,11 @@ public class DetailListView extends ActionBarActivity {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos,
                                         long id) {
-                    Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-                    intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
+
+                    List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
+//                    String intentIds = convertIntentToVideoIds(args);
+                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY,vidIds,pos,10,true, true);
+//                    intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
                     startActivity(intent);
                 }
             });
@@ -180,10 +196,9 @@ public class DetailListView extends ActionBarActivity {
                             query.getFirstInBackground(new GetCallback<ParseObject>() {
                                 @Override
                                 public void done(ParseObject object, ParseException e) {
-                                    if(e != null){
+                                    if (e != null) {
                                         Log.d("Parse:", e.getLocalizedMessage());
-                                    }
-                                    else{
+                                    } else {
 
                                         updateListView(args, position, object);
 
@@ -206,20 +221,26 @@ public class DetailListView extends ActionBarActivity {
         ArrayList<ListTuple> object = (ArrayList<ListTuple>) info.getSerializable("ArrayList");
         ListTuple ids = object.get(0);
         ArrayList vIds = ids.getVideoIds();
-        String mVIds = TextUtils.join(",",vIds);
+        String mVIds = TextUtils.join(",", vIds);
         return mVIds;
+    }
+    private List<String> convertSearchResultsToIntentIds(List<VideoItem> curList){
+        List<String> temp = new ArrayList<>();
+        for(VideoItem x : curList){
+            temp.add(x.getId().toString());
+        }
+        return temp;
     }
     private String convertIntentToListId(Bundle info){
 
         ArrayList<ListTuple> object = (ArrayList<ListTuple>) info.getSerializable("ArrayList");
         ListTuple ids = object.get(0);
         String listId = ids.getObjectId();
-
         return listId;
     }
     private void updateListView(Bundle info, int pos, ParseObject newList) {
 
-        // remove positionm from ListeViewDataArray
+        // remove position from ListeViewDataArray
         searchResults.remove(pos);
 
         //Add back new array list
@@ -238,4 +259,18 @@ public class DetailListView extends ActionBarActivity {
         }
         adapter.notifyDataSetChanged();
     }
+
+    private void toggleProgressBar(){
+        if(mProgressBar2.getVisibility() == View.INVISIBLE){
+            mProgressBar2.setVisibility(View.VISIBLE);
+            detailList.setVisibility(View.INVISIBLE);
+        }
+        else {
+            mProgressBar2.setVisibility(View.INVISIBLE);
+            detailList.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+
 }

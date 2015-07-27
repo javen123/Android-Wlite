@@ -20,7 +20,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:visibility="invisible"
-        android:longClickable="true"/>
+        android:longClickable="true"
+        android:dividerHeight="5dp"/>
 
 
 

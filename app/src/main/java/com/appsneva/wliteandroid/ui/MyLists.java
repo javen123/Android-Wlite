@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Toast;
-
 import com.appsneva.wliteandroid.ListTuple;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.SearchActivity;
@@ -29,9 +28,6 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +82,7 @@ public class MyLists extends BaseActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            myArrayTitles.clear();
             ParseUser.logOut();
             navigateToLogin();
         }

@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,8 @@ public class MainActivity extends BaseActivity {
     private Handler handler;
     private List<VideoItem> searchResults;
 
+    private ProgressBar mProgressBar;
+
     public static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -73,7 +76,8 @@ public class MainActivity extends BaseActivity {
 
         videosFound = (ListView)findViewById(R.id.videos_found);
         handler = new Handler();
-
+        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.INVISIBLE);
         // load toolbar
         activateToolbar();
 
@@ -162,6 +166,7 @@ public class MainActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+            MyLists.myArrayTitles.clear();
             ParseUser.logOut();
             navigateToLogin();
         }
@@ -180,12 +185,14 @@ public class MainActivity extends BaseActivity {
 
 
     private void searchOnYoutube(final String keywords){
+        toggleProgressBar();
         new Thread(){
             public void run(){
                 YoutubeConnector yc = new YoutubeConnector(MainActivity.this);
                 searchResults = yc.search(keywords);
                 handler.post(new Runnable(){
                     public void run(){
+                        toggleProgressBar();
                         updateVideosFound();
                     }
                 });
@@ -194,11 +201,14 @@ public class MainActivity extends BaseActivity {
     }
     private void updateVideosFound() {
         final ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults) {
+
+
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
                     convertView = getLayoutInflater().inflate(R.layout.video_item, parent, false);
                 }
+
 
                 // row item tapped action / send to YouTube player
                 addRowClickListener();
@@ -421,5 +431,14 @@ public class MainActivity extends BaseActivity {
     alertDialog.show();
 }
 
-
+    private void toggleProgressBar(){
+        if(mProgressBar.getVisibility() == View.INVISIBLE){
+            mProgressBar.setVisibility(View.VISIBLE);
+            videosFound.setVisibility(View.INVISIBLE);
+        }
+        else {
+            mProgressBar.setVisibility(View.INVISIBLE);
+            videosFound.setVisibility(View.VISIBLE);
+        }
+    }
 }
