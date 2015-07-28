@@ -49,15 +49,19 @@ public class MyLists extends BaseActivity{
         myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
 
+        /*
+         * This is probably the place to do a check for stored lists.
+         * I'm thinking that it would make sense to put in some sort
+         * of check that will not allow the displays of titles that
+         * are the same name maybe? What I do know is that if I clear
+         * the app data (clear app cache) then there is no problem.
+         */
         if (myArrayTitles.size() != 0) {
             noLists.setVisibility(View.INVISIBLE);
             loadListNames();
-
-        } else {
+        }
+        else {
             updatedListTitles();
-
-
-
         }
 
         activateToolbar();
