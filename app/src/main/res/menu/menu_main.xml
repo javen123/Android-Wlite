@@ -16,7 +16,7 @@
     <item android:id="@+id/menu_my_lists"
         android:orderInCategory="2"
         android:showAsAction="ifRoom"
-        android:title="My Lists"
+        android:title="@string/main_menu_action_list"
         tools:ignore="AppCompatResource" />
 
 

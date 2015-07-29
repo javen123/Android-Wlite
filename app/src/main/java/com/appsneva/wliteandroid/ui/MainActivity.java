@@ -260,8 +260,8 @@ public class MainActivity extends BaseActivity {
     Log.d("PARSE PULLED TITLE:", videoTitle);
     AlertDialog.Builder alert = new AlertDialog.Builder(this);
     alert.setTitle("" + videoTitle);
-    alert.setMessage("will be added to your lists");
-    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    alert.setMessage("Add to a Searchlist?");
+    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
@@ -343,7 +343,7 @@ public class MainActivity extends BaseActivity {
 
 
                             final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
-                            success.setTitle("Add to ");
+                            success.setTitle("Select Searchlist:");
                             success.setItems(titles, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -421,7 +421,7 @@ public class MainActivity extends BaseActivity {
             });
         }
     });
-    alert.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+    alert.setNegativeButton("Later", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.cancel();
