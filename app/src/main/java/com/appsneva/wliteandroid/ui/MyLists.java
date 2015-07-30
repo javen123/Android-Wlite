@@ -157,7 +157,7 @@ public class MyLists extends BaseActivity {
                 builder.setTitle("" + myArrayTitles.get(position).get("listTitle").toString());
 
                 // delete selected list
-                builder.setNeutralButton("Delete Searchlist", new DialogInterface.OnClickListener() {
+                builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ParseObject deletedList = myArrayTitles.get(position);
@@ -199,7 +199,7 @@ public class MyLists extends BaseActivity {
                     }  // onClick
                 });  // builder.setNeutralButton
 
-                builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Edit Title", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // pull reusable alert from layouts
