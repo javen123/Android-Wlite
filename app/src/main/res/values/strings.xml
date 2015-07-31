@@ -21,8 +21,6 @@
     <string name="BtnUserLogOut">Log Out</string>
     <string name="search">Search</string>
     <string name="failed">Failed to initialize Youtube Player</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_actionLogOut">Log Out</string>
     <string name="PlayerTitle">Wavlite Player</string>
     <string name="search_hint">search</string>
@@ -48,6 +46,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_create_list">Create Searchlist</string>
     <string name="edit_list_title">Edit Title</string>
+    <string name="my_list_title">My Lists</string>
 
 </resources>
 
