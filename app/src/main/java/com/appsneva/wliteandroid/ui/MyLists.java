@@ -2,11 +2,13 @@ package com.appsneva.wliteandroid.ui;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -32,9 +34,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import org.json.JSONArray;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import static android.widget.Toast.LENGTH_LONG;
 
 public class MyLists extends BaseActivity {
 
@@ -42,6 +43,9 @@ public class MyLists extends BaseActivity {
     public static ArrayList<ParseObject> myArrayTitles = new ArrayList<ParseObject>();
     private TextView noLists;
     private ArrayAdapter adapter;
+    int REQUEST_CODE = 123;
+    int newREQUEST_CODE = 321;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,6 @@ public class MyLists extends BaseActivity {
         addRowClickListener();
     }  // onCreate
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -71,10 +74,28 @@ public class MyLists extends BaseActivity {
         inflater.inflate(R.menu.menu_my_lists, menu);
 
         SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        MenuItem searchItem = menu.findItem(R.id.menu_search1);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search1).getActionView();
+        ComponentName cn = new ComponentName(this, MainActivity.class);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
 
+        SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                sharedPref.edit().putString("myQuery", query).commit();
+                Log.d("ITR", "Mylist query is "+ query);
+                finish();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        };
+        searchView.setOnQueryTextListener(textListener);
         return true;
     }
 
@@ -94,7 +115,7 @@ public class MyLists extends BaseActivity {
         }
 
         if (id == R.id.menu_search) {
-            // go to search view here?
+
         }
 
         if (id == R.id.menu_create_list) {
@@ -104,6 +125,20 @@ public class MyLists extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }  // onOptionsItemSelected
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 123){
+            if(resultCode == RESULT_OK){
+                finish();
+            }
+            else if(resultCode == RESULT_CANCELED){
+                addNewItemToList();
+            }
+        }
+
+    }
 
     private void navigateToLogin() {
         myArrayTitles.clear();
@@ -113,7 +148,6 @@ public class MyLists extends BaseActivity {
         startActivity(intent);
     }  // navigateToLogin
 
-
     private void loadListNames() {
         ArrayList<String> values = new ArrayList<String>();
 
@@ -121,13 +155,13 @@ public class MyLists extends BaseActivity {
             String title = (object.get("listTitle").toString());
             values.add(title);
         }
+        Collections.sort(values, String.CASE_INSENSITIVE_ORDER);
 
         this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
         noLists.setVisibility(View.INVISIBLE);
         myListView.setVisibility(View.VISIBLE);
         myListView.setAdapter(adapter);
     }  // loadListNames
-
 
     private void addRowClickListener() {
         if (myListView != null) {
@@ -145,19 +179,19 @@ public class MyLists extends BaseActivity {
 
                     if (xList != null) {
                         Intent intent = new Intent(MyLists.this, DetailListView.class);
+
                         Bundle args = new Bundle();
                         args.putSerializable("ArrayList", temp);
                         intent.putExtra("myListids", args);
-                        intent.putExtra("title",title);
-                        startActivity(intent);
+                        intent.putExtra("title", title);
+                        startActivityForResult(intent, REQUEST_CODE);
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.toast_empty_list), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "This searchlist is empty", Toast.LENGTH_LONG).show();
                     }
                 }  // onItemClick
             });  // myListView.setOnItemClickListener
         }  // if-myListView
-
 
         myListView.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
@@ -168,7 +202,7 @@ public class MyLists extends BaseActivity {
                 builder.setTitle("" + myArrayTitles.get(position).get("listTitle").toString());
 
                 // delete selected list
-                builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
+                builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ParseObject deletedList = myArrayTitles.get(position);
@@ -210,8 +244,7 @@ public class MyLists extends BaseActivity {
                     }  // onClick
                 });  // builder.setNeutralButton
 
-
-                builder.setPositiveButton(getString(R.string.button_edit), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Edit Title", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // pull reusable alert from layouts
@@ -221,15 +254,15 @@ public class MyLists extends BaseActivity {
                         editTitle.setView(v);
                         TextView editAlertTitle = (TextView) v.findViewById(R.id.alert_edit_title_text);
                         final EditText newTitle = (EditText) v.findViewById(R.id.first_title);
-                        editAlertTitle.setText(getString(R.string.dialog_title_list_rename));
-                        editTitle.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                        editAlertTitle.setText("Change title to:");
+                        editTitle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
                         });  // editTitle.setNegativeButton
 
-                        editTitle.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
+                        editTitle.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // grab new title name from user input
@@ -251,9 +284,9 @@ public class MyLists extends BaseActivity {
 
                                             //return alert dialog box of success
                                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
-                                            success.setTitle(getString(R.string.dialog_title_list_updated));
-                                            success.setMessage(getString(R.string.dialog_msg_list_updated));
-                                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                                            success.setTitle("Updated");
+                                            success.setMessage("Searchlist title saved!");
+                                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     adapter.notifyDataSetChanged();
@@ -271,7 +304,7 @@ public class MyLists extends BaseActivity {
                     }  // onClick
                 });  // builder.setPositiveButton
 
-                builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -285,25 +318,24 @@ public class MyLists extends BaseActivity {
         });  // myListView.setOnItemLongClickListener
     }  // addRowClickListener
 
-
     private void addNewItemToList() {
         View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
         final AlertDialog.Builder newTitle = new AlertDialog.Builder(MyLists.this);
         newTitle.setView(v);
 
         TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
-        newListAdd.setText(getString(R.string.dialog_title_list_name));
+        newListAdd.setText("Name Your Searchlist");
         final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
-        newListTitleAdd.setHint(getString(R.string.dialog_hint_list_name));
+        newListTitleAdd.setHint("Enter a Searchlist title");
 
-        newTitle.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+        newTitle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });  // newTitle.setNegativeButton
 
-        newTitle.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
+        newTitle.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final String mTitle = newListTitleAdd.getText().toString();
@@ -316,13 +348,13 @@ public class MyLists extends BaseActivity {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {
-                            // continue
+                            // empty if body?
                         }
                         else {
                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
-                            success.setTitle(getString(R.string.dialog_title_list_save));
-                            success.setMessage(getString(R.string.dialog_msg_list_save));
-                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                            success.setTitle("Saved!");
+                            success.setMessage("Your Searchlist has been created");
+                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     updatedListTitles();
@@ -338,7 +370,6 @@ public class MyLists extends BaseActivity {
         AlertDialog alert = newTitle.create();
         alert.show();
     }  // addNewItemToList
-
 
     public void updatedListTitles() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
@@ -366,6 +397,7 @@ public class MyLists extends BaseActivity {
                         loadListNames();
                     }
                 }
+
             }  // done
         });  // query.findInBackground
     }  // updatedListTitles

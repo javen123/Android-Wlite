@@ -59,7 +59,8 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable"
+                android:value=".ui.MainActivity"/>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.appsneva.wliteandroid.ui.MainActivity" />
@@ -79,6 +80,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.appsneva.wliteandroid.ui.MyLists" />
         </activity>
+
+
+
 
     </application>
 
