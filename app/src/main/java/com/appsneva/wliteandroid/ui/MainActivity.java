@@ -164,7 +164,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                searchOnYoutube(newText);
                 return false;
             }
         };
