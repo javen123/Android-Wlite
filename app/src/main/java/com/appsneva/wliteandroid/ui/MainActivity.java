@@ -1,7 +1,5 @@
 package com.appsneva.wliteandroid.ui;
 
-
-
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -45,9 +43,7 @@ import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
 import static android.widget.Toast.LENGTH_LONG;
 
-
 public class MainActivity extends BaseActivity {
-
     /** The request code when calling startActivityForResult to recover from an API service error. */
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
@@ -61,11 +57,11 @@ public class MainActivity extends BaseActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         yc = new YoutubeConnector(MainActivity.this);
         videosFound = (ListView)findViewById(R.id.videos_found);
@@ -78,14 +74,12 @@ public class MainActivity extends BaseActivity {
         //confirm youTube API Check
         checkYouTubeApi();
 
-
         //check Parse User is current
-
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser == null){
+        if (currentUser == null) {
             navigateToLogin();
         }
-        else{
+        else {
             // pull users lists if available
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
             curUser = currentUser.getObjectId();
@@ -95,7 +89,8 @@ public class MainActivity extends BaseActivity {
                 public void done(List<ParseObject> list, ParseException e) {
                     if (e != null) {
                         Log.d("Error with list pull: ", e.getLocalizedMessage());
-                    } else {
+                    }
+                    else {
                         Log.d("User's saved list: ", list.toString());
                         for (ParseObject object : list) {
                             ParseObject temp = object;
@@ -106,20 +101,22 @@ public class MainActivity extends BaseActivity {
             });
         }
         searchOnYoutube("new hit music");
-
     }
+
 
 //    private String getSavedPreferences(String key){
 //        SharedPreferences sharePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        return sharePref.getString(key, "");
 //    }
 
+
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason =
                 YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
         if (errorReason.isUserRecoverableError()) {
             errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
-        } else if (errorReason != YouTubeInitializationResult.SUCCESS) {
+        }
+        else if (errorReason != YouTubeInitializationResult.SUCCESS) {
             String errorMessage =
                     String.format(getString(R.string.error_player), errorReason.toString());
             Toast.makeText(this, errorMessage, LENGTH_LONG).show();
@@ -134,6 +131,7 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -147,7 +145,6 @@ public class MainActivity extends BaseActivity {
         SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 searchResults.clear();
                 searchOnYoutube(query);
                 searchView.clearFocus();
@@ -164,19 +161,19 @@ public class MainActivity extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch(item.getItemId()){
+        switch(item.getItemId()) {
             case R.id.action_logout:
                 MyLists.myArrayTitles.clear();
                 ParseUser.logOut();
                 navigateToLogin();
                 return true;
             case R.id.menu_search:
-
                 return true;
             case R.id.menu_my_lists:
                 Intent intent = new Intent(this, MyLists.class);
@@ -187,17 +184,18 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         handleIntent(getIntent());
     }
 
+
     private void searchOnYoutube(final String keywords){
         toggleProgressBar();
         new Thread(){
             public void run(){
-
                 searchResults = yc.search(keywords);
                 handler.post(new Runnable(){
                     public void run(){
@@ -208,16 +206,16 @@ public class MainActivity extends BaseActivity {
             }
         }.start();
     }
+
+
     public void updateVideosFound() {
         final ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults) {
-
 
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
                     convertView = getLayoutInflater().inflate(R.layout.video_item, parent, false);
                 }
-
 
                 // row item tapped action / send to YouTube player
                 addRowClickListener();
@@ -236,9 +234,9 @@ public class MainActivity extends BaseActivity {
         videosFound.setAdapter(adapter);
     }
 
-    private void addRowClickListener(){
 
-        if(videosFound != null){
+    private void addRowClickListener() {
+        if(videosFound != null) {
             videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
@@ -249,6 +247,7 @@ public class MainActivity extends BaseActivity {
                     startActivity(intent);
                 }
             });
+
             videosFound.setOnItemLongClickListener(new OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -261,15 +260,13 @@ public class MainActivity extends BaseActivity {
 
     // add dialog and button control for add item to list
 
-
-    private void addItemToParseArray(int loc){
-
+    private void addItemToParseArray(int loc) {
     final String videoTitle = searchResults.get(loc).getTitle().toString();
     final String videoId = searchResults.get(loc).getId().toString();
     AlertDialog.Builder alert = new AlertDialog.Builder(this);
     alert.setTitle("" + videoTitle);
-    alert.setMessage("will be added to your lists");
-    alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    alert.setMessage(getString(R.string.dialog_msg_list_add));
+    alert.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
@@ -280,13 +277,14 @@ public class MainActivity extends BaseActivity {
                 public void done(List<ParseObject> list, ParseException e) {
                     if (e != null) {
                         Log.d("Error with list pull: ", e.getLocalizedMessage());
-                    } else {
+                    }
+                    else {
                         if (list.isEmpty()) {
                             View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
                             final AlertDialog.Builder newTitle = new AlertDialog.Builder(MainActivity.this);
                             newTitle.setView(v);
                             final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
-                            final AlertDialog.Builder builder = newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                            final AlertDialog.Builder builder = newTitle.setPositiveButton(getString(R.string.button_add), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //get user added title from alert dialog
@@ -310,9 +308,9 @@ public class MainActivity extends BaseActivity {
                                         public void done(ParseException e) {
                                             if (e == null) {
                                                 final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
-                                                success.setTitle("Congrats");
-                                                success.setMessage("You just saved your first list");
-                                                success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                success.setTitle(getString(R.string.dialog_title_congrats));
+                                                success.setMessage(getString(R.string.dialog_msg_congrats));
+                                                success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         dialog.cancel();
@@ -320,11 +318,12 @@ public class MainActivity extends BaseActivity {
                                                 });
                                                 AlertDialog alert = success.create();
                                                 alert.show();
-                                            } else {
+                                            }
+                                            else {
                                                 final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
-                                                success.setTitle("Opps");
+                                                success.setTitle(getString(R.string.dialog_title_oops));
                                                 success.setMessage("" + e.getLocalizedMessage());
-                                                success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         dialog.cancel();
@@ -339,9 +338,8 @@ public class MainActivity extends BaseActivity {
                             });
                             AlertDialog addTitle = newTitle.create();
                             addTitle.show();
-
-                        } else {
-
+                        }
+                        else {
                             AlertDialogFragment.adjustListItems(list, MainActivity.this, videoId, getApplicationContext());
 
                         }
@@ -350,7 +348,7 @@ public class MainActivity extends BaseActivity {
             });
         }
     });
-    alert.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+    alert.setNegativeButton(getString(R.string.button_later), new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.cancel();
@@ -377,7 +375,4 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(),""+query, LENGTH_LONG).show();
         }
     }
-
-
-
 }
