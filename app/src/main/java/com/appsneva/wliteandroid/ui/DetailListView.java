@@ -113,6 +113,7 @@ public class DetailListView extends BaseActivity {
     }
 
     private void navigateToLogin() {
+        MyLists.myArrayTitles.clear();
         Intent intent = new Intent(this, LogIn.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

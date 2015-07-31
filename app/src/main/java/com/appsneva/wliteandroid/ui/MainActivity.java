@@ -7,10 +7,8 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -21,14 +19,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.appsneva.wliteandroid.AlertDialogFragment;
 import com.appsneva.wliteandroid.DeveloperKey;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
@@ -42,16 +38,11 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
-
 import java.util.List;
-
 import com.appsneva.wliteandroid.R;
-
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
-
 import static android.widget.Toast.LENGTH_LONG;
 
 
@@ -118,10 +109,10 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private String getSavedPreferences(String key){
-        SharedPreferences sharePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        return sharePref.getString(key, "");
-    }
+//    private String getSavedPreferences(String key){
+//        SharedPreferences sharePref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        return sharePref.getString(key, "");
+//    }
 
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason =
@@ -136,6 +127,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void navigateToLogin() {
+        MyLists.myArrayTitles.clear();
         Intent intent = new Intent(this, LogIn.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

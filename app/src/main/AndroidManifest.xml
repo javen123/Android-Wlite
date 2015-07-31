@@ -33,7 +33,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+
             </intent-filter>
         </activity>
 
@@ -52,7 +52,6 @@
 
         </activity>
 
-
         <activity
             android:name=".ui.MyLists"
             android:label="@string/title_activity_my_lists"
@@ -64,7 +63,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.appsneva.wliteandroid.ui.MainActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
 
+            </intent-filter>
 
         </activity>
 
