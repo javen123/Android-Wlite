@@ -144,7 +144,7 @@ public class MyLists extends BaseActivity {
 
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "This list is empty", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "This searchlist is empty", Toast.LENGTH_LONG).show();
                     }
                 }  // onItemClick
             });  // myListView.setOnItemClickListener
@@ -159,7 +159,7 @@ public class MyLists extends BaseActivity {
                 builder.setTitle("" + myArrayTitles.get(position).get("listTitle").toString());
 
                 // delete selected list
-                builder.setNeutralButton("Delete List", new DialogInterface.OnClickListener() {
+                builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ParseObject deletedList = myArrayTitles.get(position);
@@ -201,7 +201,7 @@ public class MyLists extends BaseActivity {
                     }  // onClick
                 });  // builder.setNeutralButton
 
-                builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Edit Title", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // pull reusable alert from layouts
@@ -242,7 +242,7 @@ public class MyLists extends BaseActivity {
                                             //return alert dialog box of success
                                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
                                             success.setTitle("Updated");
-                                            success.setMessage("New list title has been saved");
+                                            success.setMessage("Searchlist title saved!");
                                             success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -281,9 +281,9 @@ public class MyLists extends BaseActivity {
         newTitle.setView(v);
 
         TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
-        newListAdd.setText("Add List title");
+        newListAdd.setText("Name Your Searchlist");
         final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
-        newListTitleAdd.setHint("Enter new list");
+        newListTitleAdd.setHint("Enter a Searchlist title");
 
         newTitle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -309,8 +309,8 @@ public class MyLists extends BaseActivity {
                         }
                         else {
                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
-                            success.setTitle("Added");
-                            success.setMessage("New list title has been saved");
+                            success.setTitle("Saved!");
+                            success.setMessage("Your Searchlist has been created");
                             success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

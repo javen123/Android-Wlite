@@ -182,7 +182,7 @@ public class DetailListView extends BaseActivity {
                     builder.setTitle("" + videoTitle);
 
                     // delete selected list
-                    builder.setNeutralButton("Delete Video", new DialogInterface.OnClickListener() {
+                    builder.setNeutralButton("Delete this item?", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
