@@ -53,7 +53,7 @@
     <string name="dialog_msg_list_add">Add to Searchlist?</string>
     <string name="dialog_title_oops">Oops!</string>
     <string name="dialog_title_congrats">Congrats!</string>
-    <string name="dialog_msg_congrats">You've created your first Searchlist!</string>
+    <string name="dialog_msg_congrats">You\'ve created your first Searchlist!</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="menu_create_list">Create Searchlist</string>
