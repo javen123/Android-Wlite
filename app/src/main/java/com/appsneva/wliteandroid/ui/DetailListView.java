@@ -1,48 +1,44 @@
 package com.appsneva.wliteandroid.ui;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.appsneva.wliteandroid.DeveloperKey;
 import com.appsneva.wliteandroid.ListTuple;
-
-
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
-
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
-
 import org.json.JSONObject;
-
-
 import java.util.ArrayList;
-
 import java.util.List;
 
 public class DetailListView extends BaseActivity {
@@ -82,14 +78,41 @@ public class DetailListView extends BaseActivity {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_list_view, menu);
 
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search3).getActionView();
+        ComponentName cn = new ComponentName(this, MainActivity.class);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
+        SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                sharedPref.edit().putString("myQuery", query).commit();
+                onSearchPressed();
+                finish();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        };
+        searchView.setOnQueryTextListener(textListener);
 
         return true;
+    }
+
+    private void onSearchPressed() {
+        Intent intent = new Intent();
+        setResult(Activity.RESULT_OK, intent);
     }
 
     @Override
@@ -103,6 +126,12 @@ public class DetailListView extends BaseActivity {
         if (id == R.id.action_logout) {
             ParseUser.logOut();
             navigateToLogin();
+        }
+        if(id == R.id.menu_create_list1){
+
+            Intent intent = new Intent();
+            setResult(Activity.RESULT_CANCELED);
+            finish();
         }
         if (id == R.id.menu_search) {
 
@@ -272,7 +301,4 @@ public class DetailListView extends BaseActivity {
             detailList.setVisibility(View.VISIBLE);
         }
     }
-
-
-
 }

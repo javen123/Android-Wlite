@@ -11,6 +11,8 @@ public class ListTuple implements Serializable {
     String objectId;
     ArrayList<String> videoIds;
 
+
+
     public ArrayList<String> getVideoIds() {
         return videoIds;
     }

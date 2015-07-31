@@ -6,13 +6,20 @@
     <item
         android:id="@+id/action_logout"
         app:showAsAction="ifRoom"
-        android:orderInCategory="100"
+        android:orderInCategory="3"
         android:title="@string/btn_actionLogOut" />
 
-    <item
-        android:id="@+id/menu_create_list"
-        android:icon="@android:drawable/ic_input_add"
+    <item android:id="@+id/menu_search3"
+        android:icon="@android:drawable/ic_menu_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="@string/action_search"
         android:orderInCategory="1"
+        app:showAsAction="collapseActionView|ifRoom"/>
+
+    <item
+        android:id="@+id/menu_create_list1"
+        android:icon="@android:drawable/ic_input_add"
+        android:orderInCategory="2"
         android:title="@string/menu_create_list"
         app:showAsAction="ifRoom" />
 

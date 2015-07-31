@@ -2,11 +2,13 @@ package com.appsneva.wliteandroid.ui;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -32,9 +34,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import org.json.JSONArray;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import static android.widget.Toast.LENGTH_LONG;
 
 public class MyLists extends BaseActivity {
 
@@ -42,6 +43,8 @@ public class MyLists extends BaseActivity {
     public static ArrayList<ParseObject> myArrayTitles = new ArrayList<ParseObject>();
     private TextView noLists;
     private ArrayAdapter adapter;
+    int REQUEST_CODE = 123;
+    int newREQUEST_CODE = 321;
 
 
     @Override
@@ -71,10 +74,28 @@ public class MyLists extends BaseActivity {
         inflater.inflate(R.menu.menu_my_lists, menu);
 
         SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        MenuItem searchItem = menu.findItem(R.id.menu_search1);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search1).getActionView();
+        ComponentName cn = new ComponentName(this, MainActivity.class);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
 
+        SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                sharedPref.edit().putString("myQuery", query).commit();
+                Log.d("ITR", "Mylist query is "+ query);
+                finish();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        };
+        searchView.setOnQueryTextListener(textListener);
         return true;
     }
 
@@ -104,6 +125,21 @@ public class MyLists extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }  // onOptionsItemSelected
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 123){
+            if(resultCode == RESULT_OK){
+                finish();
+            }
+            else if(resultCode == RESULT_CANCELED){
+                addNewItemToList();
+            }
+        }
+
+    }
+
     private void navigateToLogin() {
         myArrayTitles.clear();
         Intent intent = new Intent(this, LogIn.class);
@@ -119,6 +155,7 @@ public class MyLists extends BaseActivity {
             String title = (object.get("listTitle").toString());
             values.add(title);
         }
+        Collections.sort(values, String.CASE_INSENSITIVE_ORDER);
 
         this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
         noLists.setVisibility(View.INVISIBLE);
@@ -142,12 +179,12 @@ public class MyLists extends BaseActivity {
 
                     if (xList != null) {
                         Intent intent = new Intent(MyLists.this, DetailListView.class);
+
                         Bundle args = new Bundle();
                         args.putSerializable("ArrayList", temp);
                         intent.putExtra("myListids", args);
-                        intent.putExtra("title",title);
-                        startActivity(intent);
-
+                        intent.putExtra("title", title);
+                        startActivityForResult(intent, REQUEST_CODE);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "This searchlist is empty", Toast.LENGTH_LONG).show();
@@ -360,6 +397,7 @@ public class MyLists extends BaseActivity {
                         loadListNames();
                     }
                 }
+
             }  // done
         });  // query.findInBackground
     }  // updatedListTitles
