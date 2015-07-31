@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.appsneva.wliteandroid" >
+    package="com.appsneva.wliteandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,7 +10,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Wavlite" >
+        android:theme="@style/Theme.Wavlite">
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -18,60 +19,60 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.LogIn"
             android:label="@string/title_activity_log_in"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
+
         </activity>
+
         <activity
             android:name=".ui.SignUp"
             android:label="@string/title_activity_sign_up"
             android:parentActivityName=".ui.LogIn"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".SearchActivity"
-            android:label="@string/title_activity_search"
-            android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.appsneva.wliteandroid.ui.MainActivity" />
+            android:screenOrientation="portrait">
 
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
         </activity>
-        <activity
-            android:name=".PlayerActivity"
-            android:parentActivityName=".SearchActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+
+
         <activity
             android:name=".ui.MyLists"
             android:label="@string/title_activity_my_lists"
-            android:parentActivityName=".ui.MainActivity" >
+            android:parentActivityName=".ui.MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.appsneva.wliteandroid.ui.MainActivity" />
+
+
         </activity>
+
         <activity
             android:name=".ui.DetailListView"
             android:label="@string/title_activity_detail_list_view"
-            android:parentActivityName=".ui.MyLists" >
+            android:parentActivityName=".ui.MyLists"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.appsneva.wliteandroid.ui.MyLists" />

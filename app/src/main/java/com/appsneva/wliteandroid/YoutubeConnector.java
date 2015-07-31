@@ -20,7 +20,7 @@ import java.util.List;
 public class YoutubeConnector {
     private YouTube youtube;
     private YouTube.Search.List query;
-    private static final long MAX_RESULTS = 25;
+    private static final long MAX_RESULTS = 50;
 
     // Your developer key goes here
     public static final String KEY = DeveloperKey.DEVELOPER_KEY;

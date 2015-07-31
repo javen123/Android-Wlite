@@ -3,12 +3,15 @@ package com.appsneva.wliteandroid.ui;
 
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,10 +29,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appsneva.wliteandroid.AlertDialogFragment;
+import com.appsneva.wliteandroid.DeveloperKey;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -40,17 +45,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import java.util.Arrays;
 import java.util.List;
-import com.appsneva.wliteandroid.PlayerActivity;
+
 import com.appsneva.wliteandroid.R;
-import com.appsneva.wliteandroid.SearchActivity;
+
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -64,8 +64,9 @@ public class MainActivity extends BaseActivity {
     private ListView videosFound;
     private Handler handler;
     private List<VideoItem> searchResults;
-
     private ProgressBar mProgressBar;
+    protected YoutubeConnector yc;
+    private SearchView searchView;
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -74,6 +75,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        yc = new YoutubeConnector(MainActivity.this);
         videosFound = (ListView)findViewById(R.id.videos_found);
         handler = new Handler();
         mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
@@ -112,16 +115,7 @@ public class MainActivity extends BaseActivity {
             });
         }
         searchOnYoutube("new hit music");
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(handler != null){
-
-            String query = getSavedPreferences(YOUTUBE_QUERY);
-            if(query.length() > 0) searchOnYoutube(query);
-        }
     }
 
     private String getSavedPreferences(String key){
@@ -154,7 +148,28 @@ public class MainActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
-        return true;
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                searchResults.clear();
+                searchOnYoutube(query);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        };
+        searchView.setOnQueryTextListener(textListener);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -162,33 +177,35 @@ public class MainActivity extends BaseActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch(item.getItemId()){
+            case R.id.action_logout:
+                MyLists.myArrayTitles.clear();
+                ParseUser.logOut();
+                navigateToLogin();
+                return true;
+            case R.id.menu_search:
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            MyLists.myArrayTitles.clear();
-            ParseUser.logOut();
-            navigateToLogin();
+                return true;
+            case R.id.menu_my_lists:
+                Intent intent = new Intent(this, MyLists.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        if(id == R.id.menu_search){
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        if(id == R.id.menu_my_lists){
-            Intent intent = new Intent(this, MyLists.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(getIntent());
+    }
 
     private void searchOnYoutube(final String keywords){
         toggleProgressBar();
         new Thread(){
             public void run(){
-                YoutubeConnector yc = new YoutubeConnector(MainActivity.this);
+
                 searchResults = yc.search(keywords);
                 handler.post(new Runnable(){
                     public void run(){
@@ -199,7 +216,7 @@ public class MainActivity extends BaseActivity {
             }
         }.start();
     }
-    private void updateVideosFound() {
+    public void updateVideosFound() {
         final ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults) {
 
 
@@ -235,8 +252,8 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos,
                                         long id) {
-                    Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-                    intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
+                    List<String> vidIds = new DetailListView().convertSearchResultsToIntentIds(searchResults);
+                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(MainActivity.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
                     startActivity(intent);
                 }
             });
@@ -257,7 +274,6 @@ public class MainActivity extends BaseActivity {
 
     final String videoTitle = searchResults.get(loc).getTitle().toString();
     final String videoId = searchResults.get(loc).getId().toString();
-    Log.d("PARSE PULLED TITLE:", videoTitle);
     AlertDialog.Builder alert = new AlertDialog.Builder(this);
     alert.setTitle("" + videoTitle);
     alert.setMessage("will be added to your lists");
@@ -266,6 +282,7 @@ public class MainActivity extends BaseActivity {
         public void onClick(DialogInterface dialog, int which) {
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
             query.whereEqualTo("createdBy", curUser);
+            query.orderByAscending("listTitle");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
@@ -333,87 +350,7 @@ public class MainActivity extends BaseActivity {
 
                         } else {
 
-                            // set up list titles for alert
-                            ArrayList<String> listTitles = new ArrayList<String>();
-                            for (ParseObject titles : list) {
-                                String title = (titles.get("listTitle").toString());
-                                listTitles.add(title);
-                            }
-                            final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
-
-
-                            final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
-                            success.setTitle("Add to ");
-                            success.setItems(titles, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    // pull list title
-                                    String titleTapped = titles[which].toString();
-
-                                    // convertid to Parse array type
-                                    final ArrayList<String> moreToAdd;
-                                    moreToAdd = new ArrayList<String>();
-                                    moreToAdd.add(videoId);
-
-                                    //query by list title
-                                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
-                                    query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-                                    query1.whereEqualTo("listTitle", titleTapped);
-                                    query1.getFirstInBackground(new GetCallback<ParseObject>() {
-                                        @Override
-                                        public void done(ParseObject object, ParseException e) {
-//                                            Array id = new Array();
-                                            if (object.get("myLists") == null) {
-
-                                                object.put("myLists", moreToAdd);
-                                                object.saveInBackground(new SaveCallback() {
-                                                    @Override
-                                                    public void done(ParseException e) {
-                                                        if (e != null) {
-                                                            Log.d("Parse:", e.getLocalizedMessage());
-                                                        } else {
-                                                            Log.d("Parse:", "item was supposed to be saved");
-                                                            Toast.makeText(getApplicationContext(), "Video saved", LENGTH_LONG).show();
-                                                        }
-
-                                                    }
-
-                                                });
-                                            } else {
-                                                ArrayList<String> addMore = new ArrayList<String>();
-
-                                                JSONArray myList = object.getJSONArray("myLists");
-                                                for (int i = 0; i < myList.length(); i++) {
-                                                    try {
-                                                        addMore.add(myList.get(i).toString());
-                                                    } catch (JSONException e1) {
-                                                        e1.printStackTrace();
-                                                    }
-                                                }
-                                                addMore.add(videoId);
-                                                object.put("myLists", addMore);
-                                                object.saveInBackground(new SaveCallback() {
-                                                    @Override
-                                                    public void done(ParseException e) {
-                                                        if (e != null) {
-                                                            Log.d("Parse:", e.getLocalizedMessage());
-                                                        } else {
-                                                            Log.d("Parse:", "item was supposed to be saved");
-                                                            Toast.makeText(getApplicationContext(), "Video saved", LENGTH_LONG).show();
-                                                        }
-
-                                                    }
-
-                                                });
-
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                            AlertDialog alert = success.create();
-                            alert.show();
+                            AlertDialogFragment.adjustListItems(list, MainActivity.this, videoId, getApplicationContext());
 
                         }
                     }
@@ -441,4 +378,14 @@ public class MainActivity extends BaseActivity {
             videosFound.setVisibility(View.VISIBLE);
         }
     }
+
+    private void handleIntent(Intent intent){
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Toast.makeText(getApplicationContext(),""+query, LENGTH_LONG).show();
+        }
+    }
+
+
+
 }

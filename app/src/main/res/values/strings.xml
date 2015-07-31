@@ -35,7 +35,7 @@
     <string name="searchable_hint">Wavlite Media Search</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
     <string name="title_activity_my_lists">My Searchlists</string>
-    <string name="title_activity_detail_list_view">Detailed Searchlistist View</string>
+    <string name="title_activity_detail_list_view">Detailed Searchlist View</string>
 
     <!-- Alert Dialog strings -->
     <string name="errorOK">OK</string>
@@ -46,6 +46,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_create_list">Create Searchlist</string>
     <string name="edit_list_title">Edit Title</string>
+    <string name="my_list_title">My Lists</string>
 
 </resources>
 

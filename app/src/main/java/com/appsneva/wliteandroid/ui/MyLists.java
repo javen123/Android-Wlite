@@ -1,11 +1,15 @@
 package com.appsneva.wliteandroid.ui;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +21,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Toast;
 import com.appsneva.wliteandroid.ListTuple;
 import com.appsneva.wliteandroid.R;
-import com.appsneva.wliteandroid.SearchActivity;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -30,12 +33,15 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 public class MyLists extends BaseActivity {
 
     private ListView myListView;
     public static ArrayList<ParseObject> myArrayTitles = new ArrayList<ParseObject>();
     private TextView noLists;
     private ArrayAdapter adapter;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +50,8 @@ public class MyLists extends BaseActivity {
 
         myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
-        /*
-         * This is probably the place to do a check for stored lists.
-         * I'm thinking that it would make sense to put in some sort
-         * of check that will not allow the displays of titles that
-         * are the same name maybe? What I do know is that if I clear
-         * the app data (clear app cache) then there is no problem.
-         */
+        activateToolbarWithjHomeEnabled();
+
         if (myArrayTitles.size() != 0) {
             noLists.setVisibility(View.INVISIBLE);
             loadListNames();
@@ -65,10 +66,13 @@ public class MyLists extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_my_lists, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_my_lists, menu);
+
 
         return true;
-    }  // onCreateOptionsMenu
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -85,10 +89,7 @@ public class MyLists extends BaseActivity {
         }
 
         if (id == R.id.menu_search) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
+
         }
 
         if (id == R.id.menu_create_list) {
@@ -125,7 +126,7 @@ public class MyLists extends BaseActivity {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
                     ArrayList<ListTuple> temp = new ArrayList<ListTuple>();
-
+                    String title = myArrayTitles.get(pos).get("listTitle").toString();
                     String vid = myArrayTitles.get(pos).getObjectId();
                     JSONArray myList = myArrayTitles.get(pos).getJSONArray("myLists");
                     ArrayList xList = (ArrayList) myArrayTitles.get(pos).getList("myLists");
@@ -138,6 +139,7 @@ public class MyLists extends BaseActivity {
                         Bundle args = new Bundle();
                         args.putSerializable("ArrayList", temp);
                         intent.putExtra("myListids", args);
+                        intent.putExtra("title",title);
                         startActivity(intent);
 
                     }
@@ -329,6 +331,7 @@ public class MyLists extends BaseActivity {
     public void updatedListTitles() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
         query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+        query.orderByAscending("listTitle");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {

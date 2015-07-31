@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,15 +24,12 @@ import android.widget.TextView;
 import com.appsneva.wliteandroid.DeveloperKey;
 import com.appsneva.wliteandroid.ListTuple;
 
-import com.appsneva.wliteandroid.PlayerActivity;
+
 import com.appsneva.wliteandroid.R;
-import com.appsneva.wliteandroid.SearchActivity;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
 
-import com.google.android.youtube.player.YouTubeIntents;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
-import com.google.api.services.youtube.YouTube;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -49,7 +45,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-public class DetailListView extends ActionBarActivity {
+public class DetailListView extends BaseActivity {
 
     private Bundle args;
     private List<VideoItem> searchResults;
@@ -65,12 +61,15 @@ public class DetailListView extends ActionBarActivity {
 
         mProgressBar2 = (ProgressBar)findViewById(R.id.progressBar2);
         mProgressBar2.setVisibility(View.INVISIBLE);
-
+        activateToolbarWithjHomeEnabled();
         handler = new Handler();
         Intent intent = this.getIntent();
 
-        //Grab intent
+        //Grab intents
         args = intent.getBundleExtra("myListids");
+        String title = intent.getStringExtra("title");
+
+        this.setTitle(title);
 
         //convert intent ids to youtube searchable string
         String ids = convertIntentToVideoIds(args);
@@ -106,9 +105,7 @@ public class DetailListView extends ActionBarActivity {
             navigateToLogin();
         }
         if (id == R.id.menu_search) {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
-            finish();
+
             return true;
         }
 
@@ -172,9 +169,7 @@ public class DetailListView extends ActionBarActivity {
                                         long id) {
 
                     List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
-//                    String intentIds = convertIntentToVideoIds(args);
                     Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY,vidIds,pos,10,true, true);
-//                    intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
                     startActivity(intent);
                 }
             });
@@ -207,6 +202,12 @@ public class DetailListView extends ActionBarActivity {
                             });
                         }
                     });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
                     AlertDialog alert = builder.create();
                     alert.show();
                     return true;
@@ -224,7 +225,7 @@ public class DetailListView extends ActionBarActivity {
         String mVIds = TextUtils.join(",", vIds);
         return mVIds;
     }
-    private List<String> convertSearchResultsToIntentIds(List<VideoItem> curList){
+    public List<String> convertSearchResultsToIntentIds(List<VideoItem> curList){
         List<String> temp = new ArrayList<>();
         for(VideoItem x : curList){
             temp.add(x.getId().toString());
