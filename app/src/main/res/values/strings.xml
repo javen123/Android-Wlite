@@ -50,6 +50,10 @@
     <string name="dialog_hint_list_name">Enter a Searchlist title</string>
     <string name="dialog_title_list_save">Saved!</string>
     <string name="dialog_msg_list_save">Your Searchlist has been created</string>
+    <string name="dialog_msg_list_add">Add to Searchlist?</string>
+    <string name="dialog_title_oops">Oops!</string>
+    <string name="dialog_title_congrats">Congrats!</string>
+    <string name="dialog_msg_congrats">You\'ve created your first Searchlist!</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="menu_create_list">Create Searchlist</string>
@@ -62,6 +66,8 @@
     <string name="button_edit">Edit Title</string>
     <string name="button_save">Save</string>
     <string name="button_ok">OK</string>
+    <string name="button_add">Add</string>
+    <string name="button_later">Later</string>
 
     <!-- Toast Messages -->
     <string name="toast_empty_list">Empty Searchlist</string>
