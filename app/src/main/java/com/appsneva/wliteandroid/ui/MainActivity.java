@@ -268,7 +268,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                query.whereEqualTo("createdBy", curUser);
+                query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
                 query.orderByAscending("listTitle");
                 query.findInBackground(new FindCallback<ParseObject>() {
                     @Override
@@ -281,7 +281,7 @@ public class MainActivity extends BaseActivity {
                                 AlertDialogFragment.addItemAndList(MainActivity.this,videoId,"Congrats", "you just saved your first list");
 
                             } else {
-
+                                Log.d("ITR", "Alert shold of triggered");
                                 AlertDialogFragment.adjustListItems(list, MainActivity.this, videoId, getApplicationContext());
 
                             }

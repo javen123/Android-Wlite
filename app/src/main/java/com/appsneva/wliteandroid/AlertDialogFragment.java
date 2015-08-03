@@ -119,7 +119,6 @@ public class AlertDialogFragment extends DialogFragment {
                                 }
 
                             });
-
                         }
                     }
                 });
