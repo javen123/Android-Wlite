@@ -9,13 +9,19 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.appsneva.wliteandroid.ui.MainActivity;
+import com.appsneva.wliteandroid.ui.MyLists;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -36,6 +42,9 @@ public class AlertDialogFragment extends DialogFragment {
     public String alertMessage;
 
     public static void adjustListItems(List<ParseObject> list, Activity activity, final String videoId, final Context context){
+
+
+        //get current title list and convert to new arraylist
 
         ArrayList<String> listTitles = new ArrayList<String>();
         for (ParseObject titles : list) {
@@ -77,7 +86,7 @@ public class AlertDialogFragment extends DialogFragment {
                                     if (e != null) {
                                         Log.d("Parse:", e.getLocalizedMessage());
                                     } else {
-                                        Log.d("Parse:", "item was supposed to be saved");
+                                        grabUserList(ParseUser.getCurrentUser());
                                         Toast.makeText(context, "Video saved", LENGTH_LONG).show();
                                     }
 
@@ -103,7 +112,7 @@ public class AlertDialogFragment extends DialogFragment {
                                     if (e != null) {
                                         Log.d("Parse:", e.getLocalizedMessage());
                                     } else {
-                                        Log.d("Parse:", "item was supposed to be saved");
+                                        grabUserList(ParseUser.getCurrentUser());
                                         Toast.makeText(context, "Video saved", LENGTH_LONG).show();
                                     }
 
@@ -120,6 +129,101 @@ public class AlertDialogFragment extends DialogFragment {
         alert.show();
     }
 
+    public static void addItemAndList(final Activity activity, final String vidId, final String title, final String message){
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+        query.orderByAscending("listTitle");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e != null) {
+                    Log.d("Error with list pull: ", e.getLocalizedMessage());
+                } else {
 
+                    View v = activity.getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
+                    final AlertDialog.Builder newTitle = new AlertDialog.Builder(activity);
+                    newTitle.setView(v);
+                    final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
+                    final AlertDialog.Builder builder = newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //get user added title from alert dialog
+                            String mTitle = userTitleView.getText().toString();
+
+                            //instantiate new array for videoId to load to Parse
+                            ArrayList<String> firstIdToAdd;
+                            firstIdToAdd = new ArrayList<String>();
+                            firstIdToAdd.add(vidId);
+
+                            // initiate Parse object to being adding
+                            ParseObject firstList = new ParseObject("Lists");
+                            firstList.put("listTitle", mTitle);
+                            firstList.put("myLists", firstIdToAdd);
+
+                            // create user relation
+                            ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
+                            relation.add(ParseUser.getCurrentUser());
+                            firstList.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        final AlertDialog.Builder success = new AlertDialog.Builder(activity);
+                                        success.setTitle(title);
+                                        success.setMessage(message);
+                                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                grabUserList(ParseUser.getCurrentUser());
+                                                dialog.cancel();
+                                            }
+                                        });
+                                        AlertDialog alert = success.create();
+                                        alert.show();
+                                    } else {
+                                        final AlertDialog.Builder success = new AlertDialog.Builder(activity);
+                                        success.setTitle("Opps");
+                                        success.setMessage("" + e.getLocalizedMessage());
+                                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                        AlertDialog alert = success.create();
+                                        alert.show();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    AlertDialog addTitle = newTitle.create();
+                    addTitle.show();
+                }
+            }
+        });
+    }
+
+    public static void grabUserList(ParseUser currentUser){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+
+        String curUser = currentUser.getObjectId();
+        query.whereEqualTo("createdBy", curUser);
+        query.orderByAscending("listTitle");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e != null) {
+                    Log.d("Error with list pull: ", e.getLocalizedMessage());
+                } else {
+                    Log.d("User's saved list: ", list.toString());
+                    MyLists.myArrayTitles.clear();
+                    for (ParseObject object : list) {
+                        ParseObject temp = object;
+                        MyLists.myArrayTitles.add(object);
+                    }
+                }
+            }
+        });
+    }
 
 }

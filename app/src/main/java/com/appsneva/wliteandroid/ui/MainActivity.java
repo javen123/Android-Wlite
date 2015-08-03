@@ -76,6 +76,7 @@ public class MainActivity extends BaseActivity {
         handler = new Handler();
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mProgressBar.setVisibility(View.INVISIBLE);
+
         // load toolbar
         activateToolbar();
 
@@ -89,24 +90,9 @@ public class MainActivity extends BaseActivity {
         if (currentUser == null) {
             navigateToLogin();
         } else {
+            AlertDialogFragment.grabUserList(currentUser);
             // pull users lists if available
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-            curUser = currentUser.getObjectId();
-            query.whereEqualTo("createdBy", curUser);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> list, ParseException e) {
-                    if (e != null) {
-                        Log.d("Error with list pull: ", e.getLocalizedMessage());
-                    } else {
-                        Log.d("User's saved list: ", list.toString());
-                        for (ParseObject object : list) {
-                            ParseObject temp = object;
-                            MyLists.myArrayTitles.add(object);
-                        }
-                    }
-                }
-            });
+
         }
         searchOnYoutube("new hit music");
 
@@ -291,63 +277,8 @@ public class MainActivity extends BaseActivity {
                             Log.d("Error with list pull: ", e.getLocalizedMessage());
                         } else {
                             if (list.isEmpty()) {
-                                View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
-                                final AlertDialog.Builder newTitle = new AlertDialog.Builder(MainActivity.this);
-                                newTitle.setView(v);
-                                final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
-                                final AlertDialog.Builder builder = newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //get user added title from alert dialog
-                                        String mTitle = userTitleView.getText().toString();
 
-                                        //instantiate new array for videoId to load to Parse
-                                        ArrayList<String> firstIdToAdd;
-                                        firstIdToAdd = new ArrayList<String>();
-                                        firstIdToAdd.add(videoId);
-
-                                        // initiate Parse object to being adding
-                                        ParseObject firstList = new ParseObject("Lists");
-                                        firstList.put("listTitle", mTitle);
-                                        firstList.put("myLists", firstIdToAdd);
-
-                                        // create user relation
-                                        ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
-                                        relation.add(ParseUser.getCurrentUser());
-                                        firstList.saveInBackground(new SaveCallback() {
-                                            @Override
-                                            public void done(ParseException e) {
-                                                if (e == null) {
-                                                    final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
-                                                    success.setTitle("Congrats");
-                                                    success.setMessage("You just saved your first list");
-                                                    success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-                                                    AlertDialog alert = success.create();
-                                                    alert.show();
-                                                } else {
-                                                    final AlertDialog.Builder success = new AlertDialog.Builder(MainActivity.this);
-                                                    success.setTitle("Opps");
-                                                    success.setMessage("" + e.getLocalizedMessage());
-                                                    success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-                                                    AlertDialog alert = success.create();
-                                                    alert.show();
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                                AlertDialog addTitle = newTitle.create();
-                                addTitle.show();
+                                AlertDialogFragment.addItemAndList(MainActivity.this,videoId,"Congrats", "you just saved your first list");
 
                             } else {
 
@@ -357,6 +288,14 @@ public class MainActivity extends BaseActivity {
                         }
                     }
                 });
+            }
+        });
+        alert.setNeutralButton("New list", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                AlertDialogFragment.addItemAndList(MainActivity.this, videoId,"Saved", "Video saved to new list");
+
             }
         });
         alert.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
@@ -378,5 +317,7 @@ public class MainActivity extends BaseActivity {
             videosFound.setVisibility(View.VISIBLE);
         }
     }
+
+
 
 }

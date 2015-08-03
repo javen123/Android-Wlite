@@ -129,8 +129,8 @@ public class DetailListView extends BaseActivity {
         }
         if(id == R.id.menu_create_list1){
 
-            Intent intent = new Intent();
-            setResult(Activity.RESULT_CANCELED);
+
+            MyLists.addToListFromDetail = true;
             finish();
         }
         if (id == R.id.menu_search) {
@@ -198,49 +198,49 @@ public class DetailListView extends BaseActivity {
                 public void onItemClick(AdapterView<?> av, View v, int pos,
                                         long id) {
 
-                    List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
-                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY,vidIds,pos,10,true, true);
-                    startActivity(intent);
+                List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
+                Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY,vidIds,pos,10,true, true);
+                startActivity(intent);
                 }
             });
             detailList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                    String videoTitle = searchResults.get(position).getTitle();
-                    final String listId = convertIntentToListId(args);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
-                    builder.setTitle("" + videoTitle);
+                String videoTitle = searchResults.get(position).getTitle();
+                final String listId = convertIntentToListId(args);
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
+                builder.setTitle("" + videoTitle);
 
-                    // delete selected list
-                    builder.setNeutralButton("Delete this item?", new DialogInterface.OnClickListener() {
+                // delete selected list
+                builder.setNeutralButton("Delete this item?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                    query.whereEqualTo("objectId", listId);
+                    query.getFirstInBackground(new GetCallback<ParseObject>() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void done(ParseObject object, ParseException e) {
+                        if (e != null) {
+                            Log.d("Parse:", e.getLocalizedMessage());
+                        } else {
 
-                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                            query.whereEqualTo("objectId", listId);
-                            query.getFirstInBackground(new GetCallback<ParseObject>() {
-                                @Override
-                                public void done(ParseObject object, ParseException e) {
-                                    if (e != null) {
-                                        Log.d("Parse:", e.getLocalizedMessage());
-                                    } else {
+                            updateListView(args, position, object);
 
-                                        updateListView(args, position, object);
-
-                                    }
-                                }
-                            });
+                        }
                         }
                     });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                    return true;
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+                return true;
                 }
             });
         }
@@ -255,6 +255,7 @@ public class DetailListView extends BaseActivity {
         String mVIds = TextUtils.join(",", vIds);
         return mVIds;
     }
+
     public List<String> convertSearchResultsToIntentIds(List<VideoItem> curList){
         List<String> temp = new ArrayList<>();
         for(VideoItem x : curList){
@@ -269,6 +270,7 @@ public class DetailListView extends BaseActivity {
         String listId = ids.getObjectId();
         return listId;
     }
+
     private void updateListView(Bundle info, int pos, ParseObject newList) {
 
         // remove position from ListeViewDataArray

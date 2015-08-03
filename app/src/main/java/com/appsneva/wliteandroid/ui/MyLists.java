@@ -44,7 +44,8 @@ public class MyLists extends BaseActivity {
     private TextView noLists;
     private ArrayAdapter adapter;
     int REQUEST_CODE = 123;
-    int newREQUEST_CODE = 321;
+    public static Boolean addToListFromDetail = false;
+
 
 
     @Override
@@ -54,7 +55,10 @@ public class MyLists extends BaseActivity {
 
         myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
+
         activateToolbarWithjHomeEnabled();
+
+
 
         if (myArrayTitles.size() != 0) {
             noLists.setVisibility(View.INVISIBLE);
@@ -65,6 +69,9 @@ public class MyLists extends BaseActivity {
         }
         activateToolbar();
         addRowClickListener();
+
+
+
     }  // onCreate
 
     @Override
@@ -99,6 +106,17 @@ public class MyLists extends BaseActivity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(addToListFromDetail == true){
+            addNewItemToList();
+            addToListFromDetail = false;
+        }
+        else {
+            return;
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -125,21 +143,6 @@ public class MyLists extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }  // onOptionsItemSelected
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 123){
-            if(resultCode == RESULT_OK){
-                finish();
-            }
-            else if(resultCode == RESULT_CANCELED){
-                addNewItemToList();
-            }
-        }
-
-    }
-
     private void navigateToLogin() {
         myArrayTitles.clear();
         Intent intent = new Intent(this, LogIn.class);
@@ -155,7 +158,6 @@ public class MyLists extends BaseActivity {
             String title = (object.get("listTitle").toString());
             values.add(title);
         }
-        Collections.sort(values, String.CASE_INSENSITIVE_ORDER);
 
         this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
         noLists.setVisibility(View.INVISIBLE);
@@ -168,6 +170,7 @@ public class MyLists extends BaseActivity {
             myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
+
                     ArrayList<ListTuple> temp = new ArrayList<ListTuple>();
                     String title = myArrayTitles.get(pos).get("listTitle").toString();
                     String vid = myArrayTitles.get(pos).getObjectId();
@@ -215,6 +218,7 @@ public class MyLists extends BaseActivity {
                                 else {
                                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
                                     query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                                    query.addAscendingOrder("listTitle");
                                     query.findInBackground(new FindCallback<ParseObject>() {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
