@@ -6,7 +6,7 @@
         document I expect will get rather unwieldy, but I'll organize that as it comes with
         time. For now, I'm leaving it as is.
     -->
-    <string name="app_name">WavliteV2.16</string>
+    <string name="app_name">WavliteV2.17</string>
 
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">690962291030818</string>
@@ -71,6 +71,7 @@
 
     <!-- Toast Messages -->
     <string name="toast_empty_list">Empty Searchlist</string>
+    <string name="toast_video_saved">Saved! Searchlist Updated</string>
 
 </resources>
 
