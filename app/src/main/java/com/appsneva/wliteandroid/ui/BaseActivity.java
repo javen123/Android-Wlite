@@ -19,6 +19,7 @@ public class BaseActivity extends ActionBarActivity {
             mToolbar = (Toolbar)findViewById(R.id.app_bar);
             if(mToolbar != null){
                 setSupportActionBar(mToolbar);
+                mToolbar.setLogo(R.drawable.ic_launcher_24);
             }
         }
         return mToolbar;

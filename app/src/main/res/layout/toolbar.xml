@@ -5,7 +5,5 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    wavlite:theme="@style/ActionBarThemeOverlay"
-    wavlite:navigationIcon="@drawable/ic_launcher"
-    >
+    wavlite:theme="@style/ActionBarThemeOverlay">
 </android.support.v7.widget.Toolbar>
