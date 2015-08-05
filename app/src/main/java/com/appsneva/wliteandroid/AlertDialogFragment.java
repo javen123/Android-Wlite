@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.appsneva.wliteandroid.ui.DetailListView;
 import com.appsneva.wliteandroid.ui.MainActivity;
 import com.appsneva.wliteandroid.ui.MyLists;
 import com.parse.FindCallback;
@@ -41,7 +42,7 @@ public class AlertDialogFragment extends DialogFragment {
     public String alertTitle;
     public String alertMessage;
 
-    public static void adjustListItems(List<ParseObject> list, Activity activity, final String videoId, final Context context){
+    public static void adjustListItems(List<ParseObject> list, final Activity activity, final String videoId, final Context context){
 
 
         //get current title list and convert to new arraylist
@@ -58,7 +59,7 @@ public class AlertDialogFragment extends DialogFragment {
         success.setTitle("Add to ");
         success.setItems(titles, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, final int which) {
 
                 // pull list title
                 String titleTapped = titles[which].toString();
@@ -75,7 +76,7 @@ public class AlertDialogFragment extends DialogFragment {
                 query1.whereEqualTo("listTitle", titleTapped);
                 query1.getFirstInBackground(new GetCallback<ParseObject>() {
                     @Override
-                    public void done(ParseObject object, ParseException e) {
+                    public void done(final ParseObject object, ParseException e) {
 //                                            Array id = new Array();
                         if (object.get("myLists") == null) {
 
@@ -87,21 +88,27 @@ public class AlertDialogFragment extends DialogFragment {
                                         Log.d("Parse:", e.getLocalizedMessage());
                                     } else {
                                         grabUserList(ParseUser.getCurrentUser());
+
                                         Toast.makeText(context, "Video saved", LENGTH_LONG).show();
                                     }
-
                                 }
-
                             });
                         } else {
                             ArrayList<String> addMore = new ArrayList<String>();
 
                             JSONArray myList = object.getJSONArray("myLists");
-                            for (int i = 0; i < myList.length(); i++) {
-                                try {
-                                    addMore.add(myList.get(i).toString());
-                                } catch (JSONException e1) {
-                                    e1.printStackTrace();
+
+                            // if the list is empty
+                            if(myList == null){
+                                addMore.add(videoId);
+                            }
+                            else{
+                                for (int i = 0; i < myList.length(); i++) {
+                                    try {
+                                        addMore.add(myList.get(i).toString());
+                                    } catch (JSONException e1) {
+                                        e1.printStackTrace();
+                                    }
                                 }
                             }
                             addMore.add(videoId);
@@ -117,11 +124,17 @@ public class AlertDialogFragment extends DialogFragment {
                                     }
 
                                 }
-
                             });
                         }
                     }
                 });
+            }
+        });
+        success.setNeutralButton("New list", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                listHelper(activity, videoId, "Success", "video has been saved");
             }
         });
         AlertDialog alert = success.create();
@@ -139,64 +152,7 @@ public class AlertDialogFragment extends DialogFragment {
                     Log.d("Error with list pull: ", e.getLocalizedMessage());
                 } else {
 
-                    View v = activity.getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
-                    final AlertDialog.Builder newTitle = new AlertDialog.Builder(activity);
-                    newTitle.setView(v);
-                    final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
-                    final AlertDialog.Builder builder = newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //get user added title from alert dialog
-                            String mTitle = userTitleView.getText().toString();
-
-                            //instantiate new array for videoId to load to Parse
-                            ArrayList<String> firstIdToAdd;
-                            firstIdToAdd = new ArrayList<String>();
-                            firstIdToAdd.add(vidId);
-
-                            // initiate Parse object to being adding
-                            ParseObject firstList = new ParseObject("Lists");
-                            firstList.put("listTitle", mTitle);
-                            firstList.put("myLists", firstIdToAdd);
-
-                            // create user relation
-                            ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
-                            relation.add(ParseUser.getCurrentUser());
-                            firstList.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e == null) {
-                                        final AlertDialog.Builder success = new AlertDialog.Builder(activity);
-                                        success.setTitle(title);
-                                        success.setMessage(message);
-                                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                grabUserList(ParseUser.getCurrentUser());
-                                                dialog.cancel();
-                                            }
-                                        });
-                                        AlertDialog alert = success.create();
-                                        alert.show();
-                                    } else {
-                                        final AlertDialog.Builder success = new AlertDialog.Builder(activity);
-                                        success.setTitle("Opps");
-                                        success.setMessage("" + e.getLocalizedMessage());
-                                        success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                        AlertDialog alert = success.create();
-                                        alert.show();
-                                    }
-                                }
-                            });
-                        }
-                    });
-                    AlertDialog addTitle = newTitle.create();
-                    addTitle.show();
+                    listHelper(activity, vidId, title, message);
                 }
             }
         });
@@ -225,4 +181,65 @@ public class AlertDialogFragment extends DialogFragment {
         });
     }
 
+    public static void listHelper(final Activity activity, final String id, final String title, final String message){
+        View v = activity.getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
+        final AlertDialog.Builder newTitle = new AlertDialog.Builder(activity);
+        newTitle.setView(v);
+        final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
+        final AlertDialog.Builder builder = newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //get user added title from alert dialog
+                String mTitle = userTitleView.getText().toString();
+
+                //instantiate new array for videoId to load to Parse
+                ArrayList<String> firstIdToAdd;
+                firstIdToAdd = new ArrayList<String>();
+                firstIdToAdd.add(id);
+
+                // initiate Parse object to being adding
+                ParseObject firstList = new ParseObject("Lists");
+                firstList.put("listTitle", mTitle);
+                firstList.put("myLists", firstIdToAdd);
+
+                // create user relation
+                ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
+                relation.add(ParseUser.getCurrentUser());
+                firstList.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            final AlertDialog.Builder success = new AlertDialog.Builder(activity);
+                            success.setTitle(title);
+                            success.setMessage(message);
+                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    grabUserList(ParseUser.getCurrentUser());
+
+                                    dialog.cancel();
+                                }
+                            });
+                            AlertDialog alert = success.create();
+                            alert.show();
+                        } else {
+                            final AlertDialog.Builder success = new AlertDialog.Builder(activity);
+                            success.setTitle("Opps");
+                            success.setMessage("" + e.getLocalizedMessage());
+                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            AlertDialog alert = success.create();
+                            alert.show();
+                        }
+                    }
+                });
+            }
+        });
+        AlertDialog addTitle = newTitle.create();
+        addTitle.show();
+    }
 }

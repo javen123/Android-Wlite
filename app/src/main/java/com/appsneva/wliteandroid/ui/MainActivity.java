@@ -281,24 +281,16 @@ public class MainActivity extends BaseActivity {
                                 AlertDialogFragment.addItemAndList(MainActivity.this,videoId,"Congrats", "you just saved your first list");
 
                             } else {
-                                Log.d("ITR", "Alert shold of triggered");
+                                Log.d("ITR", "Alert should of triggered");
                                 AlertDialogFragment.adjustListItems(list, MainActivity.this, videoId, getApplicationContext());
-
                             }
                         }
                     }
                 });
             }
         });
-        alert.setNeutralButton("New list", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
 
-                AlertDialogFragment.addItemAndList(MainActivity.this, videoId,"Saved", "Video saved to new list");
-
-            }
-        });
-        alert.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

@@ -21,21 +21,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.appsneva.wliteandroid.AlertDialogFragment;
 import com.appsneva.wliteandroid.DeveloperKey;
 import com.appsneva.wliteandroid.ListTuple;
 import com.appsneva.wliteandroid.R;
 import com.appsneva.wliteandroid.VideoItem;
 import com.appsneva.wliteandroid.YoutubeConnector;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -44,11 +51,13 @@ import java.util.List;
 public class DetailListView extends BaseActivity {
 
     private Bundle args;
-    private List<VideoItem> searchResults;
+    private static List<VideoItem> searchResults;
     private Handler handler;
     private ListView detailList;
-    private ArrayAdapter adapter;
+    private static ArrayAdapter adapter;
     private ProgressBar mProgressBar2;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +138,6 @@ public class DetailListView extends BaseActivity {
         }
         if(id == R.id.menu_create_list1){
 
-
             MyLists.addToListFromDetail = true;
             finish();
         }
@@ -195,12 +203,12 @@ public class DetailListView extends BaseActivity {
             detailList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
-                public void onItemClick(AdapterView<?> av, View v, int pos,
+                public void onItemClick(AdapterView<?> av, View v, final int pos,
                                         long id) {
 
-                List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
-                Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY,vidIds,pos,10,true, true);
-                startActivity(intent);
+                    List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
+                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
+                    startActivity(intent);
                 }
             });
             detailList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -238,6 +246,34 @@ public class DetailListView extends BaseActivity {
                         dialog.cancel();
                     }
                 });
+                builder.setPositiveButton("Move to", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, final int which) {
+                        final String videoId = searchResults.get(position).getId().toString();
+                        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                        query.orderByAscending("listTitle");
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> list, ParseException e) {
+                                if (e != null) {
+                                    Log.d("Error with list pull: ", e.getLocalizedMessage());
+                                } else {
+                                    if (list.isEmpty()) {
+
+                                        //do something
+
+                                    } else {
+
+                                        AlertDialogFragment.adjustListItems(list, DetailListView.this, videoId, getApplicationContext());
+                                        updateListView(args, position, list.get(position));
+                                    }
+                                }
+                            }
+                        });
+
+                    }
+                });
                 AlertDialog alert = builder.create();
                 alert.show();
                 return true;
@@ -271,16 +307,24 @@ public class DetailListView extends BaseActivity {
         return listId;
     }
 
-    private void updateListView(Bundle info, int pos, ParseObject newList) {
+    public void updateListView(Bundle info, final int pos, ParseObject newList) {
 
-        // remove position from ListeViewDataArray
         searchResults.remove(pos);
-
+        toggleProgressBar();
         //Add back new array list
-        if(searchResults.size() ==0){
+        if(searchResults.size() == 0) {
             newList.put("myLists", JSONObject.NULL);
-            newList.saveInBackground();
-            this.finish();
+            newList.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        //do something
+                    } else {
+
+                        finish();
+                    }
+                }
+            });
         }
         else {
             ArrayList<String> temp = new ArrayList<>();
@@ -288,9 +332,22 @@ public class DetailListView extends BaseActivity {
                 temp.add(x.getId().toString());
             }
             newList.put("myLists", temp);
-            newList.saveInBackground();
+            newList.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e != null){
+                        //do something
+                    }
+                    else{
+
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }
+            });
         }
-        adapter.notifyDataSetChanged();
+
+        toggleProgressBar();
     }
 
     private void toggleProgressBar(){
@@ -303,4 +360,6 @@ public class DetailListView extends BaseActivity {
             detailList.setVisibility(View.VISIBLE);
         }
     }
+
+
 }

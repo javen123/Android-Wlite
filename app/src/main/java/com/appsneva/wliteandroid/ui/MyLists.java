@@ -187,7 +187,8 @@ public class MyLists extends BaseActivity {
                         args.putSerializable("ArrayList", temp);
                         intent.putExtra("myListids", args);
                         intent.putExtra("title", title);
-                        startActivityForResult(intent, REQUEST_CODE);
+                        startActivity(intent);
+//                        startActivityForResult(intent, REQUEST_CODE);
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "This searchlist is empty", Toast.LENGTH_LONG).show();
