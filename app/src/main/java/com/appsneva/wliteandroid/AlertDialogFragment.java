@@ -2,6 +2,7 @@ package com.appsneva.wliteandroid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -39,11 +40,11 @@ import static android.widget.Toast.LENGTH_LONG;
  */
 public class AlertDialogFragment extends DialogFragment {
 
+
     public String alertTitle;
     public String alertMessage;
 
-    public static void adjustListItems(List<ParseObject> list, final Activity activity, final String videoId, final Context context){
-
+    public static void adjustListItems(final int pos,final List<ParseObject> list, final Activity activity, final String videoId, final Context context){
 
         //get current title list and convert to new arraylist
 
@@ -61,74 +62,82 @@ public class AlertDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, final int which) {
 
-                // pull list title
-                String titleTapped = titles[which].toString();
+                try{
+                    // pull list title
+                    String titleTapped = titles[which].toString();
 
-                // convertid to Parse array type
-                final ArrayList<String> moreToAdd;
-                moreToAdd = new ArrayList<String>();
-                moreToAdd.add(videoId);
+                    // convertid to Parse array type
+                    final ArrayList<String> moreToAdd;
+                    moreToAdd = new ArrayList<String>();
+                    moreToAdd.add(videoId);
 
-                //query by list title
-                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
-                query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-                query1.orderByAscending("listTitle");
-                query1.whereEqualTo("listTitle", titleTapped);
-                query1.getFirstInBackground(new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(final ParseObject object, ParseException e) {
+                    //query by list title
+                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
+                    query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                    query1.orderByAscending("listTitle");
+                    query1.whereEqualTo("listTitle", titleTapped);
+                    query1.getFirstInBackground(new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(final ParseObject object, ParseException e) {
 //                                            Array id = new Array();
-                        if (object.get("myLists") == null) {
+                            if (object.get("myLists") == null) {
 
-                            object.put("myLists", moreToAdd);
-                            object.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e != null) {
-                                        Log.d("Parse:", e.getLocalizedMessage());
-                                    } else {
-                                        grabUserList(ParseUser.getCurrentUser());
+                                object.put("myLists", moreToAdd);
+                                object.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d("Parse:", e.getLocalizedMessage());
+                                        } else {
+                                            grabUserList(ParseUser.getCurrentUser());
 
-                                        Toast.makeText(context, "Video saved", LENGTH_LONG).show();
+                                            Toast.makeText(context, "Video saved", LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                            } else {
+                                ArrayList<String> addMore = new ArrayList<String>();
+
+                                JSONArray myList = object.getJSONArray("myLists");
+
+                                // if the list is empty
+                                if (myList == null) {
+                                    addMore.add(videoId);
+                                } else {
+                                    for (int i = 0; i < myList.length(); i++) {
+                                        try {
+                                            addMore.add(myList.get(i).toString());
+                                        } catch (JSONException e1) {
+                                            e1.printStackTrace();
+                                        }
                                     }
                                 }
-                            });
-                        } else {
-                            ArrayList<String> addMore = new ArrayList<String>();
-
-                            JSONArray myList = object.getJSONArray("myLists");
-
-                            // if the list is empty
-                            if(myList == null){
                                 addMore.add(videoId);
-                            }
-                            else{
-                                for (int i = 0; i < myList.length(); i++) {
-                                    try {
-                                        addMore.add(myList.get(i).toString());
-                                    } catch (JSONException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                }
-                            }
-                            addMore.add(videoId);
-                            object.put("myLists", addMore);
-                            object.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e != null) {
-                                        Log.d("Parse:", e.getLocalizedMessage());
-                                    } else {
-                                        grabUserList(ParseUser.getCurrentUser());
-                                        Toast.makeText(context, "Video saved", LENGTH_LONG).show();
-                                    }
+                                object.put("myLists", addMore);
+                                object.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d("Parse:", e.getLocalizedMessage());
+                                        } else {
+                                            grabUserList(ParseUser.getCurrentUser());
 
-                                }
-                            });
+                                            if(activity.getClass() == DetailListView.class){
+                                                DetailListView.updateListView(activity,pos,list.get(pos));
+                                            }
+                                            Toast.makeText(context, "Video saved", LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                catch (Exception e) {
+                    throw e;
+                }
             }
+
         });
         success.setNeutralButton("New list", new DialogInterface.OnClickListener() {
             @Override
@@ -148,12 +157,12 @@ public class AlertDialogFragment extends DialogFragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e != null) {
-                    Log.d("Error with list pull: ", e.getLocalizedMessage());
-                } else {
+            if (e != null) {
+                Log.d("Error with list pull: ", e.getLocalizedMessage());
+            } else {
 
-                    listHelper(activity, vidId, title, message);
-                }
+                listHelper(activity, vidId, title, message);
+            }
             }
         });
     }
@@ -167,16 +176,16 @@ public class AlertDialogFragment extends DialogFragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if (e != null) {
-                    Log.d("Error with list pull: ", e.getLocalizedMessage());
-                } else {
-                    Log.d("User's saved list: ", list.toString());
-                    MyLists.myArrayTitles.clear();
-                    for (ParseObject object : list) {
-                        ParseObject temp = object;
-                        MyLists.myArrayTitles.add(object);
-                    }
+            if (e != null) {
+                Log.d("Error with list pull: ", e.getLocalizedMessage());
+            } else {
+                Log.d("User's saved list: ", list.toString());
+                MyLists.myArrayTitles.clear();
+                for (ParseObject object : list) {
+                    ParseObject temp = object;
+                    MyLists.myArrayTitles.add(object);
                 }
+            }
             }
         });
     }
@@ -189,54 +198,54 @@ public class AlertDialogFragment extends DialogFragment {
         final AlertDialog.Builder builder = newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //get user added title from alert dialog
-                String mTitle = userTitleView.getText().toString();
+            //get user added title from alert dialog
+            String mTitle = userTitleView.getText().toString();
 
-                //instantiate new array for videoId to load to Parse
-                ArrayList<String> firstIdToAdd;
-                firstIdToAdd = new ArrayList<String>();
-                firstIdToAdd.add(id);
+            //instantiate new array for videoId to load to Parse
+            ArrayList<String> firstIdToAdd;
+            firstIdToAdd = new ArrayList<String>();
+            firstIdToAdd.add(id);
 
-                // initiate Parse object to being adding
-                ParseObject firstList = new ParseObject("Lists");
-                firstList.put("listTitle", mTitle);
-                firstList.put("myLists", firstIdToAdd);
+            // initiate Parse object to being adding
+            ParseObject firstList = new ParseObject("Lists");
+            firstList.put("listTitle", mTitle);
+            firstList.put("myLists", firstIdToAdd);
 
-                // create user relation
-                ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
-                relation.add(ParseUser.getCurrentUser());
-                firstList.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            final AlertDialog.Builder success = new AlertDialog.Builder(activity);
-                            success.setTitle(title);
-                            success.setMessage(message);
-                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    grabUserList(ParseUser.getCurrentUser());
+            // create user relation
+            ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
+            relation.add(ParseUser.getCurrentUser());
+            firstList.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                if (e == null) {
+                    final AlertDialog.Builder success = new AlertDialog.Builder(activity);
+                    success.setTitle(title);
+                    success.setMessage(message);
+                    success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            grabUserList(ParseUser.getCurrentUser());
 
-                                    dialog.cancel();
-                                }
-                            });
-                            AlertDialog alert = success.create();
-                            alert.show();
-                        } else {
-                            final AlertDialog.Builder success = new AlertDialog.Builder(activity);
-                            success.setTitle("Opps");
-                            success.setMessage("" + e.getLocalizedMessage());
-                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            AlertDialog alert = success.create();
-                            alert.show();
+                            dialog.cancel();
                         }
-                    }
-                });
+                    });
+                    AlertDialog alert = success.create();
+                    alert.show();
+                } else {
+                    final AlertDialog.Builder success = new AlertDialog.Builder(activity);
+                    success.setTitle("Opps");
+                    success.setMessage("" + e.getLocalizedMessage());
+                    success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alert = success.create();
+                    alert.show();
+                }
+                }
+            });
             }
         });
         AlertDialog addTitle = newTitle.create();

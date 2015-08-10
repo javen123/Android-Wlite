@@ -56,6 +56,7 @@ public class YoutubeConnector {
                 item.setDescription(result.getSnippet().getDescription());
                 item.setThumbnail(result.getSnippet().getThumbnails().getDefault().getUrl());
                 item.setId(result.getId().getVideoId());
+                item.setSelected(false);
                 items.add(item);
             }
             return items;
@@ -84,6 +85,7 @@ public class YoutubeConnector {
                 item.setDescription(result.getSnippet().getDescription());
                 item.setThumbnail(result.getSnippet().getThumbnails().getDefault().getUrl());
                 item.setId(result.getId());
+                item.setSelected(false);
                 items.add(item);
             }
             return items;

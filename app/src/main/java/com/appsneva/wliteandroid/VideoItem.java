@@ -11,7 +11,15 @@ public class VideoItem {
     private String description;
     private String thumbnail;
     private String id;
+    private boolean selected;
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public String getTitle() {
         return title;

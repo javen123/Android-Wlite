@@ -9,22 +9,37 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SlidingPaneLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.Layout;
 import android.text.TextUtils;
+import android.transition.Transition;
+import android.transition.TransitionValues;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,9 +68,22 @@ public class DetailListView extends BaseActivity {
     private Bundle args;
     private static List<VideoItem> searchResults;
     private Handler handler;
-    private ListView detailList;
+    private static ListView detailList;
     private static ArrayAdapter adapter;
-    private ProgressBar mProgressBar2;
+    private static ProgressBar mProgressBar2;
+    private CheckBox check;
+
+    public Boolean getCheckActivated() {
+        return checkActivated;
+    }
+
+    public void setCheckActivated(Boolean checkActivated) {
+        this.checkActivated = checkActivated;
+    }
+
+    private Boolean checkActivated = false;
+    private ViewGroup deleteBtnView;
+    private SparseBooleanArray checkedForDelete;
 
 
 
@@ -64,9 +92,14 @@ public class DetailListView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_list_view);
 
+        //set porgress bar
         mProgressBar2 = (ProgressBar)findViewById(R.id.progressBar2);
         mProgressBar2.setVisibility(View.INVISIBLE);
+
+        //activate toobar
         activateToolbarWithjHomeEnabled();
+
+        //array handler
         handler = new Handler();
         Intent intent = this.getIntent();
 
@@ -74,12 +107,14 @@ public class DetailListView extends BaseActivity {
         args = intent.getBundleExtra("myListids");
         String title = intent.getStringExtra("title");
 
+        //update page titel
         this.setTitle(title);
 
         //convert intent ids to youtube searchable string
         String ids = convertIntentToVideoIds(args);
 
         detailList = (ListView) findViewById(R.id.detail_list_view);
+
 
         YoutubeConnector yc = new YoutubeConnector(DetailListView.this);
         toggleProgressBar();
@@ -131,22 +166,28 @@ public class DetailListView extends BaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            ParseUser.logOut();
-            navigateToLogin();
-        }
-        if(id == R.id.menu_create_list1){
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                MyLists.myArrayTitles.clear();
+                ParseUser.logOut();
+                navigateToLogin();
+                return true;
 
-            MyLists.addToListFromDetail = true;
-            finish();
-        }
-        if (id == R.id.menu_search) {
+            case R.id.menu_create_list1:
+                MyLists.addToListFromDetail = true;
+                finish();
+                return true;
 
-            return true;
-        }
+            case R.id.edit_list_bulk:
 
-        return super.onOptionsItemSelected(item);
+                addDelete();
+
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void navigateToLogin() {
@@ -166,6 +207,7 @@ public class DetailListView extends BaseActivity {
                     public void run() {
                         toggleProgressBar();
                         updateVideosFound();
+                        Log.d("ITR", ""+ args);
                     }
                 });
             }
@@ -173,24 +215,47 @@ public class DetailListView extends BaseActivity {
     }
 
     private void updateVideosFound() {
+
         adapter = new ArrayAdapter<VideoItem>(DetailListView.this, R.layout.list_video_item, searchResults) {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 if (convertView == null) {
                     convertView = getLayoutInflater().inflate(R.layout.list_video_item, parent, false);
+
+                    // row item tapped action / send to YouTube player / delete video on longPress
+                    addRowClickListener();
+
+                    ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
+                    TextView title = (TextView) convertView.findViewById(R.id.detail_title);
+
+                    VideoItem searchResult = searchResults.get(position);
+
+                    Picasso.with(getApplicationContext()).load(searchResult.getThumbnail().trim()).resize(106, 60).centerCrop().into(thumbnail);
+                    title.setText(searchResult.getTitle());
+                    Log.i("YOU", "Update video");
                 }
 
-                // row item tapped action / send to YouTube player / delete video on longPress
-                addRowClickListener();
+                // activate checkbox
+                check = (CheckBox)convertView.findViewById(R.id.checkBox1);
+                if(checkActivated){
+                    check.setVisibility(View.VISIBLE);
+                    check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if(isChecked){
+                                searchResults.get(position).setSelected(true);
+                            }
+                            if(!isChecked){
+                                searchResults.get(position).setSelected(false);
+                            }
+                        }
+                    });
 
-                ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
-                TextView title = (TextView) convertView.findViewById(R.id.detail_title);
+                }
+                else {
+                    check.setVisibility(View.INVISIBLE);
+                }
 
-                VideoItem searchResult = searchResults.get(position);
-
-                Picasso.with(getApplicationContext()).load(searchResult.getThumbnail()).into(thumbnail);
-                title.setText(searchResult.getTitle());
-                Log.i("YOU", "Update video");
                 return convertView;
             }
         };
@@ -200,85 +265,85 @@ public class DetailListView extends BaseActivity {
     private void addRowClickListener(){
 
         if(detailList != null){
-            detailList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            if(checkActivated){
+                detailList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                @Override
-                public void onItemClick(AdapterView<?> av, View v, final int pos,
-                                        long id) {
-
-                    List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
-                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
-                    startActivity(intent);
-                }
-            });
-            detailList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                String videoTitle = searchResults.get(position).getTitle();
-                final String listId = convertIntentToListId(args);
-                AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
-                builder.setTitle("" + videoTitle);
-
-                // delete selected list
-                builder.setNeutralButton("Delete this item?", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onItemClick(AdapterView<?> av, View v, final int pos,
+                                            long id) {
 
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                    query.whereEqualTo("objectId", listId);
-                    query.getFirstInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject object, ParseException e) {
-                        if (e != null) {
-                            Log.d("Parse:", e.getLocalizedMessage());
-                        } else {
-
-                            updateListView(args, position, object);
-
-                        }
-                        }
-                    });
+                        List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
+                        Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
+                        startActivity(intent);
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                detailList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.setPositiveButton("Move to", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, final int which) {
-                        final String videoId = searchResults.get(position).getId().toString();
-                        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-                        query.orderByAscending("listTitle");
-                        query.findInBackground(new FindCallback<ParseObject>() {
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                        String videoTitle = searchResults.get(position).getTitle();
+                        final String listId = convertIntentToListId(args);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
+                        builder.setTitle("" + videoTitle);
+
+                        // delete selected list
+                        builder.setNeutralButton("Delete?", new DialogInterface.OnClickListener() {
                             @Override
-                            public void done(List<ParseObject> list, ParseException e) {
-                                if (e != null) {
-                                    Log.d("Error with list pull: ", e.getLocalizedMessage());
-                                } else {
-                                    if (list.isEmpty()) {
+                            public void onClick(DialogInterface dialog, int which) {
 
-                                        //do something
+                                ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                                query.whereEqualTo("objectId", listId);
+                                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                                    @Override
+                                    public void done(ParseObject object, ParseException e) {
+                                        if (e != null) {
+                                            Log.d("Parse:", e.getLocalizedMessage());
+                                        } else {
 
-                                    } else {
+                                            updateListView(DetailListView.this, position, object);
 
-                                        AlertDialogFragment.adjustListItems(list, DetailListView.this, videoId, getApplicationContext());
-                                        updateListView(args, position, list.get(position));
+                                        }
                                     }
-                                }
+                                });
                             }
                         });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        builder.setPositiveButton("Move to", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, final int which) {
+                                final String videoId = searchResults.get(position).getId().toString();
+                                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                                query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                                query.orderByAscending("listTitle");
+                                query.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        if (e != null) {
+                                            Log.d("Error with list pull: ", e.getLocalizedMessage());
+                                        } else {
+                                            if (list.isEmpty()) {
 
+                                                //do something
+
+                                            } else {
+                                                AlertDialogFragment.adjustListItems(position,list,DetailListView.this, videoId,getApplicationContext());
+                                            }
+                                        }
+                                    }
+                                });
+
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        return true;
                     }
                 });
-                AlertDialog alert = builder.create();
-                alert.show();
-                return true;
-                }
-            });
+            }
         }
     }
 
@@ -307,7 +372,7 @@ public class DetailListView extends BaseActivity {
         return listId;
     }
 
-    public void updateListView(Bundle info, final int pos, ParseObject newList) {
+    public static void updateListView(final Activity activity, final int pos, ParseObject newList) {
 
         searchResults.remove(pos);
         toggleProgressBar();
@@ -320,8 +385,7 @@ public class DetailListView extends BaseActivity {
                     if (e != null) {
                         //do something
                     } else {
-
-                        finish();
+                        activity.finish();
                     }
                 }
             });
@@ -329,19 +393,16 @@ public class DetailListView extends BaseActivity {
         else {
             ArrayList<String> temp = new ArrayList<>();
             for(VideoItem x : searchResults){
-                temp.add(x.getId().toString());
+                temp.add(x.getId());
             }
             newList.put("myLists", temp);
             newList.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
-                    if(e != null){
+                    if (e != null) {
                         //do something
-                    }
-                    else{
-
+                    } else {
                         adapter.notifyDataSetChanged();
-
                     }
                 }
             });
@@ -350,7 +411,7 @@ public class DetailListView extends BaseActivity {
         toggleProgressBar();
     }
 
-    private void toggleProgressBar(){
+    private static void toggleProgressBar(){
         if(mProgressBar2.getVisibility() == View.INVISIBLE){
             mProgressBar2.setVisibility(View.VISIBLE);
             detailList.setVisibility(View.INVISIBLE);
@@ -361,5 +422,75 @@ public class DetailListView extends BaseActivity {
         }
     }
 
+    private void toggleCheck(CheckBox check){
 
+
+    }
+
+    private void addDelete(){
+        checkActivated = true;
+        adapter.notifyDataSetChanged();
+        deleteBtnView = (ViewGroup)findViewById(R.id.delete_mass_view);
+        deleteBtnView.setVisibility(View.VISIBLE);
+        Button cancel = (Button)findViewById(R.id.cancel_btn);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkActivated = false;
+                deleteBtnView.setVisibility(View.INVISIBLE);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Log.d("ITR", "IS checked:");
+                }
+            }
+        });
+
+        Button delete = (Button)findViewById(R.id.delete_mass_btn);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ArrayList<String> temp = new ArrayList<>();
+
+                for(VideoItem x : searchResults){
+                    if(x.isSelected() == false){
+                        temp.add(x.getId());
+                    }
+                    else {
+                        searchResults.remove(x);
+                    }
+                }
+
+                toggleProgressBar();
+
+                //query and get cur object
+                String listId = convertIntentToListId(args);
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                query.whereEqualTo("objectId", listId);
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject object, ParseException e) {
+                        if (e != null) {
+                            Log.d("Parse:", e.getLocalizedMessage());
+                        } else {
+                            object.put("myLists",temp);
+                            object.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    checkActivated = false;
+                                    updateVideosFound();
+                                    toggleProgressBar();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
 }

@@ -222,7 +222,7 @@ public class MainActivity extends BaseActivity {
 
                 VideoItem searchResult = searchResults.get(position);
 
-                Picasso.with(getApplicationContext()).load(searchResult.getThumbnail()).into(thumbnail);
+                Picasso.with(getApplicationContext()).load(searchResult.getThumbnail().trim()).resize(106,60).centerCrop().into(thumbnail);
                 title.setText(searchResult.getTitle());
                 Log.i("YOU", "Update video");
                 return convertView;
@@ -267,26 +267,26 @@ public class MainActivity extends BaseActivity {
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-                query.orderByAscending("listTitle");
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> list, ParseException e) {
-                        if (e != null) {
-                            Log.d("Error with list pull: ", e.getLocalizedMessage());
-                        } else {
-                            if (list.isEmpty()) {
+            final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+            query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+            query.orderByAscending("listTitle");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                if (e != null) {
+                    Log.d("Error with list pull: ", e.getLocalizedMessage());
+                } else {
+                    if (list.isEmpty()) {
 
-                                AlertDialogFragment.addItemAndList(MainActivity.this,videoId,"Congrats", "you just saved your first list");
+                        AlertDialogFragment.addItemAndList(MainActivity.this,videoId,"Congrats", "you just saved your first list");
 
-                            } else {
-                                Log.d("ITR", "Alert should of triggered");
-                                AlertDialogFragment.adjustListItems(list, MainActivity.this, videoId, getApplicationContext());
-                            }
-                        }
+                    } else {
+                        Log.d("ITR", "Alert should of triggered");
+                        AlertDialogFragment.adjustListItems(0,list, MainActivity.this, videoId, getApplicationContext());
                     }
-                });
+                }
+                }
+            });
             }
         });
 
@@ -309,7 +309,5 @@ public class MainActivity extends BaseActivity {
             videosFound.setVisibility(View.VISIBLE);
         }
     }
-
-
 
 }

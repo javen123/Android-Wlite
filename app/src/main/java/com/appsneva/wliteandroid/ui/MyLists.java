@@ -43,8 +43,7 @@ public class MyLists extends BaseActivity {
     public static ArrayList<ParseObject> myArrayTitles = new ArrayList<ParseObject>();
     private TextView noLists;
     private ArrayAdapter adapter;
-    int REQUEST_CODE = 123;
-    public static Boolean addToListFromDetail = false;
+    public static Boolean addToListFromDetail = false; // return bool activated from detail list page
 
 
 

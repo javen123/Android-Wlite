@@ -6,10 +6,11 @@
     <item
         android:id="@+id/action_logout"
         app:showAsAction="ifRoom"
-        android:orderInCategory="3"
+        android:orderInCategory="4"
         android:title="@string/btn_actionLogOut" />
 
-    <item android:id="@+id/menu_search3"
+    <item
+        android:id="@+id/menu_search3"
         android:icon="@android:drawable/ic_menu_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         android:title="@string/action_search"
@@ -22,6 +23,12 @@
         android:orderInCategory="2"
         android:title="@string/menu_create_list"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/edit_list_bulk"
+        android:title="Edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:orderInCategory="3"
+        app:showAsAction="ifRoom"/>
 
 
 </menu>
