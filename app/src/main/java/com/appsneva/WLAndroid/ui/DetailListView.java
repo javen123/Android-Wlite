@@ -1,4 +1,4 @@
-package com.appsneva.wliteandroid.ui;
+package com.appsneva.WLAndroid.ui;
 
 
 import android.app.Activity;
@@ -9,53 +9,40 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.SlidingPaneLayout;
-import android.support.v7.widget.RecyclerView;
+
 import android.support.v7.widget.SearchView;
-import android.text.Layout;
 import android.text.TextUtils;
-import android.transition.Transition;
-import android.transition.TransitionValues;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.appsneva.wliteandroid.AlertDialogFragment;
-import com.appsneva.wliteandroid.DeveloperKey;
-import com.appsneva.wliteandroid.ListTuple;
-import com.appsneva.wliteandroid.R;
-import com.appsneva.wliteandroid.VideoItem;
-import com.appsneva.wliteandroid.YoutubeConnector;
+import com.appsneva.WLAndroid.AlertDialogFragment;
+import com.appsneva.WLAndroid.DeveloperKey;
+import com.appsneva.WLAndroid.ListTuple;
+import com.appsneva.WLAndroid.R;
+import com.appsneva.WLAndroid.VideoItem;
+import com.appsneva.WLAndroid.YoutubeConnector;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
@@ -219,24 +206,24 @@ public class DetailListView extends BaseActivity {
         adapter = new ArrayAdapter<VideoItem>(DetailListView.this, R.layout.list_video_item, searchResults) {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = getLayoutInflater().inflate(R.layout.list_video_item, parent, false);
 
-                    // row item tapped action / send to YouTube player / delete video on longPress
-                    addRowClickListener();
+                convertView = getLayoutInflater().inflate(R.layout.list_video_item, parent, false);
 
-                    ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
-                    TextView title = (TextView) convertView.findViewById(R.id.detail_title);
+                // row item tapped action / send to YouTube player / delete video on longPress
+                addRowClickListener();
 
-                    VideoItem searchResult = searchResults.get(position);
+                ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
+                TextView title = (TextView) convertView.findViewById(R.id.detail_title);
 
-                    Picasso.with(getApplicationContext()).load(searchResult.getThumbnail().trim()).resize(106, 60).centerCrop().into(thumbnail);
-                    title.setText(searchResult.getTitle());
-                    Log.i("YOU", "Update video");
-                }
+                VideoItem searchResult = searchResults.get(position);
+
+                Picasso.with(getApplicationContext()).load(searchResult.getThumbnail().trim()).resize(106, 60).centerCrop().into(thumbnail);
+                title.setText(searchResult.getTitle());
+                Log.i("YOU", "Update video");
 
                 // activate checkbox
                 check = (CheckBox)convertView.findViewById(R.id.checkBox1);
+
                 if(checkActivated){
                     check.setVisibility(View.VISIBLE);
                     check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -255,7 +242,6 @@ public class DetailListView extends BaseActivity {
                 else {
                     check.setVisibility(View.INVISIBLE);
                 }
-
                 return convertView;
             }
         };
@@ -422,10 +408,6 @@ public class DetailListView extends BaseActivity {
         }
     }
 
-    private void toggleCheck(CheckBox check){
-
-
-    }
 
     private void addDelete(){
         checkActivated = true;
@@ -456,15 +438,19 @@ public class DetailListView extends BaseActivity {
             @Override
             public void onClick(View v) {
                 final ArrayList<String> temp = new ArrayList<>();
-
-                for(VideoItem x : searchResults){
-                    if(x.isSelected() == false){
+                final ArrayList<VideoItem> newList = new ArrayList<VideoItem>();
+                //add unchecked to temp array
+                for(VideoItem x : searchResults) {
+                    if (x.isSelected() == false) {
                         temp.add(x.getId());
-                    }
-                    else {
-                        searchResults.remove(x);
+                        newList.add(x);
                     }
                 }
+
+
+                //update current view
+
+                searchResults = newList;
 
                 toggleProgressBar();
 
@@ -478,18 +464,20 @@ public class DetailListView extends BaseActivity {
                         if (e != null) {
                             Log.d("Parse:", e.getLocalizedMessage());
                         } else {
-                            object.put("myLists",temp);
+                            object.put("myLists", temp);
                             object.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
                                     checkActivated = false;
                                     updateVideosFound();
+
                                     toggleProgressBar();
                                 }
                             });
                         }
                     }
                 });
+                deleteBtnView.setVisibility(View.INVISIBLE);
             }
         });
     }

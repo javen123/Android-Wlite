@@ -1,4 +1,4 @@
-package com.appsneva.wliteandroid;
+package com.appsneva.WLAndroid;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.appsneva.wliteandroid.ui;
+package com.appsneva.WLAndroid.ui;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -22,8 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Toast;
-import com.appsneva.wliteandroid.ListTuple;
-import com.appsneva.wliteandroid.R;
+import com.appsneva.WLAndroid.ListTuple;
+import com.appsneva.WLAndroid.R;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -34,7 +34,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import org.json.JSONArray;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MyLists extends BaseActivity {

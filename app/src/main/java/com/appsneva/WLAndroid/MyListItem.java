@@ -1,6 +1,4 @@
-package com.appsneva.wliteandroid;
-
-import java.lang.reflect.Array;
+package com.appsneva.WLAndroid;
 
 /**
  * Created by javen on 7/7/15.

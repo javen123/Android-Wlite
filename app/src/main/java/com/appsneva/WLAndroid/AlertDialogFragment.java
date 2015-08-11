@@ -1,25 +1,19 @@
-package com.appsneva.wliteandroid;
+package com.appsneva.WLAndroid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.appsneva.wliteandroid.ui.DetailListView;
-import com.appsneva.wliteandroid.ui.MainActivity;
-import com.appsneva.wliteandroid.ui.MyLists;
+import com.appsneva.WLAndroid.ui.DetailListView;
+import com.appsneva.WLAndroid.ui.MyLists;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;

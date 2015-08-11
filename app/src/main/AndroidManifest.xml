@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.appsneva.wliteandroid">
+    package="com.appsneva.WLAndroid">
 
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".WLiteApplication"
+        android:name="com.appsneva.WLAndroid.WLiteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +18,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.appsneva.WLAndroid.ui.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
 
@@ -38,24 +38,24 @@
         </activity>
 
         <activity
-            android:name=".ui.LogIn"
+            android:name="com.appsneva.WLAndroid.ui.LogIn"
             android:label="@string/title_activity_log_in"
             android:screenOrientation="portrait">
 
         </activity>
 
         <activity
-            android:name=".ui.SignUp"
+            android:name="com.appsneva.WLAndroid.ui.SignUp"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName=".ui.LogIn"
+            android:parentActivityName="com.appsneva.WLAndroid.ui.LogIn"
             android:screenOrientation="portrait">
 
         </activity>
 
         <activity
-            android:name=".ui.MyLists"
+            android:name="com.appsneva.WLAndroid.ui.MyLists"
             android:label="@string/title_activity_my_lists"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName="com.appsneva.WLAndroid.ui.MainActivity"
             >
             <meta-data
                 android:name="android.app.searchable"
@@ -63,7 +63,7 @@
                 android:value=".ui.MainActivity"/>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.appsneva.wliteandroid.ui.MainActivity" />
+                android:value="com.appsneva.WLAndroid.ui.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
 
@@ -72,12 +72,12 @@
         </activity>
 
         <activity
-            android:name=".ui.DetailListView"
+            android:name="com.appsneva.WLAndroid.ui.DetailListView"
             android:label="@string/title_activity_detail_list_view"
-            android:parentActivityName=".ui.MyLists">
+            android:parentActivityName="com.appsneva.WLAndroid.ui.MyLists">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.appsneva.wliteandroid.ui.MyLists" />
+                android:value="com.appsneva.WLAndroid.ui.MyLists" />
         </activity>
 
 

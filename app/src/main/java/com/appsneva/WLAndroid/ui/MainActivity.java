@@ -1,4 +1,4 @@
-package com.appsneva.wliteandroid.ui;
+package com.appsneva.WLAndroid.ui;
 
 
 
@@ -21,14 +21,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.appsneva.wliteandroid.AlertDialogFragment;
-import com.appsneva.wliteandroid.DeveloperKey;
+import com.appsneva.WLAndroid.AlertDialogFragment;
+import com.appsneva.WLAndroid.DeveloperKey;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
@@ -36,15 +35,13 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
-import java.util.ArrayList;
+
 import java.util.List;
-import com.appsneva.wliteandroid.R;
-import com.appsneva.wliteandroid.VideoItem;
-import com.appsneva.wliteandroid.YoutubeConnector;
+import com.appsneva.WLAndroid.R;
+import com.appsneva.WLAndroid.VideoItem;
+import com.appsneva.WLAndroid.YoutubeConnector;
 import static android.widget.Toast.LENGTH_LONG;
 
 

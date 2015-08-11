@@ -1,4 +1,4 @@
-package com.appsneva.wliteandroid;
+package com.appsneva.WLAndroid;
 
 import android.content.Context;
 import android.util.Log;

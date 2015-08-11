@@ -1,6 +1,4 @@
-package com.appsneva.wliteandroid;
-
-import android.widget.Button;
+package com.appsneva.WLAndroid;
 
 /**
  * Created by javen on 6/25/15.
