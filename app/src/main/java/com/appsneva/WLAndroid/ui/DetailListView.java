@@ -251,7 +251,7 @@ public class DetailListView extends BaseActivity {
     private void addRowClickListener(){
 
         if(detailList != null){
-            if(checkActivated){
+            if(checkActivated == false){
                 detailList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
