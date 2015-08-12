@@ -251,7 +251,7 @@ public class DetailListView extends BaseActivity {
                         final String listId = convertIntentToListId(args);
                         AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
                         builder.setTitle(getString(R.string.dlv_dialog_title));
-                        builder.setMessage("" + videoTitle);
+                        builder.setMessage("" + videoTitle + "\n ");
 
                         // delete selected list : DELETE BUTTON
                         builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {

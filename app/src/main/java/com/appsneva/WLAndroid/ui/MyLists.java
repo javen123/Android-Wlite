@@ -89,7 +89,7 @@ public class MyLists extends BaseActivity {
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
-        };  // textListener = new SearchView.OnQueryTextListener
+        };  // SearchView.OnQueryTextListener
         searchView.setOnQueryTextListener(textListener);
         return true;
     }  // onCreateOptionsMenu
@@ -190,7 +190,7 @@ public class MyLists extends BaseActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MyLists.this);
                 // Get the searchlist title from the array
                 builder.setTitle(getString(R.string.builder_title));
-                builder.setMessage("" + myArrayTitles.get(position).get("listTitle").toString());
+                builder.setMessage("" + myArrayTitles.get(position).get("listTitle").toString() + "\n ");
 
                 // delete selected list
                 builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
@@ -246,7 +246,7 @@ public class MyLists extends BaseActivity {
                         editTitle.setView(v);
                         TextView editAlertTitle = (TextView) v.findViewById(R.id.alert_edit_title_text);
                         final EditText newTitle = (EditText) v.findViewById(R.id.first_title);
-                        editAlertTitle.setText(getString(R.string.ml_dialog_rename));
+                        editAlertTitle.setText(getString(R.string.ml_dialog_rename) + "\n ");
 
                         editTitle.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                             @Override

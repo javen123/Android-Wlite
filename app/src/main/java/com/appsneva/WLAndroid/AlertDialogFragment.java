@@ -37,6 +37,10 @@ public class AlertDialogFragment extends DialogFragment {
 
     public String alertTitle;
     public String alertMessage;
+    public static String selectSearchlist = "Select Searchlist";
+    public static String newButton = "CREATE NEW SEARCHLIST";
+    public static String searchlistCreated = "Success!";
+    public static String searchlistCreatedMessage = "Your new searchlist has been created with this video added. You can now search Wavlite and add more to this searchlist or go to \"My Searchlists\" and enjoy!\n" + "";
 
     public static void adjustListItems(final int pos,final List<ParseObject> list, final Activity activity, final String videoId, final Context context){
 
@@ -51,7 +55,7 @@ public class AlertDialogFragment extends DialogFragment {
 
 
         final AlertDialog.Builder success = new AlertDialog.Builder(activity);
-        success.setTitle("Add to ");
+        success.setTitle(selectSearchlist);
         success.setItems(titles, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, final int which) {
@@ -133,11 +137,11 @@ public class AlertDialogFragment extends DialogFragment {
             }
 
         });
-        success.setNeutralButton("New list", new DialogInterface.OnClickListener() {
+        success.setNeutralButton(newButton, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                listHelper(activity, videoId, "Success", "video has been saved");
+                listHelper(activity, videoId, searchlistCreated, searchlistCreatedMessage);
             }
         });
         AlertDialog alert = success.create();
@@ -189,7 +193,7 @@ public class AlertDialogFragment extends DialogFragment {
         final AlertDialog.Builder newTitle = new AlertDialog.Builder(activity);
         newTitle.setView(v);
         final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
-        final AlertDialog.Builder builder = newTitle.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        final AlertDialog.Builder builder = newTitle.setPositiveButton("ADD SEARCHLIST", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             //get user added title from alert dialog
@@ -215,7 +219,7 @@ public class AlertDialogFragment extends DialogFragment {
                     final AlertDialog.Builder success = new AlertDialog.Builder(activity);
                     success.setTitle(title);
                     success.setMessage(message);
-                    success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    success.setPositiveButton("GOT IT!", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             grabUserList(ParseUser.getCurrentUser());
