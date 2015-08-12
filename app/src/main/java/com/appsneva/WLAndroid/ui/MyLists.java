@@ -189,7 +189,8 @@ public class MyLists extends BaseActivity {
                 // create alert to give edit title options with long press
                 AlertDialog.Builder builder = new AlertDialog.Builder(MyLists.this);
                 // Get the searchlist title from the array
-                builder.setTitle("" + myArrayTitles.get(position).get("listTitle").toString());
+                builder.setTitle(getString(R.string.builder_title));
+                builder.setMessage("" + myArrayTitles.get(position).get("listTitle").toString());
 
                 // delete selected list
                 builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
