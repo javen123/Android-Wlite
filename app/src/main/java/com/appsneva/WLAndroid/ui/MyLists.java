@@ -189,7 +189,7 @@ public class MyLists extends BaseActivity {
 //                        startActivityForResult(intent, REQUEST_CODE);
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "This searchlist is empty", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.toast_empty_list), Toast.LENGTH_LONG).show();
                     }
                 }  // onItemClick
             });  // myListView.setOnItemClickListener
@@ -204,7 +204,7 @@ public class MyLists extends BaseActivity {
                 builder.setTitle("" + myArrayTitles.get(position).get("listTitle").toString());
 
                 // delete selected list
-                builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ParseObject deletedList = myArrayTitles.get(position);
@@ -247,7 +247,7 @@ public class MyLists extends BaseActivity {
                     }  // onClick
                 });  // builder.setNeutralButton
 
-                builder.setPositiveButton("Edit Title", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getString(R.string.button_edit), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // pull reusable alert from layouts
@@ -257,15 +257,15 @@ public class MyLists extends BaseActivity {
                         editTitle.setView(v);
                         TextView editAlertTitle = (TextView) v.findViewById(R.id.alert_edit_title_text);
                         final EditText newTitle = (EditText) v.findViewById(R.id.first_title);
-                        editAlertTitle.setText("Change title to:");
-                        editTitle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        editAlertTitle.setText(getString(R.string.dialog_title_list_rename));
+                        editTitle.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
                         });  // editTitle.setNegativeButton
 
-                        editTitle.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        editTitle.setPositiveButton(getString(R.string.button_save), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // grab new title name from user input
@@ -287,9 +287,9 @@ public class MyLists extends BaseActivity {
 
                                             //return alert dialog box of success
                                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
-                                            success.setTitle("Updated");
-                                            success.setMessage("Searchlist title saved!");
-                                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            success.setTitle(getString(R.string.dialog_title_list_updated));
+                                            success.setMessage(getString((R.string.dialog_msg_list_updated)));
+                                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     adapter.notifyDataSetChanged();
@@ -307,7 +307,7 @@ public class MyLists extends BaseActivity {
                     }  // onClick
                 });  // builder.setPositiveButton
 
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -327,18 +327,18 @@ public class MyLists extends BaseActivity {
         newTitle.setView(v);
 
         TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
-        newListAdd.setText("Name Your Searchlist");
+        newListAdd.setText(getString(R.string.dialog_title_list_name));
         final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
-        newListTitleAdd.setHint("Enter a Searchlist title");
+        newListTitleAdd.setHint(getString(R.string.dialog_hint_list_name));
 
-        newTitle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        newTitle.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });  // newTitle.setNegativeButton
 
-        newTitle.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        newTitle.setPositiveButton(getString(R.string.button_save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final String mTitle = newListTitleAdd.getText().toString();
@@ -355,9 +355,9 @@ public class MyLists extends BaseActivity {
                         }
                         else {
                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
-                            success.setTitle("Saved!");
-                            success.setMessage("Your Searchlist has been created");
-                            success.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            success.setTitle(getString(R.string.dialog_title_list_save));
+                            success.setMessage(getString(R.string.dialog_msg_list_save));
+                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     updatedListTitles();
