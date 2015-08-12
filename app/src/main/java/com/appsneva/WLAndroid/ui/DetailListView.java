@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailListView extends BaseActivity {
-
     private Bundle args;
     private static List<VideoItem> searchResults;
     private Handler handler;
@@ -67,11 +66,9 @@ public class DetailListView extends BaseActivity {
     public void setCheckActivated(Boolean checkActivated) {
         this.checkActivated = checkActivated;
     }
-
     private Boolean checkActivated = false;
     private ViewGroup deleteBtnView;
     private SparseBooleanArray checkedForDelete;
-
 
 
     @Override
@@ -99,15 +96,12 @@ public class DetailListView extends BaseActivity {
 
         //convert intent ids to youtube searchable string
         String ids = convertIntentToVideoIds(args);
-
         detailList = (ListView) findViewById(R.id.detail_list_view);
-
-
         YoutubeConnector yc = new YoutubeConnector(DetailListView.this);
         toggleProgressBar();
         searchOnYoutube(ids);
+    }  // onCreate
 
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,33 +112,32 @@ public class DetailListView extends BaseActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search3).getActionView();
         ComponentName cn = new ComponentName(this, MainActivity.class);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
+
         SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 sharedPref.edit().putString("myQuery", query).commit();
                 onSearchPressed();
                 finish();
-
                 return true;
-            }
+            }  // onQueryTextSubmit
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
                 return false;
             }
-        };
+        };  // SearchView.OnQueryTextListener
         searchView.setOnQueryTextListener(textListener);
-
         return true;
-    }
+    }  // onCreateOptionsMenu
+
 
     private void onSearchPressed() {
         Intent intent = new Intent();
         setResult(Activity.RESULT_OK, intent);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -159,23 +152,18 @@ public class DetailListView extends BaseActivity {
                 ParseUser.logOut();
                 navigateToLogin();
                 return true;
-
             case R.id.menu_create_list1:
                 MyLists.addToListFromDetail = true;
                 finish();
                 return true;
-
             case R.id.edit_list_bulk:
-
                 addDelete();
-
-
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }  // onOptionsItemSelected
+
 
     private void navigateToLogin() {
         MyLists.myArrayTitles.clear();
@@ -183,7 +171,8 @@ public class DetailListView extends BaseActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
+    }  // navigateToLogin
+
 
     private void searchOnYoutube(final String keywords) {
         new Thread() {
@@ -197,85 +186,77 @@ public class DetailListView extends BaseActivity {
                         Log.d("ITR", ""+ args);
                     }
                 });
-            }
-        }.start();
-    }
+            }  // run
+        }.start();  // Thread
+    }  // searchOnYoutube
+
 
     private void updateVideosFound() {
-
         adapter = new ArrayAdapter<VideoItem>(DetailListView.this, R.layout.list_video_item, searchResults) {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
-
                 convertView = getLayoutInflater().inflate(R.layout.list_video_item, parent, false);
 
                 // row item tapped action / send to YouTube player / delete video on longPress
                 addRowClickListener();
-
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.detail_title);
-
                 VideoItem searchResult = searchResults.get(position);
-
                 Picasso.with(getApplicationContext()).load(searchResult.getThumbnail().trim()).resize(106, 60).centerCrop().into(thumbnail);
                 title.setText(searchResult.getTitle());
                 Log.i("YOU", "Update video");
 
                 // activate checkbox
                 check = (CheckBox)convertView.findViewById(R.id.checkBox1);
-
-                if(checkActivated){
+                if (checkActivated) {
                     check.setVisibility(View.VISIBLE);
                     check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            if(isChecked){
+                            if (isChecked) {
                                 searchResults.get(position).setSelected(true);
                             }
-                            if(!isChecked){
+                            if (!isChecked) {
                                 searchResults.get(position).setSelected(false);
                             }
-                        }
-                    });
-
-                }
+                        }  // onCheckedChanged
+                    });  // check.setOnCheckedChangeListener
+                }  // if (checkActivated)
                 else {
                     check.setVisibility(View.INVISIBLE);
                 }
                 return convertView;
-            }
-        };
+              }  // getView
+        };  // adapter = new ArrayAdapter
         detailList.setAdapter(adapter);
-    }
+    }  // updateVideosFound
 
-    private void addRowClickListener(){
 
-        if(detailList != null){
-            if(checkActivated == false){
+    private void addRowClickListener() {
+        if(detailList != null) {
+            if (checkActivated == false) {
                 detailList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
                     @Override
-                    public void onItemClick(AdapterView<?> av, View v, final int pos,
-                                            long id) {
-
+                    public void onItemClick(AdapterView<?> av, View v, final int pos, long id) {
                         List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
                         Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
                         startActivity(intent);
                     }
-                });
+                });  // detailList.setOnItemClickListener
+
                 detailList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                         String videoTitle = searchResults.get(position).getTitle();
                         final String listId = convertIntentToListId(args);
                         AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
-                        builder.setTitle("" + videoTitle);
+                        builder.setTitle(getString(R.string.dlv_dialog_title));
+                        builder.setMessage("" + videoTitle);
 
-                        // delete selected list
-                        builder.setNeutralButton("Delete?", new DialogInterface.OnClickListener() {
+                        // delete selected list : DELETE BUTTON
+                        builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
                                 query.whereEqualTo("objectId", listId);
                                 query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -284,21 +265,23 @@ public class DetailListView extends BaseActivity {
                                         if (e != null) {
                                             Log.d("Parse:", e.getLocalizedMessage());
                                         } else {
-
                                             updateListView(DetailListView.this, position, object);
-
                                         }
                                     }
                                 });
-                            }
-                        });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            }  // onClick
+                        });  // builder.setNeutralButton
+
+                        // CANCEL BUTTON
+                        builder.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
                         });
-                        builder.setPositiveButton("Move to", new DialogInterface.OnClickListener() {
+
+                        // MOVE TO BUTTON
+                        builder.setPositiveButton(getString(R.string.button_move), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, final int which) {
                                 final String videoId = searchResults.get(position).getId().toString();
@@ -310,28 +293,27 @@ public class DetailListView extends BaseActivity {
                                     public void done(List<ParseObject> list, ParseException e) {
                                         if (e != null) {
                                             Log.d("Error with list pull: ", e.getLocalizedMessage());
-                                        } else {
+                                        }
+                                        else {
                                             if (list.isEmpty()) {
-
-                                                //do something
-
-                                            } else {
+                                                // do something
+                                            }
+                                            else {
                                                 AlertDialogFragment.adjustListItems(position,list,DetailListView.this, videoId,getApplicationContext());
                                             }
                                         }
-                                    }
-                                });
-
-                            }
-                        });
+                                    }  // done
+                                });  // query.findInBackground
+                            }  // onClick
+                        });  // builder.setPositiveButton
                         AlertDialog alert = builder.create();
                         alert.show();
                         return true;
-                    }
-                });
-            }
-        }
-    }
+                    }  // onItemLongClick
+                });  // detailList.setOnItemLongClickListener
+            }  // if (checkActivated == false)
+        }  // if(detailList != null)
+    }  // addRowClickListener
 
 
      //: HELPERS
@@ -343,15 +325,15 @@ public class DetailListView extends BaseActivity {
         return mVIds;
     }
 
-    public List<String> convertSearchResultsToIntentIds(List<VideoItem> curList){
+    public List<String> convertSearchResultsToIntentIds(List<VideoItem> curList) {
         List<String> temp = new ArrayList<>();
         for(VideoItem x : curList){
             temp.add(x.getId().toString());
         }
         return temp;
     }
-    private String convertIntentToListId(Bundle info){
 
+    private String convertIntentToListId(Bundle info) {
         ArrayList<ListTuple> object = (ArrayList<ListTuple>) info.getSerializable("ArrayList");
         ListTuple ids = object.get(0);
         String listId = ids.getObjectId();
@@ -359,7 +341,6 @@ public class DetailListView extends BaseActivity {
     }
 
     public static void updateListView(final Activity activity, final int pos, ParseObject newList) {
-
         searchResults.remove(pos);
         toggleProgressBar();
         //Add back new array list
@@ -370,11 +351,12 @@ public class DetailListView extends BaseActivity {
                 public void done(ParseException e) {
                     if (e != null) {
                         //do something
-                    } else {
+                    }
+                    else {
                         activity.finish();
                     }
                 }
-            });
+            });  // newList.saveInBackground
         }
         else {
             ArrayList<String> temp = new ArrayList<>();
@@ -387,18 +369,18 @@ public class DetailListView extends BaseActivity {
                 public void done(ParseException e) {
                     if (e != null) {
                         //do something
-                    } else {
+                    }
+                    else {
                         adapter.notifyDataSetChanged();
                     }
                 }
-            });
+            });  // newList.saveInBackground
         }
-
         toggleProgressBar();
-    }
+    }  // updateListView
 
-    private static void toggleProgressBar(){
-        if(mProgressBar2.getVisibility() == View.INVISIBLE){
+    private static void toggleProgressBar() {
+        if (mProgressBar2.getVisibility() == View.INVISIBLE) {
             mProgressBar2.setVisibility(View.VISIBLE);
             detailList.setVisibility(View.INVISIBLE);
         }
@@ -406,14 +388,15 @@ public class DetailListView extends BaseActivity {
             mProgressBar2.setVisibility(View.INVISIBLE);
             detailList.setVisibility(View.VISIBLE);
         }
-    }
+    }  // toggleProgressBar
 
 
-    private void addDelete(){
+    private void addDelete() {
         checkActivated = true;
         adapter.notifyDataSetChanged();
         deleteBtnView = (ViewGroup)findViewById(R.id.delete_mass_view);
         deleteBtnView.setVisibility(View.VISIBLE);
+
         Button cancel = (Button)findViewById(R.id.cancel_btn);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -422,7 +405,7 @@ public class DetailListView extends BaseActivity {
                 deleteBtnView.setVisibility(View.INVISIBLE);
                 adapter.notifyDataSetChanged();
             }
-        });
+        });  // cancel.setOnClickListener
 
         check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -431,7 +414,7 @@ public class DetailListView extends BaseActivity {
                     Log.d("ITR", "IS checked:");
                 }
             }
-        });
+        });  // check.setOnCheckedChangeListener
 
         Button delete = (Button)findViewById(R.id.delete_mass_btn);
         delete.setOnClickListener(new View.OnClickListener() {
@@ -446,12 +429,8 @@ public class DetailListView extends BaseActivity {
                         newList.add(x);
                     }
                 }
-
-
                 //update current view
-
                 searchResults = newList;
-
                 toggleProgressBar();
 
                 //query and get cur object
@@ -463,22 +442,22 @@ public class DetailListView extends BaseActivity {
                     public void done(ParseObject object, ParseException e) {
                         if (e != null) {
                             Log.d("Parse:", e.getLocalizedMessage());
-                        } else {
+                        }
+                        else {
                             object.put("myLists", temp);
                             object.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
                                     checkActivated = false;
                                     updateVideosFound();
-
                                     toggleProgressBar();
                                 }
-                            });
+                            });  // object.saveInBackground
                         }
-                    }
-                });
+                    }  // done
+                });  // query.getFirstInBackground
                 deleteBtnView.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
-}
+            }  // onClick
+        });  //  delete.setOnClickListener
+    }  // addDelete
+}  // END DetailListView
