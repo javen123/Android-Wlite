@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Toast;
@@ -37,11 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyLists extends BaseActivity {
-    private ListView myListView;
+    private static ListView myListView;
     public static ArrayList<ParseObject> myArrayTitles = new ArrayList<ParseObject>();
     private TextView noLists;
     private ArrayAdapter adapter;
     public static Boolean addToListFromDetail = false;  // return bool activated from detail list page
+    private static ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,10 @@ public class MyLists extends BaseActivity {
 
         myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
-        activateToolbarWithjHomeEnabled();  // does this create the "back" arrow?
+        activateToolbarWithHomeEnabled();  // does this create the "back" arrow?
+
+        progressBar = (ProgressBar)findViewById(R.id.progressBar3);
+        progressBar.setVisibility(View.INVISIBLE);
 
         if (myArrayTitles.size() != 0) {
             noLists.setVisibility(View.INVISIBLE);
@@ -62,7 +67,6 @@ public class MyLists extends BaseActivity {
         activateToolbar();
         addRowClickListener();
     }  // onCreate
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,7 +98,6 @@ public class MyLists extends BaseActivity {
         return true;
     }  // onCreateOptionsMenu
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -106,7 +109,6 @@ public class MyLists extends BaseActivity {
             return;
         }
     }  // onResume
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -130,7 +132,6 @@ public class MyLists extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }  // onOptionsItemSelected
 
-
     private void navigateToLogin() {
         myArrayTitles.clear();
         Intent intent = new Intent(this, LogIn.class);
@@ -151,33 +152,31 @@ public class MyLists extends BaseActivity {
         myListView.setAdapter(adapter);
     }  // loadListNames
 
-
     private void addRowClickListener() {
         if (myListView != null) {
             myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-                    ArrayList<ListTuple> temp = new ArrayList<ListTuple>();
-                    String title = myArrayTitles.get(pos).get("listTitle").toString();
-                    String vid = myArrayTitles.get(pos).getObjectId();
-                    JSONArray myList = myArrayTitles.get(pos).getJSONArray("myLists");
-                    ArrayList xList = (ArrayList) myArrayTitles.get(pos).getList("myLists");
-                    ListTuple i;
-                    i = new ListTuple(vid, xList);
-                    temp.add(i);
+                ArrayList<ListTuple> temp = new ArrayList<ListTuple>();
+                String title = myArrayTitles.get(pos).get("listTitle").toString();
+                String vid = myArrayTitles.get(pos).getObjectId();
+                JSONArray myList = myArrayTitles.get(pos).getJSONArray("myLists");
+                ArrayList xList = (ArrayList) myArrayTitles.get(pos).getList("myLists");
+                ListTuple i;
+                i = new ListTuple(vid, xList);
+                temp.add(i);
 
-                    if (xList != null) {
-                        Intent intent = new Intent(MyLists.this, DetailListView.class);
-                        Bundle args = new Bundle();
-                        args.putSerializable("ArrayList", temp);
-                        intent.putExtra("myListids", args);
-                        intent.putExtra("title", title);
-                        startActivity(intent);
-                        // startActivityForResult(intent, REQUEST_CODE);
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.toast_empty_list), Toast.LENGTH_LONG).show();
-                    }
+                if (xList != null) {
+                    Intent intent = new Intent(MyLists.this, DetailListView.class);
+                    Bundle args = new Bundle();
+                    args.putSerializable("ArrayList", temp);
+                    intent.putExtra("myListids", args);
+                    intent.putExtra("title", title);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_empty_list), Toast.LENGTH_LONG).show();
+                }
                 }  // onItemClick
             });  // myListView.setOnItemClickListener
         }  // if-myListView
@@ -202,8 +201,7 @@ public class MyLists extends BaseActivity {
                             public void done(ParseException e) {
                                 if (e != null) {
                                     Log.d("Parse Error: ", e.getLocalizedMessage());
-                                }
-                                else {
+                                } else {
                                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
                                     query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
                                     query.addAscendingOrder("listTitle");
@@ -212,8 +210,7 @@ public class MyLists extends BaseActivity {
                                         public void done(List<ParseObject> list, ParseException e) {
                                             if (e != null) {
                                                 Log.d("Error with list pull: ", e.getLocalizedMessage());
-                                            }
-                                            else {
+                                            } else {
                                                 // clear current list and update with new material
                                                 myArrayTitles.clear();
                                                 for (ParseObject object : list) {
@@ -222,8 +219,7 @@ public class MyLists extends BaseActivity {
                                                 if (myArrayTitles.size() == 0) {
                                                     noLists.setVisibility(View.VISIBLE);
                                                     myListView.setVisibility(View.INVISIBLE);
-                                                }
-                                                else {
+                                                } else {
                                                     loadListNames();
                                                 }
                                             }  // main if-else
@@ -269,8 +265,7 @@ public class MyLists extends BaseActivity {
                                     public void done(ParseException e) {
                                         if (e != null) {
                                             Log.d("Parse: ", e.getLocalizedMessage());
-                                        }
-                                        else {
+                                        } else {
                                             // immediately grab new lists for new Listview
                                             myArrayTitles.clear();
                                             updatedListTitles();
@@ -300,8 +295,8 @@ public class MyLists extends BaseActivity {
                 builder.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
+                        dialog.cancel();
+                    }
                 });
                 AlertDialog alert = builder.create();
                 alert.show();
@@ -309,7 +304,6 @@ public class MyLists extends BaseActivity {
             }
         });  // myListView.setOnItemLongClickListener
     }  // addRowClickListener
-
 
     private void addNewItemToList() {
         View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
@@ -343,8 +337,7 @@ public class MyLists extends BaseActivity {
                     public void done(ParseException e) {
                         if (e != null) {
                             // empty if body?
-                        }
-                        else {
+                        } else {
                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
                             success.setTitle(getString(R.string.ml_dialog_save));
                             success.setMessage(getString(R.string.ml_dialog_msg_save));
@@ -365,7 +358,6 @@ public class MyLists extends BaseActivity {
         alert.show();
     }  // addNewItemToList
 
-
     public void updatedListTitles() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
         query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
@@ -375,8 +367,7 @@ public class MyLists extends BaseActivity {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e != null) {
                     Log.d("Error with list pull: ", e.getLocalizedMessage());
-                }
-                else {
+                } else {
                     // clear current list and update with new material
                     myArrayTitles.clear();
                     for (ParseObject object : list) {
@@ -386,12 +377,22 @@ public class MyLists extends BaseActivity {
                     if (myArrayTitles.isEmpty()) {
                         noLists.setVisibility(View.VISIBLE);
                         myListView.setVisibility(View.INVISIBLE);
-                    }
-                    else {
+                    } else {
                         loadListNames();
                     }
                 }
             }  // done
         });  // query.findInBackground
     }  // updatedListTitles
+
+    private static void toggleProgressBar() {
+        if (progressBar.getVisibility() == View.INVISIBLE) {
+            progressBar.setVisibility(View.VISIBLE);
+            myListView.setVisibility(View.INVISIBLE);
+        }
+        else {
+            progressBar.setVisibility(View.INVISIBLE);
+            myListView.setVisibility(View.VISIBLE);
+        }
+    }  // toggleProgressBar
 }  // MyLists (END CLASS)

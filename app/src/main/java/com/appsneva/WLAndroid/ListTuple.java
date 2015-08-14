@@ -29,8 +29,6 @@ public class ListTuple implements Serializable {
         this.objectId = objectId;
     }
 
-
-
     public ListTuple(String objectId, ArrayList<String> videoIds){
         this.objectId = objectId;
         this.videoIds = videoIds;

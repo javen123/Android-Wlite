@@ -34,9 +34,6 @@ import static android.widget.Toast.LENGTH_LONG;
  */
 public class AlertDialogFragment extends DialogFragment {
 
-
-    public String alertTitle;
-    public String alertMessage;
     public static String selectSearchlist = "Select Searchlist";
     public static String newButton = "CREATE NEW SEARCHLIST";
     public static String searchlistCreated = "Success!";
@@ -60,80 +57,77 @@ public class AlertDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, final int which) {
 
-                try{
-                    // pull list title
-                    String titleTapped = titles[which].toString();
+            try{
+                // pull list title
+                String titleTapped = titles[which].toString();
 
-                    // convertid to Parse array type
-                    final ArrayList<String> moreToAdd;
-                    moreToAdd = new ArrayList<String>();
-                    moreToAdd.add(videoId);
+                // convertid to Parse array type
+                final ArrayList<String> moreToAdd;
+                moreToAdd = new ArrayList<String>();
+                moreToAdd.add(videoId);
 
-                    //query by list title
-                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
-                    query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-                    query1.orderByAscending("listTitle");
-                    query1.whereEqualTo("listTitle", titleTapped);
-                    query1.getFirstInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(final ParseObject object, ParseException e) {
+                //query by list title
+                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
+                query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                query1.orderByAscending("listTitle");
+                query1.whereEqualTo("listTitle", titleTapped);
+                query1.getFirstInBackground(new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(final ParseObject object, ParseException e) {
 //                                            Array id = new Array();
-                            if (object.get("myLists") == null) {
+                    if (object.get("myLists") == null) {
 
-                                object.put("myLists", moreToAdd);
-                                object.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e != null) {
-                                            Log.d("Parse:", e.getLocalizedMessage());
-                                        } else {
-                                            grabUserList(ParseUser.getCurrentUser());
-
-                                            Toast.makeText(context, "Video saved", LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
-                            } else {
-                                ArrayList<String> addMore = new ArrayList<String>();
-
-                                JSONArray myList = object.getJSONArray("myLists");
-
-                                // if the list is empty
-                                if (myList == null) {
-                                    addMore.add(videoId);
+                        object.put("myLists", moreToAdd);
+                        object.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e != null) {
+                                    Log.d("Parse:", e.getLocalizedMessage());
                                 } else {
-                                    for (int i = 0; i < myList.length(); i++) {
-                                        try {
-                                            addMore.add(myList.get(i).toString());
-                                        } catch (JSONException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                    }
-                                }
-                                addMore.add(videoId);
-                                object.put("myLists", addMore);
-                                object.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e != null) {
-                                            Log.d("Parse:", e.getLocalizedMessage());
-                                        } else {
-                                            grabUserList(ParseUser.getCurrentUser());
+                                    grabUserList(ParseUser.getCurrentUser());
 
-                                            if(activity.getClass() == DetailListView.class){
-                                                DetailListView.updateListView(activity,pos,list.get(pos));
-                                            }
-                                            Toast.makeText(context, "Video saved", LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
+                                    Toast.makeText(context, "Video saved", LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    } else {
+                        ArrayList<String> addMore = new ArrayList<String>();
+
+                        JSONArray myList = object.getJSONArray("myLists");
+
+                        // if the list is empty
+                        if (myList == null) {
+                            addMore.add(videoId);
+                        } else {
+                            for (int i = 0; i < myList.length(); i++) {
+                                try {
+                                    addMore.add(myList.get(i).toString());
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
                             }
                         }
-                    });
-                }
-                catch (Exception e) {
-                    throw e;
-                }
+                        addMore.add(videoId);
+                        object.put("myLists", addMore);
+                        object.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                            if (e != null) {
+                                Log.d("Parse:", e.getLocalizedMessage());
+                            } else {
+                                grabUserList(ParseUser.getCurrentUser());
+
+                                Toast.makeText(context, "Video saved", LENGTH_LONG).show();
+                            }
+                            }
+                        });
+                    }
+                    }
+                });
+            }
+            catch (Exception e) {
+                throw e;
+            }
             }
 
         });

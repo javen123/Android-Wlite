@@ -10,15 +10,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -35,6 +42,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
+
+import java.net.URL;
 import java.util.List;
 import com.appsneva.WLAndroid.R;
 import com.appsneva.WLAndroid.VideoItem;
@@ -101,7 +110,6 @@ public class MainActivity extends BaseActivity {
         }
     }  // onResume
 
-
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
         if (errorReason.isUserRecoverableError()) {
@@ -113,7 +121,6 @@ public class MainActivity extends BaseActivity {
         }
     }  // checkYouTubeApi
 
-
     private void navigateToLogin() {
         MyLists.myArrayTitles.clear();
         Intent intent = new Intent(this, LogIn.class);
@@ -121,7 +128,6 @@ public class MainActivity extends BaseActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }  // navigateToLogin
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -151,7 +157,6 @@ public class MainActivity extends BaseActivity {
         return true;
     }  // onCreateOptionsMenu
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -174,7 +179,6 @@ public class MainActivity extends BaseActivity {
         }
     }  // onOptionsItemSelected
 
-
     private void searchOnYoutube(final String keywords) {
         toggleProgressBar();
         new Thread() {
@@ -189,7 +193,6 @@ public class MainActivity extends BaseActivity {
             }  // run
         }.start();  // Thread
     }  // searchOnYoutube
-
 
     public void updateVideosFound() {
         final ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults) {
@@ -213,15 +216,20 @@ public class MainActivity extends BaseActivity {
         videosFound.setAdapter(adapter);
     }  // updateVideosFound
 
-
     private void addRowClickListener() {
         if (videosFound != null) {
             videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-                    List<String> vidIds = new DetailListView().convertSearchResultsToIntentIds(searchResults);
-                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(MainActivity.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
-                    startActivity(intent);
+
+                    List<String> curId = new DetailListView().convertSearchResultsToIntentIds(searchResults);
+                    loadYTWebView(curId.get(pos));
+
+
+//                    webView.animate().translationY(200);
+//                    List<String> vidIds = new DetailListView().convertSearchResultsToIntentIds(searchResults);
+//                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(MainActivity.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
+//                    startActivity(intent);
                 }
             });
             videosFound.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -234,6 +242,32 @@ public class MainActivity extends BaseActivity {
         }  // if (videosFound != null)
     }  // addRowClickListener
 
+    private void loadYTWebView(String id) {
+
+        //setup webview
+        WebView webView = (WebView)findViewById(R.id.webView);
+        webView.setVisibility(View.VISIBLE);
+        videosFound.bringChildToFront(webView);
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float px = 200 *(metrics.densityDpi/160f);
+        videosFound.animate().translationY(px);
+
+        //set up backbtn
+        ImageButton close = (ImageButton)findViewById(R.id.close_button);
+        close.bringToFront();
+
+        String src = "https:www.youtube.com/embed/"+id;
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webView.loadUrl(src);
+    }
 
     // add dialog and button control for add item to list
     private void addItemToParseArray(int loc) {

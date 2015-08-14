@@ -12,6 +12,14 @@
 
     <include android:id= "@+id/app_bar" layout="@layout/toolbar"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,6 +41,32 @@
         android:id="@+id/no_list_text"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:id="@+id/delete_myLists_view"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/primary_light"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/mylist_massCancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/mylist_massDelete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete" />
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -51,25 +51,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailListView extends BaseActivity {
-    private Bundle args;
+    private Bundle args;//received bundle from MyLists page
+
     private static List<VideoItem> searchResults;
     private Handler handler;
     private static ListView detailList;
     private static ArrayAdapter adapter;
+
     private static ProgressBar mProgressBar2;
+
     private CheckBox check;
 
     public Boolean getCheckActivated() {
         return checkActivated;
     }
 
-    public void setCheckActivated(Boolean checkActivated) {
-        this.checkActivated = checkActivated;
-    }
+//    public void setCheckActivated(Boolean checkActivated) { TODO: test to make sure this is not necessary
+//        this.checkActivated = checkActivated;
+//    }
     private Boolean checkActivated = false;
     private ViewGroup deleteBtnView;
-    private SparseBooleanArray checkedForDelete;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class DetailListView extends BaseActivity {
         mProgressBar2.setVisibility(View.INVISIBLE);
 
         //activate toobar
-        activateToolbarWithjHomeEnabled();
+        activateToolbarWithHomeEnabled();
 
         //array handler
         handler = new Handler();
@@ -192,6 +193,7 @@ public class DetailListView extends BaseActivity {
 
 
     private void updateVideosFound() {
+
         adapter = new ArrayAdapter<VideoItem>(DetailListView.this, R.layout.list_video_item, searchResults) {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
@@ -199,6 +201,7 @@ public class DetailListView extends BaseActivity {
 
                 // row item tapped action / send to YouTube player / delete video on longPress
                 addRowClickListener();
+
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.detail_title);
                 VideoItem searchResult = searchResults.get(position);
@@ -299,7 +302,33 @@ public class DetailListView extends BaseActivity {
                                                 // do something
                                             }
                                             else {
-                                                AlertDialogFragment.adjustListItems(position,list,DetailListView.this, videoId,getApplicationContext());
+                                                try{
+                                                    AlertDialogFragment.adjustListItems(position,list,DetailListView.this, videoId,getApplicationContext());
+                                                }
+                                                catch (Exception e1){
+                                                    throw e1;
+                                                }
+                                                finally{
+                                                    searchResults.remove(position);
+
+                                                    final ArrayList<String> temp = new ArrayList<>();
+                                                    for(VideoItem x : searchResults){
+                                                        temp.add(x.getId());
+                                                    }
+                                                    ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>("Lists");
+                                                    query2.getInBackground(listId, new GetCallback<ParseObject>() {
+                                                        @Override
+                                                        public void done(ParseObject object, ParseException e) {
+                                                            object.put("myLists", temp);
+                                                            try {
+                                                                object.save();
+                                                            } catch (ParseException e1) {
+                                                                e1.printStackTrace();
+                                                            }
+                                                        }
+                                                    });
+                                                    adapter.notifyDataSetChanged();
+                                                }
                                             }
                                         }
                                     }  // done

@@ -1,6 +1,6 @@
 package com.appsneva.WLAndroid.ui;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import com.appsneva.WLAndroid.R;
 
@@ -9,10 +9,9 @@ import com.appsneva.WLAndroid.R;
 /**
  * Created by javen on 6/26/15.
  */
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    public static final String YOUTUBE_QUERY = "YT QUERY";
 
     protected Toolbar activateToolbar() {
         if(mToolbar == null){
@@ -26,10 +25,13 @@ public class BaseActivity extends ActionBarActivity {
         return mToolbar;
     }
 
-    protected Toolbar activateToolbarWithjHomeEnabled(){
+    protected Toolbar activateToolbarWithHomeEnabled(){
         activateToolbar();
+
         if(mToolbar != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);//returns back arrow for home in appbar
 
         }
         return mToolbar;
