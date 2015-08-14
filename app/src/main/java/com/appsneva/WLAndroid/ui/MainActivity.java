@@ -222,14 +222,13 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
 
-                    List<String> curId = new DetailListView().convertSearchResultsToIntentIds(searchResults);
-                    loadYTWebView(curId.get(pos));
-
-
+//                    List<String> curId = new DetailListView().convertSearchResultsToIntentIds(searchResults);
+//                    loadYTWebView(curId.get(pos));
 //                    webView.animate().translationY(200);
-//                    List<String> vidIds = new DetailListView().convertSearchResultsToIntentIds(searchResults);
-//                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(MainActivity.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
-//                    startActivity(intent);
+
+                    List<String> vidIds = new DetailListView().convertSearchResultsToIntentIds(searchResults);
+                    Intent intent = YouTubeStandalonePlayer.createVideosIntent(MainActivity.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
+                    startActivity(intent);
                 }
             });
             videosFound.setOnItemLongClickListener(new OnItemLongClickListener() {
