@@ -16,7 +16,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseBooleanArray;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -344,7 +344,6 @@ public class DetailListView extends BaseActivity {
         }  // if(detailList != null)
     }  // addRowClickListener
 
-
      //: HELPERS
     private String convertIntentToVideoIds(Bundle info) {
         ArrayList<ListTuple> object = (ArrayList<ListTuple>) info.getSerializable("ArrayList");
@@ -418,7 +417,6 @@ public class DetailListView extends BaseActivity {
             detailList.setVisibility(View.VISIBLE);
         }
     }  // toggleProgressBar
-
 
     private void addDelete() {
         checkActivated = true;

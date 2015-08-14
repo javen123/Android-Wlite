@@ -15,8 +15,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -25,6 +28,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Toast;
 import com.appsneva.WLAndroid.ListTuple;
 import com.appsneva.WLAndroid.R;
+import com.appsneva.WLAndroid.VideoItem;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -44,6 +48,12 @@ public class MyLists extends BaseActivity {
     private ArrayAdapter adapter;
     public static Boolean addToListFromDetail = false;  // return bool activated from detail list page
     private static ProgressBar progressBar;
+    private ArrayList<VideoItem> xyz;
+
+
+    private CheckBox checkBox;
+    private Boolean checkActivated = false;
+    private ViewGroup deleteBtnView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,8 +139,32 @@ public class MyLists extends BaseActivity {
         if (id == R.id.menu_create_list) {
             addNewItemToList();
         }
+        if(id == R.id.edit_my_list){
+            massDelete();
+        }
         return super.onOptionsItemSelected(item);
     }  // onOptionsItemSelected
+
+    private void massDelete() {
+
+        checkActivated = true;
+        adapter.notifyDataSetChanged();
+        deleteBtnView = (ViewGroup)findViewById(R.id.delete_myLists_view);
+        deleteBtnView.setVisibility(View.VISIBLE);
+
+        Button cancel = (Button)findViewById(R.id.mylist_massCancel_btn);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkActivated = false;
+                deleteBtnView.setVisibility(View.INVISIBLE);
+                adapter.notifyDataSetChanged();
+            }
+        });  // cancel.setOnClickListener
+
+
+
+    }
 
     private void navigateToLogin() {
         myArrayTitles.clear();
@@ -146,7 +180,9 @@ public class MyLists extends BaseActivity {
             String title = (object.get("listTitle").toString());
             values.add(title);
         }
-        this.adapter = new ArrayAdapter<String>(MyLists.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        adapter = new ArrayAdapter(MyLists.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+
         noLists.setVisibility(View.INVISIBLE);
         myListView.setVisibility(View.VISIBLE);
         myListView.setAdapter(adapter);
