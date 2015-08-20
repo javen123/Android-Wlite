@@ -19,12 +19,14 @@
 
     <WebView
         android:id="@+id/webView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:layout_below="@id/app_bar"
         android:background="@android:color/black"
-        android:visibility="invisible"
-        />
+
+        android:layout_margin="16dp"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp" />
 
 
     <ImageButton
@@ -49,9 +51,11 @@
         android:id="@+id/videos_found"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/app_bar"
+        android:layout_below="@+id/webView"
         android:dividerHeight="5dp"
         android:focusable="false"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:focusableInTouchMode="false" />
 
 </RelativeLayout>

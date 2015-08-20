@@ -17,22 +17,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.appsneva.WLAndroid.AlertDialogFragment;
 import com.appsneva.WLAndroid.DeveloperKey;
+import com.appsneva.WLAndroid.R;
+import com.appsneva.WLAndroid.VideoItem;
+import com.appsneva.WLAndroid.YoutubeConnector;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
@@ -43,11 +45,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.List;
-import com.appsneva.WLAndroid.R;
-import com.appsneva.WLAndroid.VideoItem;
-import com.appsneva.WLAndroid.YoutubeConnector;
+
 import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends BaseActivity {
@@ -56,7 +55,7 @@ public class MainActivity extends BaseActivity {
      */
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
-    protected String curUser;
+    private WebView webview;
     private ListView videosFound;
     private Handler handler;
     private List<VideoItem> searchResults;
@@ -69,6 +68,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        //set up webview
+        webview = (WebView)findViewById(R.id.webView);
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.loadUrl("http://www.wavlite.com/api/videoPlayer.html");
 
         yc = new YoutubeConnector(MainActivity.this);
         videosFound = (ListView) findViewById(R.id.videos_found);
@@ -93,7 +98,6 @@ public class MainActivity extends BaseActivity {
         }
         searchOnYoutube(getString(R.string.ma_searchOnYoutube));
     }  // onCreate
-
 
     @Override
     protected void onResume() {
