@@ -55,7 +55,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/signUpBtn"
+        android:text="@string/signUpBtnText"
         android:id="@+id/btnSignUp"
         android:layout_below="@+id/editTextPW"
         android:layout_alignParentLeft="true"
@@ -64,6 +64,11 @@
         android:paddingTop="@dimen/form_btn_t_padding"
         android:paddingRight="@dimen/form_btn_r_padding"
         android:paddingBottom="@dimen/form_btn_b_padding"
-        android:layout_marginTop="@dimen/signup_btn_t_margin" />
+        android:layout_marginTop="@dimen/signup_btn_t_margin"
+        android:background="@color/login_btn_background"
+        android:textColor="@color/login_btn_textColor"
+        android:textSize="@dimen/login_btn_textSize"
+        android:textStyle="bold"
+        android:focusable="true" />
 
 </RelativeLayout>
