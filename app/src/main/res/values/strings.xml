@@ -20,7 +20,7 @@
     <string name="title_activity_log_in">Log In</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="userName">Username</string>
-    <string name="signUpBtn">Sign Up</string>
+    <string name="signUpBtnText">Sign Up!</string>
     <string name="password">Password</string>
     <string name="userEmail">Email address</string>
     <string name="signUpErrorMsg">Please fill out all fields</string>
