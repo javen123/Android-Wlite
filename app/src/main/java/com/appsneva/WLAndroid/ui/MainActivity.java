@@ -1,15 +1,12 @@
 package com.appsneva.WLAndroid.ui;
 
 import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -50,9 +47,7 @@ import java.util.List;
 import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends BaseActivity {
-    /**
-     * The request code when calling startActivityForResult to recover from an API service error.
-     */
+
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     private WebView webview;
@@ -61,8 +56,8 @@ public class MainActivity extends BaseActivity {
     private List<VideoItem> searchResults;
     private ProgressBar mProgressBar;
     protected YoutubeConnector yc;
-    private SearchView searchView;
     public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String YT_QUERY = "YTSEARCH";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,16 +97,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String newQuery = sharedPref.getString("myQuery", "");
-        Log.d("ITR", "Shared pref is " + newQuery);
 
-        if (newQuery.isEmpty()) {
-            return;
-        }
-        else {
-            searchOnYoutube(newQuery);
-        }
+        checkYTSearchInput();
+
     }  // onResume
 
     private void checkYouTubeApi() {
@@ -139,25 +127,6 @@ public class MainActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchResults.clear();
-                searchOnYoutube(query);
-                searchView.clearFocus();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchOnYoutube(newText);
-                return false;
-            }
-        };  // SearchView.OnQueryTextListener textListener
-        searchView.setOnQueryTextListener(textListener);
         return true;
     }  // onCreateOptionsMenu
 
@@ -172,9 +141,11 @@ public class MainActivity extends BaseActivity {
                 ParseUser.logOut();
                 navigateToLogin();
                 return true;
-            case R.id.menu_search:
+            case R.id.main_menu_search:
+                Intent searchIntent = new Intent(MainActivity.this, SearchViewActivity.class);
+                startActivity(searchIntent);
                 return true;
-            case R.id.menu_my_lists:
+            case R.id.main_menu_my_lists:
                 Intent intent = new Intent(this, MyLists.class);
                 startActivity(intent);
                 return true;
@@ -290,17 +261,15 @@ public class MainActivity extends BaseActivity {
                     public void done(List<ParseObject> list, ParseException e) {
                         if (e != null) {
                             Log.d("Error with list pull: ", e.getLocalizedMessage());
-                        }
-                        else {
+                        } else {
                             if (list.isEmpty()) {
                                 // If no searchlists saved for user
                                 AlertDialogFragment.addItemAndList(
                                         MainActivity.this, videoId, getString(R.string.ma_dialog_congrats),
                                         getString(R.string.ma_dialog_msg_congrats));
-                            }
-                            else {
+                            } else {
                                 Log.d("ITR", "Alert should of triggered");
-                                AlertDialogFragment.adjustListItems(0,list, MainActivity.this, videoId, getApplicationContext());
+                                AlertDialogFragment.adjustListItems(0, list, MainActivity.this, videoId, getApplicationContext());
                             }
                         }
                     }  // done
@@ -318,6 +287,19 @@ public class MainActivity extends BaseActivity {
         alertDialog.show();
     }  // addItemToParseArray
 
+    private void checkYTSearchInput(){
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String newQuery = sharedPreferences.getString(YT_QUERY, "");
+
+        if (YT_QUERY == null) {
+            searchOnYoutube("new+top+hits");
+        }
+        else {
+            searchOnYoutube(newQuery);
+            this.getSharedPreferences(YT_QUERY,0).edit().clear().commit();
+        }
+    }
 
     private void toggleProgressBar() {
         if (mProgressBar.getVisibility() == View.INVISIBLE) {

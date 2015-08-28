@@ -1,15 +1,10 @@
 package com.appsneva.WLAndroid.ui;
 
 import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v7.widget.SearchView;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,15 +12,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Toast;
+
+import com.appsneva.WLAndroid.CreateLists;
 import com.appsneva.WLAndroid.ListTuple;
 import com.appsneva.WLAndroid.R;
 import com.appsneva.WLAndroid.VideoItem;
@@ -37,7 +35,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
 import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,10 +55,16 @@ public class MyLists extends BaseActivity {
     private Boolean checkActivated = false;
     private ViewGroup deleteBtnView;
 
+    // new array setup
+
+    List<MyListItems> items;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_lists);
+
+
 
         myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
@@ -69,6 +75,12 @@ public class MyLists extends BaseActivity {
 
         if (myArrayTitles.size() != 0) {
             noLists.setVisibility(View.INVISIBLE);
+
+            //NEW ARRAY set up
+//            convertParseArrayToClassItems(myArrayTitles);
+//            newLoadListItems();
+
+            //old array setup
             loadListNames();
         }
         else {
@@ -84,27 +96,7 @@ public class MyLists extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_my_lists, menu);
 
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search1).getActionView();
-        ComponentName cn = new ComponentName(this, MainActivity.class);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
-
-        SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                sharedPref.edit().putString("myQuery", query).commit();
-                Log.d("ITR", "Mylist query is "+ query);
-                finish();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        };  // SearchView.OnQueryTextListener
-        searchView.setOnQueryTextListener(textListener);
+//
         return true;
     }  // onCreateOptionsMenu
 
@@ -133,13 +125,18 @@ public class MyLists extends BaseActivity {
             ParseUser.logOut();
             navigateToLogin();
         }
-        if (id == R.id.menu_search) {
+        if (id == R.id.ml_menu_search) {
 
+            ActivityCompat.startActivityForResult(this, new Intent(this,SearchViewActivity.class),0,null);
+            finish();
+            return true;
         }
-        if (id == R.id.menu_create_list) {
-            addNewItemToList();
+        if (id == R.id.ml_menu_create_list) {
+//            addNewItemToList();
+            CreateLists cl = new CreateLists();
+            cl.addNewItemToList(MyLists.this);
         }
-        if(id == R.id.edit_my_list){
+        if(id == R.id.ml_edit_my_list){
             massDelete();
         }
         return super.onOptionsItemSelected(item);
@@ -431,4 +428,85 @@ public class MyLists extends BaseActivity {
             myListView.setVisibility(View.VISIBLE);
         }
     }  // toggleProgressBar
+
+    //NEW ARRAY Helper
+    private void convertParseArrayToClassItems(ArrayList<ParseObject> objects){
+
+        ArrayList<MyListItems> itemps = new ArrayList<>();
+        for(ParseObject x : objects){
+            MyListItems temp = new MyListItems(x.getParseObject("Lists"), false);
+            itemps.add(temp);
+        }
+        items = itemps;
+        itemps.clear();
+    }
+
+    private void newLoadListItems() {
+
+        adapter = new ArrayAdapter<MyListItems>(MyLists.this, R.layout.my_list_item, items) {
+            @Override
+            public View getView(final int position, View convertView, ViewGroup parent) {
+                convertView = getLayoutInflater().inflate(R.layout.my_list_item, parent, false);
+
+                TextView title = (TextView) convertView.findViewById(R.id.list_title);
+                MyListItems x = items.get(position);
+                title.setText(x.getObject().get("listTitle").toString());
+
+                // activate checkbox
+                checkBox = (CheckBox) convertView.findViewById(R.id.checkBox2);
+                ;
+                if (checkActivated) {
+                    checkBox.setVisibility(View.VISIBLE);
+                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked) {
+                                items.get(position).setSelected(true);
+                            }
+                            if (!isChecked) {
+                                items.get(position).setSelected(false);
+                            }
+                        };  // if (checkActivated)
+                    });
+                }
+                else {
+                    checkBox.setVisibility(View.INVISIBLE);
+                }
+                return convertView;
+            }
+        };
+        myListView.setAdapter(adapter);
+    }
+
+    private class MyListItems{
+
+
+        ParseObject object;
+        Boolean selected;
+
+
+        public ParseObject getObject() {
+            return object;
+        }
+
+        public void setObject(ParseObject object) {
+            this.object = object;
+        }
+
+        public Boolean getSelected() {
+            return selected;
+        }
+
+        public void setSelected(Boolean selected) {
+            this.selected = selected;
+        }
+
+
+
+        public MyListItems(ParseObject object, Boolean selected) {
+            this.object = object;
+            this.selected = selected;
+        }
+    }
+
 }  // MyLists (END CLASS)

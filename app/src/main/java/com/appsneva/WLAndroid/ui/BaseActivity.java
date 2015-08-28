@@ -14,13 +14,14 @@ public class BaseActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
     protected Toolbar activateToolbar() {
+
         if(mToolbar == null){
             mToolbar = (Toolbar)findViewById(R.id.app_bar);
             if(mToolbar != null){
                 setSupportActionBar(mToolbar);
                 mToolbar.setLogo(R.drawable.ic_launcher_48);
 
-            }
+             }
         }
         return mToolbar;
     }

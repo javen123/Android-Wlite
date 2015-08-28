@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.appsneva.WLAndroid">
-
+    package="com.appsneva.WLAndroid" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,77 +10,76 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Wavlite">
-
+        android:theme="@style/Theme.Wavlite" >
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name="com.appsneva.WLAndroid.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
-
+            android:launchMode="singleTop" >
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
-
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name="com.appsneva.WLAndroid.ui.LogIn"
+            android:name=".ui.LogIn"
             android:label="@string/title_activity_log_in"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait" >
         </activity>
 
         <activity
-            android:name="com.appsneva.WLAndroid.ui.SignUp"
+            android:name=".ui.SignUp"
             android:label="@string/title_activity_sign_up"
-            android:parentActivityName="com.appsneva.WLAndroid.ui.LogIn"
-            android:screenOrientation="portrait">
-
+            android:parentActivityName=".ui.LogIn"
+            android:screenOrientation="portrait" >
         </activity>
 
         <activity
-            android:name="com.appsneva.WLAndroid.ui.MyLists"
+            android:name=".ui.MyLists"
             android:label="@string/title_activity_my_lists"
-            android:parentActivityName="com.appsneva.WLAndroid.ui.MainActivity"
-            >
+            android:parentActivityName=".ui.MainActivity" >
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"
-                android:value=".ui.MainActivity"/>
+                android:value=".ui.MainActivity" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.appsneva.WLAndroid.ui.MainActivity" />
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+
 
         </activity>
 
         <activity
-            android:name="com.appsneva.WLAndroid.ui.DetailListView"
+            android:name=".ui.DetailListView"
             android:label="@string/title_activity_detail_list_view"
-            android:parentActivityName="com.appsneva.WLAndroid.ui.MyLists">
+            android:parentActivityName=".ui.MyLists" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.appsneva.WLAndroid.ui.MyLists" />
         </activity>
 
+        <activity
+            android:name=".ui.SearchViewActivity"
+            android:label="@string/title_activity_search_view"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.appsneva.WLAndroid.ui.MainActivity" />
 
 
+        </activity>
 
     </application>
 

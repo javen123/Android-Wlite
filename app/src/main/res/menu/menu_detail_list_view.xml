@@ -12,7 +12,6 @@
     <item
         android:id="@+id/menu_search3"
         android:icon="@android:drawable/ic_menu_search"
-        app:actionViewClass="android.support.v7.widget.SearchView"
         android:title="@string/action_search"
         android:orderInCategory="1"
         app:showAsAction="collapseActionView|ifRoom"/>

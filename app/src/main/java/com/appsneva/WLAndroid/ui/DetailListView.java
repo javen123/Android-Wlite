@@ -3,20 +3,13 @@ package com.appsneva.WLAndroid.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Handler;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-
-import android.support.v7.widget.SearchView;
+import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +39,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
+
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,27 +104,7 @@ public class DetailListView extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_list_view, menu);
 
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search3).getActionView();
-        ComponentName cn = new ComponentName(this, MainActivity.class);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
 
-        SearchView.OnQueryTextListener textListener = new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                sharedPref.edit().putString("myQuery", query).commit();
-                onSearchPressed();
-                finish();
-                return true;
-            }  // onQueryTextSubmit
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        };  // SearchView.OnQueryTextListener
-        searchView.setOnQueryTextListener(textListener);
         return true;
     }  // onCreateOptionsMenu
 
@@ -160,6 +135,9 @@ public class DetailListView extends BaseActivity {
             case R.id.edit_list_bulk:
                 addDelete();
                 return true;
+            case R.id.menu_search3:
+                ActivityCompat.startActivityForResult(this, new Intent(this, SearchViewActivity.class), 0, null);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }

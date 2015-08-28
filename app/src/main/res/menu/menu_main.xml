@@ -4,25 +4,38 @@
     tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="3"
-        android:title="@string/btn_actionLogOut"
-        wavlite:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/menu_search"
-        wavlite:actionViewClass="android.support.v7.widget.SearchView"
+        android:id="@+id/main_menu_search"
         android:icon="@android:drawable/ic_menu_search"
         android:orderInCategory="1"
         android:title="@string/action_search"
-        wavlite:showAsAction="collapseActionView|ifRoom" />
+        wavlite:showAsAction="always" />
 
     <item
-        android:id="@+id/menu_my_lists"
+        android:id="@+id/main_menu_my_lists"
         android:orderInCategory="2"
         android:showAsAction="ifRoom"
         android:title="@string/my_list_title"
         tools:ignore="AppCompatResource" />
+
+    <item
+        android:id="@+id/main_create_searchlist"
+        android:orderInCategory="3"
+        android:showAsAction="ifRoom"
+        android:title="@string/main_menu_create_seachlist"
+        tools:ignore="AppCompatResource" />
+
+
+    <item
+        android:id="@+id/main_action_logout"
+        android:orderInCategory="4"
+        android:title="@string/btn_actionLogOut"
+        wavlite:showAsAction="never" />
+
+
+
+
+
+
 
 
 </menu>

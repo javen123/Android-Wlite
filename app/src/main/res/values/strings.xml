@@ -102,5 +102,7 @@
 
     <!-- AlertDialogFragment.java Dialogs (Add To window) -->
     <string name="select_searchlist">Select Searchlist</string>
+    <string name="title_activity_search_view">Wavlite Search</string>
+    <string name="main_menu_create_seachlist">Create SearchList</string>
 
 </resources>
