@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appsneva.WLAndroid.AlertDialogFragment;
+import com.appsneva.WLAndroid.CreateLists;
 import com.appsneva.WLAndroid.DeveloperKey;
 import com.appsneva.WLAndroid.R;
 import com.appsneva.WLAndroid.VideoItem;
@@ -149,6 +150,10 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(this, MyLists.class);
                 startActivity(intent);
                 return true;
+            case R.id.main_create_searchlist:
+                CreateLists cl = new CreateLists();
+                cl.addNewItemToList(MainActivity.this);
+
             default:
                 return super.onOptionsItemSelected(item);
         }

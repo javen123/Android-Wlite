@@ -23,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.appsneva.WLAndroid.CreateLists;
 import com.appsneva.WLAndroid.ListTuple;
 import com.appsneva.WLAndroid.R;
 import com.appsneva.WLAndroid.VideoItem;
@@ -133,12 +132,11 @@ public class MyLists extends BaseActivity {
         }
         if (id == R.id.ml_menu_create_list) {
 //            addNewItemToList();
-            CreateLists cl = new CreateLists();
-            cl.addNewItemToList(MyLists.this);
+            addNewItemToList();
         }
-        if(id == R.id.ml_edit_my_list){
-            massDelete();
-        }
+//        if(id == R.id.ml_edit_my_list){
+//            massDelete();
+//        }
         return super.onOptionsItemSelected(item);
     }  // onOptionsItemSelected
 
@@ -338,14 +336,68 @@ public class MyLists extends BaseActivity {
         });  // myListView.setOnItemLongClickListener
     }  // addRowClickListener
 
-    private void addNewItemToList() {
+//    private void addNewItemToList() {
+//        View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
+//        final AlertDialog.Builder newTitle = new AlertDialog.Builder(MyLists.this);
+//        newTitle.setView(v);
+//
+//        // Edit the searchlist title name
+//        TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
+//        newListAdd.setText(getString(R.string.ml_dialog_name));
+//        final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
+//        newListTitleAdd.setHint(getString(R.string.ml_dialog_hint_name));
+//
+//        newTitle.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });  // newTitle.setNegativeButton
+//
+//        newTitle.setPositiveButton(getString(R.string.button_save), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                final String mTitle = newListTitleAdd.getText().toString();
+//                ParseObject newListTitle = new ParseObject("Lists");
+//                newListTitle.put("listTitle", mTitle);
+//                ParseRelation<ParseObject> relation = newListTitle.getRelation("createdBy");
+//                relation.add(ParseUser.getCurrentUser());
+//
+//                newListTitle.saveInBackground(new SaveCallback() {
+//                    @Override
+//                    public void done(ParseException e) {
+//                        if (e != null) {
+//                            // empty if body?
+//                        } else {
+//                            final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
+//                            success.setTitle(getString(R.string.ml_dialog_save));
+//                            success.setMessage(getString(R.string.ml_dialog_msg_save));
+//                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    updatedListTitles();
+//                                }
+//                            });  // success.setPositiveButton
+//                            AlertDialog alert = success.create();
+//                            alert.show();
+//                        }
+//                    }  // done
+//                });  // newListTitle.saveInBackground
+//            }  // onClick
+//        });  // newTitle.setPositiveButton
+//        AlertDialog alert = newTitle.create();
+//        alert.show();
+//    }  // addNewItemToList
+
+    public void addNewItemToList() {
         View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
-        final AlertDialog.Builder newTitle = new AlertDialog.Builder(MyLists.this);
+        final AlertDialog.Builder newTitle = new AlertDialog.Builder(this);
         newTitle.setView(v);
 
         // Edit the searchlist title name
         TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
         newListAdd.setText(getString(R.string.ml_dialog_name));
+
         final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
         newListTitleAdd.setHint(getString(R.string.ml_dialog_hint_name));
 

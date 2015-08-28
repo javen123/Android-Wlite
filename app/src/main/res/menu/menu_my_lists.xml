@@ -16,12 +16,12 @@
         android:orderInCategory="1"
         app:showAsAction="collapseActionView|ifRoom"/>
 
-    <item
-        android:id="@+id/ml_edit_my_list"
-        android:title="Edit"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:orderInCategory="3"
-        app:showAsAction="ifRoom"/>
+    <!--<item-->
+        <!--android:id="@+id/ml_edit_my_list"-->
+        <!--android:title="Edit"-->
+        <!--android:icon="@android:drawable/ic_menu_edit"-->
+        <!--android:orderInCategory="3"-->
+        <!--app:showAsAction="ifRoom"/>-->
 
     <item
         android:id="@+id/ml_menu_create_list"
