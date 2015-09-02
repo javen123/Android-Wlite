@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.appsneva.WLAndroid.AlertDialogFragment;
+import com.appsneva.WLAndroid.CreateLists;
 import com.appsneva.WLAndroid.DeveloperKey;
 import com.appsneva.WLAndroid.ListTuple;
 import com.appsneva.WLAndroid.R;
@@ -129,14 +130,17 @@ public class DetailListView extends BaseActivity {
                 navigateToLogin();
                 return true;
             case R.id.menu_create_list1:
-                MyLists.addToListFromDetail = true;
-                finish();
+                CreateLists cl = new CreateLists();
+                cl.addNewItemToList(DetailListView.this);
+
                 return true;
             case R.id.edit_list_bulk:
                 addDelete();
                 return true;
             case R.id.menu_search3:
                 ActivityCompat.startActivityForResult(this, new Intent(this, SearchViewActivity.class), 0, null);
+                finish();
+            case R.id.my_search_lists:
                 finish();
             default:
                 return super.onOptionsItemSelected(item);

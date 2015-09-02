@@ -4,12 +4,6 @@
     tools:context="com.appsneva.WLAndroid.ui.DetailListView">
 
     <item
-        android:id="@+id/action_logout"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="4"
-        android:title="@string/btn_actionLogOut" />
-
-    <item
         android:id="@+id/menu_search3"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_search"
@@ -17,9 +11,16 @@
         app:showAsAction="collapseActionView|ifRoom"/>
 
     <item
+        android:id="@+id/my_search_lists"
+        android:title="My Search Lists"
+        android:orderInCategory="2"
+        app:showAsAction= "ifRoom"
+        />
+
+    <item
         android:id="@+id/menu_create_list1"
         android:icon="@android:drawable/ic_input_add"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:title="@string/menu_create_list"
         app:showAsAction="ifRoom" />
 
@@ -27,8 +28,15 @@
         android:id="@+id/edit_list_bulk"
         android:title="Edit"
         android:icon="@android:drawable/ic_menu_edit"
-        android:orderInCategory="3"
+        android:orderInCategory="4"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_logout"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="6"
+        android:title="@string/btn_actionLogOut" />
+
 
 
 </menu>

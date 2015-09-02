@@ -12,13 +12,31 @@
         android:id="@+id/app_bar"
         layout="@layout/toolbar" />
 
-    <ImageView
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/search_view_image"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_launcher_192" />
+        android:layout_centerVertical="true" />
+
+
+    <ListView
+        android:id="@+id/videos_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="@dimen/activity_main_divider_height"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:drawSelectorOnTop="false"
+        android:headerDividersEnabled="true"
+        android:layout_marginLeft="@dimen/activity_main_margin_horizontal"
+        android:layout_marginRight="@dimen/activity_main_margin_horizontal"
+        android:layout_marginBottom="@dimen/activity_main_margin_vertical"
+        android:layout_below="@+id/app_bar" />
+
+
 
 
 </RelativeLayout>
