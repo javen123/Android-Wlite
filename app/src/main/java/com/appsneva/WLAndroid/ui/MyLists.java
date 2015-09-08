@@ -226,39 +226,57 @@ public class MyLists extends BaseActivity {
                 builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ParseObject deletedList = myArrayTitles.get(position);
-                        deletedList.deleteInBackground(new DeleteCallback() {
+
+                        AlertDialog.Builder delete = new AlertDialog.Builder(MyLists.this);
+                        delete.setTitle("Are you sure?");
+                        delete.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
-                            public void done(ParseException e) {
-                                if (e != null) {
-                                    Log.d("Parse Error: ", e.getLocalizedMessage());
-                                } else {
-                                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                                    query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-                                    query.addAscendingOrder("listTitle");
-                                    query.findInBackground(new FindCallback<ParseObject>() {
-                                        @Override
-                                        public void done(List<ParseObject> list, ParseException e) {
-                                            if (e != null) {
-                                                Log.d("Error with list pull: ", e.getLocalizedMessage());
-                                            } else {
-                                                // clear current list and update with new material
-                                                myArrayTitles.clear();
-                                                for (ParseObject object : list) {
-                                                    MyLists.myArrayTitles.add(object);
-                                                }
-                                                if (myArrayTitles.size() == 0) {
-                                                    noLists.setVisibility(View.VISIBLE);
-                                                    myListView.setVisibility(View.INVISIBLE);
-                                                } else {
-                                                    loadListNames();
-                                                }
-                                            }  // main if-else
-                                        }  // done
-                                    });  // query.findInBackground
-                                }  // main if-else
-                            }  // done
-                        });  // deletedList.deleteInBackground
+                            public void onClick(DialogInterface dialog, int which) {
+                                ParseObject deletedList = myArrayTitles.get(position);
+                                deletedList.deleteInBackground(new DeleteCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Log.d("Parse Error: ", e.getLocalizedMessage());
+                                        } else {
+                                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                                            query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                                            query.addAscendingOrder("listTitle");
+                                            query.findInBackground(new FindCallback<ParseObject>() {
+                                                @Override
+                                                public void done(List<ParseObject> list, ParseException e) {
+                                                    if (e != null) {
+                                                        Log.d("Error with list pull: ", e.getLocalizedMessage());
+                                                    } else {
+                                                        // clear current list and update with new material
+                                                        myArrayTitles.clear();
+                                                        for (ParseObject object : list) {
+                                                            MyLists.myArrayTitles.add(object);
+                                                        }
+                                                        if (myArrayTitles.size() == 0) {
+                                                            noLists.setVisibility(View.VISIBLE);
+                                                            myListView.setVisibility(View.INVISIBLE);
+                                                        } else {
+                                                            loadListNames();
+                                                        }
+                                                    }  // main if-else
+                                                }  // done
+                                            });  // query.findInBackground
+                                        }  // main if-else
+                                    }  // done
+                                });  // deletedList.deleteInBackground
+                            }
+                        });
+                        delete.setNeutralButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog a = delete.create();
+                        a.show();
+
+
                     }  // onClick
                 });  // builder.setNeutralButton
 

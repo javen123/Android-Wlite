@@ -242,18 +242,34 @@ public class DetailListView extends BaseActivity {
                         builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                                query.whereEqualTo("objectId", listId);
-                                query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+                                AlertDialog.Builder delete = new AlertDialog.Builder(DetailListView.this);
+                                delete.setTitle("Are you sure");
+                                delete.setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void done(ParseObject object, ParseException e) {
-                                        if (e != null) {
-                                            Log.d("Parse:", e.getLocalizedMessage());
-                                        } else {
-                                            updateListView(DetailListView.this, position, object);
-                                        }
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
                                     }
                                 });
+                                delete.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                                        query.whereEqualTo("objectId", listId);
+                                        query.getFirstInBackground(new GetCallback<ParseObject>() {
+                                            @Override
+                                            public void done(ParseObject object, ParseException e) {
+                                                if (e != null) {
+                                                    Log.d("Parse:", e.getLocalizedMessage());
+                                                } else {
+                                                    updateListView(DetailListView.this, position, object);
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                                AlertDialog a = delete.create();
+                                a.show();
                             }  // onClick
                         });  // builder.setNeutralButton
 
@@ -429,43 +445,53 @@ public class DetailListView extends BaseActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ArrayList<String> temp = new ArrayList<>();
-                final ArrayList<VideoItem> newList = new ArrayList<VideoItem>();
-                //add unchecked to temp array
-                for(VideoItem x : searchResults) {
-                    if (x.isSelected() == false) {
-                        temp.add(x.getId());
-                        newList.add(x);
-                    }
-                }
-                //update current view
-                searchResults = newList;
-                toggleProgressBar();
 
-                //query and get cur object
-                String listId = convertIntentToListId(args);
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
-                query.whereEqualTo("objectId", listId);
-                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
+                a.setTitle("Are you sure?");
+                a.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
-                    public void done(ParseObject object, ParseException e) {
-                        if (e != null) {
-                            Log.d("Parse:", e.getLocalizedMessage());
+                    public void onClick(DialogInterface dialog, int which) {
+                        final ArrayList<String> temp = new ArrayList<>();
+                        final ArrayList<VideoItem> newList = new ArrayList<VideoItem>();
+                        //add unchecked to temp array
+                        for (VideoItem x : searchResults) {
+                            if (x.isSelected() == false) {
+                                temp.add(x.getId());
+                                newList.add(x);
+                            }
                         }
-                        else {
-                            object.put("myLists", temp);
-                            object.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    checkActivated = false;
-                                    updateVideosFound();
-                                    toggleProgressBar();
+                        //update current view
+                        searchResults = newList;
+                        toggleProgressBar();
+
+                        //query and get cur object
+                        String listId = convertIntentToListId(args);
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
+                        query.whereEqualTo("objectId", listId);
+                        query.getFirstInBackground(new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject object, ParseException e) {
+                                if (e != null) {
+                                    Log.d("Parse:", e.getLocalizedMessage());
+                                } else {
+                                    object.put("myLists", temp);
+                                    object.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            checkActivated = false;
+                                            updateVideosFound();
+                                            toggleProgressBar();
+                                        }
+                                    });  // object.saveInBackground
                                 }
-                            });  // object.saveInBackground
-                        }
-                    }  // done
-                });  // query.getFirstInBackground
-                deleteBtnView.setVisibility(View.INVISIBLE);
+                            }  // done
+                        });  // query.getFirstInBackground
+                        deleteBtnView.setVisibility(View.INVISIBLE);
+                    }
+                });
+                AlertDialog del = a.create();
+                del.show();
+
             }  // onClick
         });  //  delete.setOnClickListener
     }  // addDelete
