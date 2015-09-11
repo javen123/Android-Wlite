@@ -29,7 +29,7 @@
     <string name="searchable_hint">Wavlite Media Search</string>
     <string name="title_activity_my_lists">My Searchlists</string>
     <string name="title_activity_detail_list_view">Detailed Searchlist View</string>
-    <string name="alert_first_list_title">Create a new Searchlist</string>
+    <string name="alert_first_list_title">Create a new Searchlist\n</string>
     <string name="main_menu_action_list">My Searchlists</string>
 
 

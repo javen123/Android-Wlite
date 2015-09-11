@@ -8,9 +8,8 @@
     <color name="primary_dark">#1976D2</color>
     <color name="primary_light">#BBDEFB</color>
     <color name="accent">#9E9E9E</color>
-
-    <color name="primary_text">#FF1B1B1B</color>
-    <color name="secondary_text">#FF323232</color>
+    <color name="primary_text">#1B1B1B</color>
+    <color name="secondary_text">#323232</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
@@ -20,6 +19,8 @@
     <color name="text_grey_dark">#FF333333</color>
     <color name="text_grey">#FF999999</color>
     <color name="text_grey_light">#FFCCCCCC</color>
+    <color name="text_blue_xlite">#C7E0FC</color>
+    <color name="text_blue_dark">#1D2A49</color>
 
     <!-- Activity Backgrounds -->
     <color name="activity_main_background">#FF253E66</color>

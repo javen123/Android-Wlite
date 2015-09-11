@@ -39,10 +39,9 @@ public class AlertDialogFragment extends DialogFragment {
     public static String searchlistCreated = "Success!";
     public static String searchlistCreatedMessage = "Your new searchlist has been created with this video added. You can now search Wavlite and add more to this searchlist or go to \"My Searchlists\" and enjoy!\n" + "";
 
-    public static void adjustListItems(final int pos,final List<ParseObject> list, final Activity activity, final String videoId, final Context context){
+    public static void adjustListItems(final int pos, final List<ParseObject> list, final Activity activity, final String videoId, final Context context) {
 
         //get current title list and convert to new arraylist
-
         ArrayList<String> listTitles = new ArrayList<String>();
         for (ParseObject titles : list) {
             String title = (titles.get("listTitle").toString());
@@ -50,7 +49,7 @@ public class AlertDialogFragment extends DialogFragment {
         }
         final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
 
-
+        // Set text/color manipulation here?
         final AlertDialog.Builder success = new AlertDialog.Builder(activity);
         success.setTitle(selectSearchlist);
         success.setItems(titles, new DialogInterface.OnClickListener() {

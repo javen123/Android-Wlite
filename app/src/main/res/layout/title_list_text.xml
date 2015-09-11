@@ -8,5 +8,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
+        android:textColor="@color/text_white"
         android:id="@+id/title_list_text" />
 </LinearLayout>
