@@ -8,8 +8,8 @@
     <color name="primary_dark">#1976D2</color>
     <color name="primary_light">#BBDEFB</color>
     <color name="accent">#9E9E9E</color>
-    <color name="primary_text">#1B1B1B</color>
-    <color name="secondary_text">#323232</color>
+    <color name="primary_text">#C7E0FC</color>
+    <color name="secondary_text">#C8C8C8</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
