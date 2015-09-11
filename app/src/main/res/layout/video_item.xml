@@ -2,8 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    >
+    android:padding="16dp">
+
+<!--
+    This controls the search view results image and text (color). The image view is for the video
+    video image thumbnail and the text view is for the video title information. Use this xml for
+    making changes to the font and font color as well as other graphical UI characteristics.
+-->
 
     <ImageView
         android:id="@+id/thumbnail"
@@ -26,6 +31,7 @@
         android:layout_marginLeft="5dp"
         android:maxLines="3"
         android:layout_marginRight="5dp"
+        android:textColor="@color/text_blue_xlite"
         android:gravity="center_horizontal|left" />
 
     <!--<TextView android:id="@+id/video_description"-->
