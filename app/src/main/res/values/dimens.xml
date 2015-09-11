@@ -16,6 +16,10 @@
         after the global section here.
     -->
 
+    <!-- Multi edit container -->
+    <dimen name="multiedit_container">60dp</dimen>
+
+
     <!-- login/sign-in buttons : btn_[position(t,r,b,l)_[style] -->
     <dimen name="form_btn_t_padding">25dp</dimen>
     <dimen name="form_btn_r_padding">15dp</dimen>
@@ -25,6 +29,7 @@
     <dimen name="form_btn_r_margin">5dp</dimen>
     <dimen name="form_btn_b_margin">5dp</dimen>
     <dimen name="form_btn_l_margin">5dp</dimen>
+
 
     <!-- login/sign-in textboxes : tbox_[position(t,r,b,l)_[style] -->
     <dimen name="form_tbox_t_padding">25dp</dimen>
@@ -36,6 +41,7 @@
     <dimen name="form_tbox_b_margin">5dp</dimen>
     <dimen name="form_tbox_l_margin">5dp</dimen>
 
+
     <!-- login activity specifics -->
     <dimen name="login_btn_t_marginLI">35dp</dimen>
     <dimen name="login_btn_textSize">20dp</dimen>
@@ -43,15 +49,17 @@
     <dimen name="login_sbtn_t_margin">150dp</dimen>
     <dimen name="login_sbtn_textSize">14dp</dimen>
 
+
     <!-- sign-up activity specifics -->
     <dimen name="signup_btn_t_margin">25dp</dimen>
+
 
     <!-- main activity specifics -->
     <dimen name="activity_main_divider_height">1dp</dimen>
     <dimen name="activity_main_margin_horizontal">0dp</dimen>
     <dimen name="activity_main_margin_vertical">0dp</dimen>
-
     <dimen name="activity_my_lists_divider_height">1dp</dimen>
+
 
     <!-- player activity specifics -->
 
