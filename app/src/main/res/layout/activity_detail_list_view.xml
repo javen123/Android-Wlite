@@ -31,7 +31,7 @@
     <LinearLayout
         android:id="@+id/delete_mass_view"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/multiedit_container"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@color/toolbar_background"

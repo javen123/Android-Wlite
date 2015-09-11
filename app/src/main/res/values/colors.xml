@@ -20,7 +20,7 @@
     <color name="text_grey">#FF999999</color>
     <color name="text_grey_light">#FFCCCCCC</color>
     <color name="text_blue_xlite">#C7E0FC</color>
-    <color name="text_blue_dark">#1D2A49</color>
+    <color name="text_blue_dark">#122040</color>
     <color name="text_red_dark">#4B0004</color>
 
     <!-- Activity Backgrounds -->
@@ -30,7 +30,7 @@
     <!-- toolbar primary and secondary text -->
     <color name="toolbar_text_primary">#FFC7E0FC</color>
     <color name="toolbar_text_secondary">#FFC8C8C8</color>
-    <color name="toolbar_background">#FF1D2A49</color>
+    <color name="toolbar_background">#FF122040</color>
 
     <!-- login activity styles -->
     <color name="login_btn_background">#FF253E66</color>
