@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.appsneva.WLAndroid.ListTuple;
 import com.appsneva.WLAndroid.R;
 import com.appsneva.WLAndroid.VideoItem;
@@ -48,15 +47,19 @@ public class MyLists extends BaseActivity {
     public static Boolean addToListFromDetail = false;  // return bool activated from detail list page
     private static ProgressBar progressBar;
     private ArrayList<VideoItem> xyz;
+
     private CheckBox checkBox;
     private Boolean checkActivated = false;
     private ViewGroup deleteBtnView;
-    List<MyListItems> items;  // new array setup
+
+    // new array setup
+    List<MyListItems> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_lists);
+
         myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
         activateToolbarWithHomeEnabled();  // does this create the "back" arrow?
@@ -66,10 +69,13 @@ public class MyLists extends BaseActivity {
 
         if (myArrayTitles.size() != 0) {
             noLists.setVisibility(View.INVISIBLE);
+
             //NEW ARRAY set up
 //            convertParseArrayToClassItems(myArrayTitles);
 //            newLoadListItems();
-            loadListNames();  //old array setup
+
+            //old array setup
+            loadListNames();
         }
         else {
             updatedListTitles();
@@ -84,6 +90,7 @@ public class MyLists extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_my_lists, menu);
+//
         return true;
     }  // onCreateOptionsMenu
 
@@ -99,7 +106,6 @@ public class MyLists extends BaseActivity {
             return;
         }
     }  // onResume
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -147,7 +153,6 @@ public class MyLists extends BaseActivity {
         });  // cancel.setOnClickListener
     }
 
-
     private void navigateToLogin() {
         myArrayTitles.clear();
         Intent intent = new Intent(this, LogIn.class);
@@ -155,7 +160,6 @@ public class MyLists extends BaseActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }  // navigateToLogin
-
 
     private void loadListNames() {
         ArrayList<String> values = new ArrayList<String>();
@@ -170,7 +174,6 @@ public class MyLists extends BaseActivity {
         myListView.setAdapter(adapter);
     }  // loadListNames
 
-
     private void addRowClickListener() {
         if (myListView != null) {
             myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -184,18 +187,18 @@ public class MyLists extends BaseActivity {
                 ListTuple i;
                 i = new ListTuple(vid, xList);
                 temp.add(i);
-                    // if xList has a value, load the DetailListView intent
-                    if (xList != null) {
-                        Intent intent = new Intent(MyLists.this, DetailListView.class);
-                        Bundle args = new Bundle();
-                        args.putSerializable("ArrayList", temp);
-                        intent.putExtra("myListids", args);
-                        intent.putExtra("title", title);
-                        startActivity(intent);
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.toast_empty_list), Toast.LENGTH_LONG).show();
-                    }
+
+                if (xList != null) {
+                    Intent intent = new Intent(MyLists.this, DetailListView.class);
+                    Bundle args = new Bundle();
+                    args.putSerializable("ArrayList", temp);
+                    intent.putExtra("myListids", args);
+                    intent.putExtra("title", title);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.toast_empty_list), Toast.LENGTH_LONG).show();
+                }
                 }  // onItemClick
             });  // myListView.setOnItemClickListener
         }  // if-myListView
@@ -216,7 +219,7 @@ public class MyLists extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         AlertDialog.Builder delete = new AlertDialog.Builder(MyLists.this);
-                        delete.setTitle("Delete? (cannot undo!)");
+                        delete.setTitle("Are you sure?");
                         delete.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -255,7 +258,7 @@ public class MyLists extends BaseActivity {
                                 });  // deletedList.deleteInBackground
                             }
                         });
-                        delete.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        delete.setNeutralButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
