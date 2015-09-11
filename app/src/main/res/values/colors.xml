@@ -10,9 +10,7 @@
     <color name="accent">#9E9E9E</color>
 
     <color name="primary_text">#FF1B1B1B</color>
-    <color name="secondary_text">#FF323232</color><!--
-    <color name="primary_text">#FFC7E0FC</color>
-    <color name="secondary_text">#FFC8C8C8</color>-->
+    <color name="secondary_text">#FF323232</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
