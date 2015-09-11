@@ -21,7 +21,7 @@
     <color name="text_grey_light">#FFCCCCCC</color>
     <color name="text_blue_xlite">#C7E0FC</color>
     <color name="text_blue_dark">#1D2A49</color>
-    <color name="text_red_dark">#4B0005</color>
+    <color name="text_red_dark">#4B0004</color>
 
     <!-- Activity Backgrounds -->
     <color name="activity_main_background">#FF253E66</color>
