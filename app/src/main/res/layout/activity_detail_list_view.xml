@@ -18,6 +18,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
+    <!-- can I use a text view here instead? -->
     <ListView
         android:id="@+id/detail_list_view"
         android:layout_width="match_parent"
