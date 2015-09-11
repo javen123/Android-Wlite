@@ -8,6 +8,10 @@
     android:animateLayoutChanges="true"
     android:weightSum="6">
 
+<!--
+    This file controls the UI components for the Detailed List View. Use this to change text color
+    and other UI components, such as the video image thumbnails
+-->
     <ImageView
         android:id="@+id/detail_thumbnail"
         android:layout_alignParentTop="true"
@@ -19,10 +23,10 @@
         android:layout_marginRight="10dp"
         android:layout_alignParentLeft="true"
         android:backgroundTint="@color/primary"
-
         android:layout_weight="2" />
 
     <TextView
+        android:textColor="@color/text_white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/detail_title"
