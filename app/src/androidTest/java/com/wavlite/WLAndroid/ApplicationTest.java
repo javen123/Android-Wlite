@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

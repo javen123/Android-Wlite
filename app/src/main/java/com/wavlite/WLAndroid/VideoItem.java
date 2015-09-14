@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 /**
  * Created by javen on 6/25/15.

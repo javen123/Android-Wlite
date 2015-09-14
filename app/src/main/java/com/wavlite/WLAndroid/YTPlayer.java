@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 
 import android.os.Bundle;

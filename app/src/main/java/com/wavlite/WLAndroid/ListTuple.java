@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 import java.io.Serializable;
 import java.util.ArrayList;

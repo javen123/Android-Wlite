@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.appsneva.WLAndroid.ui.DetailListView;
-import com.appsneva.WLAndroid.ui.MyLists;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -20,6 +18,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.wavlite.WLAndroid.ui.MyLists;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +50,7 @@ public class AlertDialogFragment extends DialogFragment {
 
         // Set text/color manipulation here?
         final AlertDialog.Builder success = new AlertDialog.Builder(activity);
+        success.setIcon(R.drawable.ic_launcher_48);
         success.setTitle(selectSearchlist);
         success.setItems(titles, new DialogInterface.OnClickListener() {
             @Override
@@ -184,6 +184,7 @@ public class AlertDialogFragment extends DialogFragment {
     public static void listHelper(final Activity activity, final String id, final String title, final String message){
         View v = activity.getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
         final AlertDialog.Builder newTitle = new AlertDialog.Builder(activity);
+        newTitle.setIcon(R.drawable.ic_launcher_48);
         newTitle.setView(v);
         final EditText userTitleView = (EditText) v.findViewById(R.id.first_title);
         final AlertDialog.Builder builder = newTitle.setPositiveButton("ADD SEARCHLIST", new DialogInterface.OnClickListener() {

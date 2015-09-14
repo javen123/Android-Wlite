@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/MyListsView"
     tools:context="com.appsneva.WLAndroid.ui.SearchViewActivity">
 
     <include
@@ -16,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+
 
     <ListView
         android:id="@+id/videos_found"

@@ -1,6 +1,6 @@
 // Copyright 2014 Google Inc. All Rights Reserved.
 
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 /**
  * Static container class for holding a reference to your YouTube Developer Key.

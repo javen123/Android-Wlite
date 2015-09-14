@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_background_white"
+    android:background="@color/activity_main_background"
     tools:context="com.appsneva.WLAndroid.ui.LogIn"
     android:paddingLeft="@dimen/activity_horizontal_margin_login"
     android:paddingRight="@dimen/activity_horizontal_margin_login"

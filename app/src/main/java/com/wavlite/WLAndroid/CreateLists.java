@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.appsneva.WLAndroid.ui.MyLists;
+import com.wavlite.WLAndroid.ui.MyLists;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;

@@ -112,4 +112,8 @@
     <string name="title_activity_search_view">Wavlite Search</string>
     <string name="main_menu_create_seachlist">Create SearchList</string>
 
+    <!-- ParseUI Login Credentials-->
+    <string name="parse_app_id">ykrFkxjHcVz8j8oBSc8ZFpXH0gSu99vkKEhzt6Hs</string>
+    <string name="parse_client_key">pmzgjReSbDsmwvZXLNoqNGXtIqo5ZCbu04WwuSrM</string>
+
 </resources>

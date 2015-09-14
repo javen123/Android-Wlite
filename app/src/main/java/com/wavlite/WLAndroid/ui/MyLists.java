@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid.ui;
+package com.wavlite.WLAndroid.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,9 +22,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.appsneva.WLAndroid.ListTuple;
-import com.appsneva.WLAndroid.R;
-import com.appsneva.WLAndroid.VideoItem;
+
+import com.wavlite.WLAndroid.ListTuple;
+import com.wavlite.WLAndroid.R;
+import com.wavlite.WLAndroid.VideoItem;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -48,17 +49,21 @@ public class MyLists extends BaseActivity {
     private static ProgressBar progressBar;
     private ArrayList<VideoItem> xyz;
 
+
     private CheckBox checkBox;
     private Boolean checkActivated = false;
     private ViewGroup deleteBtnView;
 
     // new array setup
+
     List<MyListItems> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_lists);
+
+
 
         myListView = (ListView) findViewById(R.id.my_list_titles);
         noLists = (TextView) findViewById(R.id.no_list_text);
@@ -84,16 +89,15 @@ public class MyLists extends BaseActivity {
         addRowClickListener();
     }  // onCreate
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_my_lists, menu);
+
 //
         return true;
     }  // onCreateOptionsMenu
-
 
     @Override
     protected void onResume() {
@@ -115,12 +119,13 @@ public class MyLists extends BaseActivity {
         int id = item.getItemId();
 
         // noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.ml_action_logout) {
             myArrayTitles.clear();
             ParseUser.logOut();
             navigateToLogin();
         }
         if (id == R.id.ml_menu_search) {
+
             ActivityCompat.startActivityForResult(this, new Intent(this,SearchViewActivity.class),0,null);
             finish();
             return true;
@@ -135,8 +140,8 @@ public class MyLists extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }  // onOptionsItemSelected
 
-
     private void massDelete() {
+
         checkActivated = true;
         adapter.notifyDataSetChanged();
         deleteBtnView = (ViewGroup)findViewById(R.id.delete_myLists_view);
@@ -151,14 +156,19 @@ public class MyLists extends BaseActivity {
                 adapter.notifyDataSetChanged();
             }
         });  // cancel.setOnClickListener
+
+
+
     }
+
 
     private void navigateToLogin() {
         myArrayTitles.clear();
-        Intent intent = new Intent(this, LogIn.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        this.startActivity(intent);
+        this.finish();
     }  // navigateToLogin
 
     private void loadListNames() {
@@ -168,6 +178,7 @@ public class MyLists extends BaseActivity {
             values.add(title);
         }
         adapter = new ArrayAdapter(MyLists.this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
 
         noLists.setVisibility(View.INVISIBLE);
         myListView.setVisibility(View.VISIBLE);

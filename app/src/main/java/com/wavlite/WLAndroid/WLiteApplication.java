@@ -1,8 +1,10 @@
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 import android.app.Application;
-import com.parse.Parse;
+
 import com.facebook.FacebookSdk;
+import com.parse.Parse;
+
 /**
  * Created by javen on 6/19/15.
  */

@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid.ui;
+package com.wavlite.WLAndroid.ui;
 
 
 import android.app.Activity;
@@ -24,13 +24,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.appsneva.WLAndroid.AlertDialogFragment;
-import com.appsneva.WLAndroid.CreateLists;
-import com.appsneva.WLAndroid.DeveloperKey;
-import com.appsneva.WLAndroid.ListTuple;
-import com.appsneva.WLAndroid.R;
-import com.appsneva.WLAndroid.VideoItem;
-import com.appsneva.WLAndroid.YoutubeConnector;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -40,6 +33,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
+import com.wavlite.WLAndroid.AlertDialogFragment;
+import com.wavlite.WLAndroid.CreateLists;
+import com.wavlite.WLAndroid.DeveloperKey;
+import com.wavlite.WLAndroid.ListTuple;
+import com.wavlite.WLAndroid.R;
+import com.wavlite.WLAndroid.VideoItem;
+import com.wavlite.WLAndroid.YoutubeConnector;
 
 import org.json.JSONObject;
 
@@ -125,7 +125,7 @@ public class DetailListView extends BaseActivity {
 
         switch (item.getItemId()) {
             case R.id.action_logout:
-                MyLists.myArrayTitles.clear();
+                com.wavlite.WLAndroid.ui.MyLists.myArrayTitles.clear();
                 ParseUser.logOut();
                 navigateToLogin();
                 return true;
@@ -148,12 +148,14 @@ public class DetailListView extends BaseActivity {
     }  // onOptionsItemSelected
 
 
+
     private void navigateToLogin() {
         MyLists.myArrayTitles.clear();
-        Intent intent = new Intent(this, LogIn.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        this.startActivity(intent);
+        this.finish();
     }  // navigateToLogin
 
 
@@ -235,6 +237,7 @@ public class DetailListView extends BaseActivity {
                         String videoTitle = searchResults.get(position).getTitle();
                         final String listId = convertIntentToListId(args);
                         AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
+                        builder.setIcon(R.drawable.ic_launcher_48);
                         builder.setTitle(getString(R.string.dlv_dialog_title));
                         builder.setMessage("" + videoTitle + "\n ");
 
@@ -448,6 +451,7 @@ public class DetailListView extends BaseActivity {
 
                 AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
                 a.setTitle("Are you sure?");
+                a.setIcon(R.drawable.ic_launcher_48);
                 a.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

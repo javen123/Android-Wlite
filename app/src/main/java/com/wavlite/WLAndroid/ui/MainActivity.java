@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid.ui;
+package com.wavlite.WLAndroid.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,12 +8,13 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-import com.appsneva.WLAndroid.AlertDialogFragment;
-import com.appsneva.WLAndroid.CreateLists;
-import com.appsneva.WLAndroid.R;
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
+import com.wavlite.WLAndroid.AlertDialogFragment;
+import com.wavlite.WLAndroid.CreateLists;
+import com.wavlite.WLAndroid.R;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -22,8 +23,6 @@ public class MainActivity extends BaseActivity {
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     private WebView webview;
-
-
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -47,19 +46,19 @@ public class MainActivity extends BaseActivity {
         //confirm youTube API Check
         checkYouTubeApi();
 
-        //check Parse User is current
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser == null) {
-            navigateToLogin();
+        // grab current list
+        ParseUser curUser = ParseUser.getCurrentUser();
+        if (curUser == null){
+            parseLoginHelper();
         }
         else {
-            AlertDialogFragment.grabUserList(currentUser);
-            // pull users lists if available
+            AlertDialogFragment.grabUserList(curUser);
         }
 
+    //TODO: wrap into connection test
+
+
     }  // onCreate
-
-
 
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
@@ -71,14 +70,6 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(this, errorMessage, LENGTH_LONG).show();
         }
     }  // checkYouTubeApi
-
-    private void navigateToLogin() {
-        MyLists.myArrayTitles.clear();
-        Intent intent = new Intent(this, LogIn.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }  // navigateToLogin
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,8 +86,8 @@ public class MainActivity extends BaseActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.action_logout:
-                MyLists.myArrayTitles.clear();
+            case R.id.main_action_logout:
+                com.wavlite.WLAndroid.ui.MyLists.myArrayTitles.clear();
                 ParseUser.logOut();
                 navigateToLogin();
                 return true;
@@ -105,7 +96,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(searchIntent);
                 return true;
             case R.id.main_menu_my_lists:
-                Intent intent = new Intent(this, MyLists.class);
+                Intent intent = new Intent(this, com.wavlite.WLAndroid.ui.MyLists.class);
                 startActivity(intent);
                 return true;
             case R.id.main_create_searchlist:
@@ -117,13 +108,14 @@ public class MainActivity extends BaseActivity {
         }
     }  // onOptionsItemSelected
 
+    private void navigateToLogin() {
+        MyLists.myArrayTitles.clear();
+        parseLoginHelper();
+    }  // navigateToLogin
 
 
-
-
-
-    // add dialog and button control for add item to list
-
-
-
+    private void parseLoginHelper(){
+        ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
+        startActivityForResult(builder.build(), 0);
+    }
 }

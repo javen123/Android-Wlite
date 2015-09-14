@@ -1,4 +1,4 @@
-package com.appsneva.WLAndroid.ui;
+package com.wavlite.WLAndroid.ui;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
@@ -22,11 +22,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.appsneva.WLAndroid.AlertDialogFragment;
-import com.appsneva.WLAndroid.DeveloperKey;
-import com.appsneva.WLAndroid.R;
-import com.appsneva.WLAndroid.VideoItem;
-import com.appsneva.WLAndroid.YoutubeConnector;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -34,6 +29,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
+import com.wavlite.WLAndroid.AlertDialogFragment;
+import com.wavlite.WLAndroid.DeveloperKey;
+import com.wavlite.WLAndroid.R;
+import com.wavlite.WLAndroid.VideoItem;
+import com.wavlite.WLAndroid.YoutubeConnector;
 
 import java.util.List;
 
@@ -61,6 +61,8 @@ public class SearchViewActivity extends BaseActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
 
+
+
         searchOnYoutube(getString(R.string.ma_searchOnYoutube));
     }
 
@@ -76,9 +78,6 @@ public class SearchViewActivity extends BaseActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-//                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                sharedPref.edit().putString("YTSEARCH", s).commit();
-//                Log.d("QUERY", "Query is:" + s);
 
                 searchOnYoutube(s);
                 mSearchView.clearFocus();
@@ -89,7 +88,7 @@ public class SearchViewActivity extends BaseActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 int nt = newText.length();
-                if(nt >2){
+                if (nt > 2) {
                     searchOnYoutube(newText);
                 }
 
@@ -100,7 +99,6 @@ public class SearchViewActivity extends BaseActivity {
             @Override
             public boolean onClose() {
 
-                finish();
                 return false;
             }
         });
@@ -136,6 +134,7 @@ public class SearchViewActivity extends BaseActivity {
         final String videoTitle = searchResults.get(loc).getTitle().toString();
         final String videoId = searchResults.get(loc).getId().toString();
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setIcon(R.drawable.ic_launcher_48);
         alert.setTitle("" + videoTitle);
         alert.setMessage(getString(R.string.ma_dialog_add));
         alert.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
@@ -216,10 +215,6 @@ public class SearchViewActivity extends BaseActivity {
             videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-
-//                    List<String> curId = new DetailListView().convertSearchResultsToIntentIds(searchResults);
-//                    loadYTWebView(curId.get(pos));
-//                    webView.animate().translationY(200);
 
                     List<String> vidIds = new DetailListView().convertSearchResultsToIntentIds(searchResults);
                     Intent intent = YouTubeStandalonePlayer.createVideosIntent(SearchViewActivity.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);

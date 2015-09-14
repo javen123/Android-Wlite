@@ -1,8 +1,8 @@
-package com.appsneva.WLAndroid.ui;
+package com.wavlite.WLAndroid.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import com.appsneva.WLAndroid.R;
+import com.wavlite.WLAndroid.R;
 
 
 

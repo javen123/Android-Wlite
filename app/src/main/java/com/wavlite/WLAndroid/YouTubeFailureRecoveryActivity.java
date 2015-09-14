@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.appsneva.WLAndroid;
+package com.wavlite.WLAndroid;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
