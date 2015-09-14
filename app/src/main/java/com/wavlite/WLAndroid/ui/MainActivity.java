@@ -16,6 +16,8 @@ import com.wavlite.WLAndroid.AlertDialogFragment;
 import com.wavlite.WLAndroid.CreateLists;
 import com.wavlite.WLAndroid.R;
 
+import java.util.Arrays;
+
 import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends BaseActivity {
@@ -116,6 +118,20 @@ public class MainActivity extends BaseActivity {
 
     private void parseLoginHelper(){
         ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
-        startActivityForResult(builder.build(), 0);
+        Intent parseLoginIntent = builder.setAppLogo(R.drawable.ic_launcher_192)
+                .setParseLoginEnabled(true)
+                .setParseLoginButtonText("Go")
+                .setParseSignupButtonText("Register")
+                .setParseLoginHelpText("Forgot password?")
+                .setParseLoginInvalidCredentialsToastText("Your email and/or password is not correct")
+                .setParseLoginEmailAsUsername(true)
+                .setParseSignupSubmitButtonText("Submit registration")
+                .setFacebookLoginEnabled(true)
+                .setFacebookLoginButtonText("Facebook")
+                .setFacebookLoginPermissions(Arrays.asList("public_profile", "user_friends"))
+                .setTwitterLoginEnabled(true)
+                .setTwitterLoginButtontext("Twitter")
+                .build();
+        startActivityForResult(parseLoginIntent, 0);
     }
 }
