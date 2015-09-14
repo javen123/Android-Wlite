@@ -11,7 +11,7 @@
         Note that buttons will not be included. Buttons will have their own sections and can
         include buttons that are not necessarily a part of a modal/dialog window.
     -->
-    <string name="app_name">Wavlite v2.21.0</string>
+    <string name="app_name">Wavlite</string>
 
     <!-- General application string resources -->
     <string name="action_settings">Settings</string>
