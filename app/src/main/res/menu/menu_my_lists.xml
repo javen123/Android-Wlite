@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.wavlite.WLAndroid.ui.MyLists">
+    tools:context=".MyLists">
 
 
     <item
@@ -11,7 +11,7 @@
         android:title="@string/btn_actionLogOut" />
 
     <item android:id="@+id/ml_menu_search"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search"
         android:title="@string/action_search"
         android:orderInCategory="1"
         app:showAsAction="collapseActionView|ifRoom"/>
@@ -25,7 +25,7 @@
 
     <item
         android:id="@+id/ml_menu_create_list"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="2"
         android:title="@string/menu_create_list"
         app:showAsAction="ifRoom" />

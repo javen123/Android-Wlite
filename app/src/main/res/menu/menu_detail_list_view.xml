@@ -5,13 +5,14 @@
 
     <item
         android:id="@+id/menu_search3"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search"
         android:title="@string/action_search"
         android:orderInCategory="1"
         app:showAsAction="collapseActionView|ifRoom"/>
 
     <item
         android:id="@+id/my_search_lists"
+        android:icon="@drawable/ic_lists"
         android:title="My Search Lists"
         android:orderInCategory="2"
         app:showAsAction= "ifRoom"
@@ -19,7 +20,7 @@
 
     <item
         android:id="@+id/menu_create_list1"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="3"
         android:title="@string/menu_create_list"
         app:showAsAction="ifRoom" />

@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/main_menu_search"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search"
         android:orderInCategory="1"
         android:title="@string/action_search"
         wavlite:showAsAction="always" />
@@ -15,6 +15,7 @@
         android:orderInCategory="2"
         android:showAsAction="ifRoom"
         android:title="@string/my_list_title"
+        android:icon="@drawable/ic_lists"
         tools:ignore="AppCompatResource" />
 
     <item
@@ -22,6 +23,7 @@
         android:orderInCategory="3"
         android:showAsAction="ifRoom"
         android:title="@string/main_menu_create_seachlist"
+        android:icon="@drawable/ic_add"
         tools:ignore="AppCompatResource" />
 
 

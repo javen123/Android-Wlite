@@ -95,13 +95,7 @@ public class SearchViewActivity extends BaseActivity {
                 return true;
             }
         });
-        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
 
-                return false;
-            }
-        });
         return true;
     }
 

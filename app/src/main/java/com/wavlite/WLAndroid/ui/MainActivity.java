@@ -1,5 +1,6 @@
 package com.wavlite.WLAndroid.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -64,8 +65,14 @@ public class MainActivity extends BaseActivity {
 
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
+
         if (errorReason.isUserRecoverableError()) {
-            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    dialog.cancel();
+                }
+            });
         }
         else if (errorReason != YouTubeInitializationResult.SUCCESS) {
             String errorMessage = String.format(getString(R.string.ma_error_player), errorReason.toString());
