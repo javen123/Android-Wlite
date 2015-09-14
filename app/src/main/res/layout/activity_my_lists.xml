@@ -42,7 +42,7 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/primary_light"
+        android:background="@color/toolbar_background"
         android:orientation="horizontal"
         android:visibility="invisible"
         android:weightSum="2">
@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/text_blue_dark"
             android:text="@string/button_cancel" />
 
         <Button
@@ -59,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/text_red_dark"
             android:text="@string/button_delete" />
     </LinearLayout>
 
