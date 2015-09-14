@@ -45,7 +45,7 @@
     <string name="signUpBtnText">Sign Up!</string>
     <string name="signUpErrorMsg">Please fill out all fields</string>
     <string name="signUpErrorTitle">Oops!</string>
-    <string name="no_list_text">Ahh, you need to create a searchlist (or seven)! Nothing here to show...</string>
+    <string name="no_list_text">No Searchlists available</string>
 
 
     <!-- Login Activity Strings -->

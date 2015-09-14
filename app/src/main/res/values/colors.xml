@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     As with the dimens.xml, each activity will have it's own sub-section here for anything
-    that is specific to an activity that is not a global style
+    that is specific to an activity that is not a global style (to help organization)
 -->
 <resources>
     <color name="primary">#2196F3</color>
@@ -13,7 +13,7 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
-    <!-- text color variations -->
+    <!-- text color variations (for global usage) -->
     <color name="text_white">#FFFFFFFF</color>
     <color name="text_black">#FF000000</color>
     <color name="text_grey_dark">#FF333333</color>
@@ -23,19 +23,19 @@
     <color name="text_blue_dark">#122040</color>
     <color name="text_red_dark">#4B0004</color>
 
-    <!-- Activity Backgrounds -->
+    <!-- Main Activity styles -->
     <color name="activity_main_background">#FF253E66</color>
     <color name="activity_background_white">#FFFFFFFF</color>
 
-    <!-- toolbar primary and secondary text -->
+    <!-- Toolbar primary and secondary text -->
     <color name="toolbar_text_primary">#FFC7E0FC</color>
     <color name="toolbar_text_secondary">#FFC8C8C8</color>
     <color name="toolbar_background">#FF122040</color>
 
-    <!-- login activity styles -->
+    <!-- Login Activity styles -->
     <color name="login_btn_background">#FF253E66</color>
     <color name="login_btn_textColor">#FFFFFFFF</color>
 
-    <!-- signup activity styles -->
+    <!-- Signup Activity styles -->
     <color name="signup_text_dark">#FF555555</color>
 </resources>
