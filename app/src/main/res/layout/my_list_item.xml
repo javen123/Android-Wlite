@@ -3,9 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:weightSum="2"
-    >
+    android:weightSum="2" >
 
+<!--
+    Controls the UI for the list items in MyLists (list video item is for the individuals in the
+    detailed lists view)
+-->
 
     <TextView
         android:textColor="@color/text_white"
