@@ -148,12 +148,12 @@ public class AlertDialogFragment extends DialogFragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-            if (e != null) {
-                Log.d("Error with list pull: ", e.getLocalizedMessage());
-            } else {
+                if (e != null) {
+                    Log.d("Error with list pull: ", e.getLocalizedMessage());
+                } else {
 
-                listHelper(activity, vidId, title, message);
-            }
+                    listHelper(activity, vidId, title, message);
+                }
             }
         });
     }
@@ -242,5 +242,23 @@ public class AlertDialogFragment extends DialogFragment {
         });
         AlertDialog addTitle = newTitle.create();
         addTitle.show();
+    }
+
+    public static void dataConnection(final Activity activity){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Oops");
+        builder.setMessage("Please connect to the internet to use this service");
+        builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                activity.finish();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
     }
 }

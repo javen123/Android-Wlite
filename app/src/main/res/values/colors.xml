@@ -13,6 +13,7 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
+
     <!-- text color variations (for global usage) -->
     <color name="text_white">#FFFFFFFF</color>
     <color name="text_black">#FF000000</color>

@@ -1,7 +1,10 @@
 package com.wavlite.WLAndroid.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,8 +19,6 @@ import com.parse.ui.ParseLoginBuilder;
 import com.wavlite.WLAndroid.AlertDialogFragment;
 import com.wavlite.WLAndroid.CreateLists;
 import com.wavlite.WLAndroid.R;
-
-import java.util.Arrays;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -41,7 +42,9 @@ public class MainActivity extends BaseActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.loadUrl("http://www.wavlite.com/api/videoPlayer.html");
 
-
+        if(isNetworkAvailable() == false){
+            AlertDialogFragment.dataConnection(this);
+        }
 
         // load toolbar
         activateToolbar();
@@ -57,9 +60,6 @@ public class MainActivity extends BaseActivity {
         else {
             AlertDialogFragment.grabUserList(curUser);
         }
-
-    //TODO: wrap into connection test
-
 
     }  // onCreate
 
@@ -133,12 +133,19 @@ public class MainActivity extends BaseActivity {
                 .setParseLoginInvalidCredentialsToastText("Your email and/or password is not correct")
                 .setParseLoginEmailAsUsername(true)
                 .setParseSignupSubmitButtonText("Submit registration")
-                .setFacebookLoginEnabled(true)
-                .setFacebookLoginButtonText("Facebook")
-                .setFacebookLoginPermissions(Arrays.asList("public_profile", "user_friends"))
-                .setTwitterLoginEnabled(true)
-                .setTwitterLoginButtontext("Twitter")
                 .build();
         startActivityForResult(parseLoginIntent, 0);
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+
+        return isAvailable;
+    }
+
 }

@@ -46,11 +46,13 @@
 
     <style name="MyDialogue" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/MyTextTitleStyle</item>
-
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="MyTextTitleStyle">
         <item name="android:textColor">@color/text_blue_dark</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+
     </style>
 </resources>
