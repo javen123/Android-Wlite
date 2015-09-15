@@ -26,12 +26,9 @@
         android:icon="@drawable/ic_add"
         tools:ignore="AppCompatResource" />
 
-
     <item
         android:id="@+id/main_action_logout"
         android:orderInCategory="4"
         android:title="@string/btn_actionLogOut"
         wavlite:showAsAction="never" />
-
-
 </menu>
