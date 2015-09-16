@@ -12,10 +12,11 @@
     <color name="com_parse_ui_parse_login_help_button_label">#E0E0E0</color>
     <color name="com_parse_ui_parse_login_help_button_label_focus">#CCCCCC</color>
     <color name="com_parse_ui_parse_login_help_button_label_push">#AAAAAA</color>
-    <color name="com_parse_ui_parse_login_text_hint">#AAAAAA</color>
+    <color name="com_parse_ui_parse_login_text_hint">#C7E0FC</color>
     <color name="com_parse_ui_twitter_login_button">#2DAAE2</color>
     <color name="com_parse_ui_twitter_login_button_focus">#2788BE</color>
     <color name="com_parse_ui_twitter_login_button_push">#2588B5</color>
+    <color name="text_blue_xlite">#C7E0FC</color>
     <dimen name="com_parse_ui_horizontal_margin">16dp</dimen>
     <dimen name="com_parse_ui_large_vertical_spacing">24dp</dimen>
     <dimen name="com_parse_ui_small_horizontal_spacing">8dp</dimen>
@@ -93,6 +94,7 @@
     </style>
     <style name="ParseLoginUI.EditText" parent="@android:style/Widget.EditText">
         <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/text_blue_xlite</item>
     </style>
     <style name="ParseLoginUI.HelpButton" parent="@android:style/Widget.Button">
         <item name="android:layout_width">wrap_content</item>

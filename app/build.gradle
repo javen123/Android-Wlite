@@ -29,7 +29,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.0.1'
     compile project(':ParseLoginUI')
-    compile files('com.ParseLoginUI/ParseFacebookUtilsV4-1.10.0.jar')
+    compile files("$rootProject.projectDir/ParseLoginUI/libs/ParseFacebookUtilsV4-1.10.1.jar")
+    compile files("$rootProject.projectDir/ParseLoginUI/libs/ParseTwitterUtils-1.10.1.jar")
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.apis:google-api-services-youtube:v3-rev141-1.20.0'
     compile 'com.android.support:multidex:1.0.1'

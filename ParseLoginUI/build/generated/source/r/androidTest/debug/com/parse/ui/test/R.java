@@ -21,11 +21,12 @@ public final class R {
         public static final int com_parse_ui_parse_login_help_button_label=0x7f060007;
         public static final int com_parse_ui_parse_login_help_button_label_focus=0x7f060008;
         public static final int com_parse_ui_parse_login_help_button_label_push=0x7f060009;
-        public static final int com_parse_ui_parse_login_help_button_label_selector=0x7f06000e;
+        public static final int com_parse_ui_parse_login_help_button_label_selector=0x7f06000f;
         public static final int com_parse_ui_parse_login_text_hint=0x7f06000a;
         public static final int com_parse_ui_twitter_login_button=0x7f06000b;
         public static final int com_parse_ui_twitter_login_button_focus=0x7f06000c;
         public static final int com_parse_ui_twitter_login_button_push=0x7f06000d;
+        public static final int text_blue_xlite=0x7f06000e;
     }
     public static final class dimen {
         public static final int com_parse_ui_horizontal_margin=0x7f070000;

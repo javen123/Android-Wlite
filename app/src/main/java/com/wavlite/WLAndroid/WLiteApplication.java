@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
+import com.parse.ParseTwitterUtils;
 
 /**
  * Created by javen on 6/19/15.
@@ -14,8 +15,8 @@ public class WLiteApplication extends Application {
     public void onCreate(){
         super.onCreate();
         Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "ykrFkxjHcVz8j8oBSc8ZFpXH0gSu99vkKEhzt6Hs", "pmzgjReSbDsmwvZXLNoqNGXtIqo5ZCbu04WwuSrM");
+        Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
         FacebookSdk.sdkInitialize(getApplicationContext());
-
+        ParseTwitterUtils.initialize(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret));
     }
 }

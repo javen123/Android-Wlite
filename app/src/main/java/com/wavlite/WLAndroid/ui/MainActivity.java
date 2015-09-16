@@ -133,6 +133,7 @@ public class MainActivity extends BaseActivity {
                 .setParseLoginInvalidCredentialsToastText("Your email and/or password is not correct")
                 .setParseLoginEmailAsUsername(true)
                 .setParseSignupSubmitButtonText("Submit registration")
+                .setTwitterLoginEnabled(true)
                 .build();
         startActivityForResult(parseLoginIntent, 0);
     }
