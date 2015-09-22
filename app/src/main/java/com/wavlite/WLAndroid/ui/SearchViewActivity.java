@@ -81,7 +81,6 @@ public class SearchViewActivity extends BaseActivity {
 
                 searchOnYoutube(s);
                 mSearchView.clearFocus();
-                finish();
                 return true;
             }
 
