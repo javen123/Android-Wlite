@@ -6,6 +6,7 @@
 
     <item
         android:id="@+id/ml_action_logout"
+        android:icon="@drawable/ic_logout"
         app:showAsAction="ifRoom"
         android:orderInCategory="4"
         android:title="@string/btn_actionLogOut" />

@@ -28,12 +28,13 @@
     <item
         android:id="@+id/edit_list_bulk"
         android:title="Edit"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/icons_edit"
         android:orderInCategory="4"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_logout"
+        android:icon="@drawable/ic_logout"
         app:showAsAction="ifRoom"
         android:orderInCategory="6"
         android:title="@string/btn_actionLogOut" />
