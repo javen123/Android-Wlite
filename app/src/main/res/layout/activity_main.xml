@@ -30,12 +30,21 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/app_bar" />
 
+    <!--
+        DISPLAY ALL MODULES/VIEWS/CONTENT HERE
+        Below is the image view that is just holding the Wavlite logo as a place holder. This image
+        view is directly below the webView (which may be changed). This will be where all content
+        for the landing page will go (regardless of view type).
+
+        NOTE: THE LOGO USED HERE IS LARGER THAN XXXHDMI:
+              *** FULL SIZE (1060px X 1060px, .png) ***
+    -->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageViewLogo"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_launcher_192"
+        android:src="@drawable/ic_logo_fullsize"
         android:layout_below="@+id/webView" />
 
 </RelativeLayout>
