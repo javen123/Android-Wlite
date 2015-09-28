@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.parse.FindCallback;
@@ -44,11 +45,14 @@ import com.wavlite.WLAndroid.YoutubeConnector;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class DetailListView extends BaseActivity {
-    private Bundle args;//received bundle from MyLists page
+import static android.widget.Toast.LENGTH_LONG;
 
+public class DetailListView extends BaseActivity {
+
+    private Bundle args;//received bundle from MyLists page
     private static List<VideoItem> searchResults;
     private Handler handler;
     private static ListView detailList;
@@ -58,13 +62,6 @@ public class DetailListView extends BaseActivity {
 
     private CheckBox check;
 
-    public Boolean getCheckActivated() {
-        return checkActivated;
-    }
-
-//    public void setCheckActivated(Boolean checkActivated) { TODO: test to make sure this is not necessary
-//        this.checkActivated = checkActivated;
-//    }
     private Boolean checkActivated = false;
     private ViewGroup deleteBtnView;
 
@@ -380,8 +377,7 @@ public class DetailListView extends BaseActivity {
                 public void done(ParseException e) {
                     if (e != null) {
                         //do something
-                    }
-                    else {
+                    } else {
                         activity.finish();
                     }
                 }
@@ -398,8 +394,7 @@ public class DetailListView extends BaseActivity {
                 public void done(ParseException e) {
                     if (e != null) {
                         //do something
-                    }
-                    else {
+                    } else {
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -425,6 +420,7 @@ public class DetailListView extends BaseActivity {
         deleteBtnView = (ViewGroup)findViewById(R.id.delete_mass_view);
         deleteBtnView.setVisibility(View.VISIBLE);
 
+        //set cancel button
         Button cancel = (Button)findViewById(R.id.cancel_btn);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -444,7 +440,225 @@ public class DetailListView extends BaseActivity {
             }
         });  // check.setOnCheckedChangeListener
 
+
+        //set copy to button
+        Button copyTo = (Button)findViewById(R.id.copy_to_btn);
+        copyTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //get tapped ids
+                final List newList = getTappedIds();
+                //get current title list and convert to new arraylist
+                ArrayList<String> listTitles = new ArrayList<String>();
+                for (ParseObject titles : MyLists.myArrayTitles) {
+                    String title = (titles.get("listTitle").toString());
+                    listTitles.add(title);
+                }
+
+                final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
+
+                AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
+                a.setTitle("Copy to?");
+                a.setIcon(R.drawable.ic_launcher_48);
+                a.setItems(titles, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            // pull list title
+                            String titleTapped = titles[which].toString();
+
+                            //query by list title
+                            ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
+                            query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                            query1.orderByAscending("listTitle");
+                            query1.whereEqualTo("listTitle", titleTapped);
+                            query1.getFirstInBackground(new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(final ParseObject object, ParseException e) {
+//                                            Array id = new Array();
+                                    if (object.get("myLists") == null) {
+
+                                        object.put("myLists", newList);
+                                        object.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e != null) {
+                                                    Log.d("Parse:", e.getLocalizedMessage());
+                                                } else {
+                                                    AlertDialogFragment.grabUserList(ParseUser.getCurrentUser());
+
+                                                    Toast.makeText(DetailListView.this, "Video(s) saved", LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                                    } else {
+
+                                        //set up returned list
+                                        List myList = object.getList("myLists");
+
+                                        for (int i = 0; i < myList.size(); i++) {
+
+                                            newList.add(myList.get(i).toString());
+
+                                        }
+
+                                        object.put("myLists", newList);
+                                        object.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e != null) {
+                                                    Log.d("Parse:", e.getLocalizedMessage());
+                                                } else {
+                                                    AlertDialogFragment.grabUserList(ParseUser.getCurrentUser());
+
+                                                    Toast.makeText(DetailListView.this, "Video(s) saved", LENGTH_LONG).show();
+                                                    deleteBtnView.setVisibility(View.INVISIBLE);
+                                                    checkActivated = false;
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        } catch (Exception e) {
+                            throw e;
+                        }
+                    }
+                });
+                AlertDialog copy = a.create();
+                copy.show();
+
+            }  // onClick
+        });
+
+        //set move to button
+        Button moveTo = (Button)findViewById(R.id.move_to_btn);
+        moveTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //get tapped ids
+                final List newList = getTappedIds();
+
+                //get current title list and convert to new arraylist
+                ArrayList<String> listTitles = new ArrayList<String>();
+                for (ParseObject titles : MyLists.myArrayTitles) {
+                    String title = (titles.get("listTitle").toString());
+                    listTitles.add(title);
+                }
+
+                final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
+
+                AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
+                a.setTitle("Move to?");
+                a.setIcon(R.drawable.ic_launcher_48);
+                a.setItems(titles, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            // pull list title
+                            String titleTapped = titles[which].toString();
+
+                            // get and remove objects from current list
+                            Iterator<VideoItem> x = searchResults.iterator();
+                            while (x.hasNext()) {
+
+                                VideoItem y = x.next();
+                                if (y.isSelected()) {
+                                    x.remove();
+                                }
+                            }
+
+                            final ArrayList<String> temp = new ArrayList<>();
+                            for (VideoItem x1 : searchResults) {
+                                temp.add(x1.getId());
+                            }
+
+                            final String listId = convertIntentToListId(args);
+
+                            ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>("Lists");
+                            query2.getInBackground(listId, new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(ParseObject object, ParseException e) {
+                                    object.put("myLists", temp);
+                                    try {
+                                        object.save();
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                            });
+
+                            //query by list title
+                            ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
+                            query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+                            query1.orderByAscending("listTitle");
+                            query1.whereEqualTo("listTitle", titleTapped);
+                            query1.getFirstInBackground(new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(final ParseObject object, ParseException e) {
+//                                            Array id = new Array();
+                                    if (object.get("myLists") == null) {
+
+                                        object.put("myLists", newList);
+                                        object.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e != null) {
+                                                    Log.d("Parse:", e.getLocalizedMessage());
+                                                } else {
+                                                    AlertDialogFragment.grabUserList(ParseUser.getCurrentUser());
+
+                                                    Toast.makeText(DetailListView.this, "Video(s) saved", LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                                    } else {
+
+                                        //set up returned list
+                                        List myList = object.getList("myLists");
+
+                                        for (int i = 0; i < myList.size(); i++) {
+
+                                            newList.add(myList.get(i).toString());
+
+                                        }
+
+                                        object.put("myLists", newList);
+                                        object.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e != null) {
+                                                    Log.d("Parse:", e.getLocalizedMessage());
+                                                } else {
+                                                    AlertDialogFragment.grabUserList(ParseUser.getCurrentUser());
+
+                                                    Toast.makeText(DetailListView.this, "Video(s) saved", LENGTH_LONG).show();
+                                                    deleteBtnView.setVisibility(View.INVISIBLE);
+                                                    checkActivated = false;
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        } catch (Exception e) {
+                            throw e;
+                        }
+                    }
+                });
+                AlertDialog copy = a.create();
+                copy.show();
+
+            }
+        });
+
+        //set delete button
         Button delete = (Button)findViewById(R.id.delete_mass_btn);
+
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -499,4 +713,17 @@ public class DetailListView extends BaseActivity {
             }  // onClick
         });  //  delete.setOnClickListener
     }  // addDelete
+
+    private List getTappedIds () {
+        final ArrayList<String> temp = new ArrayList<>();
+        final ArrayList<String> newList = new ArrayList<String>();
+        //add unchecked to temp array
+        for (VideoItem x : searchResults) {
+            if (x.isSelected()) {
+                newList.add(x.getId());
+            }
+        }
+        return newList;
+    }
+
 }  // END DetailListView

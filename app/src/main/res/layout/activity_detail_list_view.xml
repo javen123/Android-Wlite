@@ -37,7 +37,8 @@
         android:background="@color/toolbar_background"
         android:orientation="horizontal"
         android:visibility="invisible"
-        android:weightSum="2">
+        android:weightSum="4">
+
 
         <Button
             android:id="@+id/cancel_btn"
@@ -46,6 +47,23 @@
             android:layout_weight="1"
             android:textColor="@color/text_blue_dark"
             android:text="@string/button_cancel" />
+
+        <Button
+            android:id="@+id/copy_to_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/text_blue_dark"
+            android:text="@string/button_copy_to" />
+
+        <Button
+            android:id="@+id/move_to_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/text_blue_dark"
+            android:text="@string/button_move" />
+
 
         <Button
             android:id="@+id/delete_mass_btn"

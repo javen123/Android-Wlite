@@ -46,6 +46,7 @@ public class AlertDialogFragment extends DialogFragment {
             String title = (titles.get("listTitle").toString());
             listTitles.add(title);
         }
+
         final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
 
         // Set text/color manipulation here?

@@ -124,8 +124,8 @@ public class SearchViewActivity extends BaseActivity {
     }
 
     private void addItemToParseArray(int loc) {
-        final String videoTitle = searchResults.get(loc).getTitle().toString();
-        final String videoId = searchResults.get(loc).getId().toString();
+        final String videoTitle = searchResults.get(loc).getTitle();
+        final String videoId = searchResults.get(loc).getId();
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setIcon(R.drawable.ic_launcher_48);
         alert.setTitle("" + videoTitle);
