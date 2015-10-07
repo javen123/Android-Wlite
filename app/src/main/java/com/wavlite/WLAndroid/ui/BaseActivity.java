@@ -15,7 +15,7 @@ public class BaseActivity extends AppCompatActivity {
             mToolbar = (Toolbar)findViewById(R.id.app_bar);
             if(mToolbar != null) {
                 setSupportActionBar(mToolbar);
-                mToolbar.setLogo(R.mipmap.ic_toolbar);
+                mToolbar.setLogo(R.drawable.ic_toolbar);
              }
         }
         return mToolbar;
