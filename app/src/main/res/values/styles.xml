@@ -46,7 +46,7 @@
 
     <style name="MyDialogue" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/MyTextTitleStyle</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <item name="android:padding">4dp</item>
 
     </style>
