@@ -651,7 +651,7 @@ public class DetailListView extends BaseActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
-                a.setTitle(getString(R.string.dlv_dialog_del_confirm));
+                a.setTitle(getString(R.string.builder_mdel_confirm));
                 a.setIcon(R.drawable.ic_dialog);
                 a.setNegativeButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
                     @Override
