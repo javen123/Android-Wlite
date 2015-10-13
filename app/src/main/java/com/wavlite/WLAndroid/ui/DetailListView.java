@@ -51,44 +51,42 @@ import java.util.List;
 import static android.widget.Toast.LENGTH_LONG;
 
 public class DetailListView extends BaseActivity {
-
-    private Bundle args;//received bundle from MyLists page
-    private static List<VideoItem> searchResults;
+    private Bundle args;  // received bundle from MyLists page
     private Handler handler;
-    private static ListView detailList;
-    private static ArrayAdapter adapter;
-
-    private static ProgressBar mProgressBar2;
-
     private CheckBox check;
-
     private Boolean checkActivated = false;
     private ViewGroup deleteBtnView;
+
+    private static List<VideoItem> searchResults;
+    private static ListView detailList;
+    private static ArrayAdapter adapter;
+    private static ProgressBar mProgressBar2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_list_view);
 
-        //set porgress bar
+        //set progress bar
         mProgressBar2 = (ProgressBar)findViewById(R.id.progressBar2);
         mProgressBar2.setVisibility(View.INVISIBLE);
 
-        //activate toobar
+        // activate toolbar
         activateToolbarWithHomeEnabled();
 
-        //array handler
+        // array handler
         handler = new Handler();
         Intent intent = this.getIntent();
 
-        //Grab intents
+        // Grab intents
         args = intent.getBundleExtra("myListids");
         String title = intent.getStringExtra("title");
 
-        //update page titel
+        // update page title
         this.setTitle(title);
 
-        //convert intent ids to youtube searchable string
+        // convert intent ids to youtube searchable string
         String ids = convertIntentToVideoIds(args);
         detailList = (ListView) findViewById(R.id.detail_list_view);
         YoutubeConnector yc = new YoutubeConnector(DetailListView.this);
@@ -101,8 +99,6 @@ public class DetailListView extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_list_view, menu);
-
-
         return true;
     }  // onCreateOptionsMenu
 
@@ -110,7 +106,7 @@ public class DetailListView extends BaseActivity {
     private void onSearchPressed() {
         Intent intent = new Intent();
         setResult(Activity.RESULT_OK, intent);
-    }
+    }  // onSearchPressed
 
 
     @Override
@@ -129,7 +125,6 @@ public class DetailListView extends BaseActivity {
             case R.id.menu_create_list1:
                 CreateLists cl = new CreateLists();
                 cl.addNewItemToList(DetailListView.this);
-
                 return true;
             case R.id.edit_list_bulk:
                 addDelete();
@@ -143,7 +138,6 @@ public class DetailListView extends BaseActivity {
                 return super.onOptionsItemSelected(item);
         }
     }  // onOptionsItemSelected
-
 
 
     private void navigateToLogin() {
@@ -174,7 +168,6 @@ public class DetailListView extends BaseActivity {
 
 
     private void updateVideosFound() {
-
         adapter = new ArrayAdapter<VideoItem>(DetailListView.this, R.layout.list_video_item, searchResults) {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
@@ -183,6 +176,7 @@ public class DetailListView extends BaseActivity {
                 // row item tapped action / send to YouTube player / delete video on longPress
                 addRowClickListener();
 
+                // Update listView items
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.detail_title);
                 VideoItem searchResult = searchResults.get(position);
@@ -234,24 +228,23 @@ public class DetailListView extends BaseActivity {
                         String videoTitle = searchResults.get(position).getTitle();
                         final String listId = convertIntentToListId(args);
                         AlertDialog.Builder builder = new AlertDialog.Builder(DetailListView.this);
-                        builder.setIcon(R.drawable.ic_launcher_48);
+                        builder.setIcon(R.drawable.ic_dialog);
                         builder.setTitle(getString(R.string.dlv_dialog_title));
                         builder.setMessage("" + videoTitle + "\n ");
 
-                        // delete selected list : DELETE BUTTON
+                        // DELETE SELECTED SEARCHLIST : DELETE BUTTON
                         builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 AlertDialog.Builder delete = new AlertDialog.Builder(DetailListView.this);
-                                delete.setTitle("Are you sure");
-                                delete.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                delete.setTitle(getString(R.string.dlv_dlg_del_sl_confirm));
+                                delete.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.cancel();
                                     }
                                 });
-                                delete.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                delete.setPositiveButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
@@ -261,7 +254,8 @@ public class DetailListView extends BaseActivity {
                                             public void done(ParseObject object, ParseException e) {
                                                 if (e != null) {
                                                     Log.d("Parse:", e.getLocalizedMessage());
-                                                } else {
+                                                }
+                                                else {
                                                     updateListView(DetailListView.this, position, object);
                                                 }
                                             }
@@ -297,16 +291,16 @@ public class DetailListView extends BaseActivity {
                                         }
                                         else {
                                             if (list.isEmpty()) {
-                                                // do something
+                                                // do something (This should be logged so there is evidence of it)
                                             }
                                             else {
-                                                try{
+                                                try {
                                                     AlertDialogFragment.adjustListItems(position,list,DetailListView.this, videoId,getApplicationContext());
                                                 }
-                                                catch (Exception e1){
+                                                catch (Exception e1) {
                                                     throw e1;
                                                 }
-                                                finally{
+                                                finally {
                                                     searchResults.remove(position);
 
                                                     final ArrayList<String> temp = new ArrayList<>();
@@ -320,7 +314,8 @@ public class DetailListView extends BaseActivity {
                                                             object.put("myLists", temp);
                                                             try {
                                                                 object.save();
-                                                            } catch (ParseException e1) {
+                                                            }
+                                                            catch (ParseException e1) {
                                                                 e1.printStackTrace();
                                                             }
                                                         }
@@ -342,14 +337,16 @@ public class DetailListView extends BaseActivity {
         }  // if(detailList != null)
     }  // addRowClickListener
 
-     //: HELPERS
+
+    //: HELPERS
     private String convertIntentToVideoIds(Bundle info) {
         ArrayList<ListTuple> object = (ArrayList<ListTuple>) info.getSerializable("ArrayList");
         ListTuple ids = object.get(0);
         ArrayList vIds = ids.getVideoIds();
         String mVIds = TextUtils.join(",", vIds);
         return mVIds;
-    }
+    }  // convertIntentToVideoIds
+
 
     public List<String> convertSearchResultsToIntentIds(List<VideoItem> curList) {
         List<String> temp = new ArrayList<>();
@@ -357,14 +354,16 @@ public class DetailListView extends BaseActivity {
             temp.add(x.getId().toString());
         }
         return temp;
-    }
+    }  // convertSearchResultsToIntentIds
+
 
     private String convertIntentToListId(Bundle info) {
         ArrayList<ListTuple> object = (ArrayList<ListTuple>) info.getSerializable("ArrayList");
         ListTuple ids = object.get(0);
         String listId = ids.getObjectId();
         return listId;
-    }
+    }  // convertIntentToListId
+
 
     public static void updateListView(final Activity activity, final int pos, ParseObject newList) {
         searchResults.remove(pos);
@@ -376,8 +375,9 @@ public class DetailListView extends BaseActivity {
                 @Override
                 public void done(ParseException e) {
                     if (e != null) {
-                        //do something
-                    } else {
+                        // do something (This should be logged so there is evidence of it)
+                    }
+                    else {
                         activity.finish();
                     }
                 }
@@ -393,8 +393,9 @@ public class DetailListView extends BaseActivity {
                 @Override
                 public void done(ParseException e) {
                     if (e != null) {
-                        //do something
-                    } else {
+                        //do something (This should be logged so there is evidence of it)
+                    }
+                    else {
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -402,6 +403,7 @@ public class DetailListView extends BaseActivity {
         }
         toggleProgressBar();
     }  // updateListView
+
 
     private static void toggleProgressBar() {
         if (mProgressBar2.getVisibility() == View.INVISIBLE) {
@@ -420,7 +422,7 @@ public class DetailListView extends BaseActivity {
         deleteBtnView = (ViewGroup)findViewById(R.id.delete_mass_view);
         deleteBtnView.setVisibility(View.VISIBLE);
 
-        //set cancel button
+        // SET CANCEL BUTTON
         Button cancel = (Button)findViewById(R.id.cancel_btn);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -440,15 +442,13 @@ public class DetailListView extends BaseActivity {
             }
         });  // check.setOnCheckedChangeListener
 
-
-        //set copy to button
+        // SET COPY BUTTON
         Button copyTo = (Button)findViewById(R.id.copy_to_btn);
         copyTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final List newList = getTappedIds();  // get tapped ids
 
-                //get tapped ids
-                final List newList = getTappedIds();
                 //get current title list and convert to new arraylist
                 ArrayList<String> listTitles = new ArrayList<String>();
                 for (ParseObject titles : MyLists.myArrayTitles) {
@@ -459,8 +459,8 @@ public class DetailListView extends BaseActivity {
                 final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
 
                 AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
-                a.setTitle("Copy to?");
-                a.setIcon(R.drawable.ic_launcher_48);
+                a.setTitle(getString(R.string.dlv_dialog_copy));
+                a.setIcon(R.drawable.ic_dialog);
                 a.setItems(titles, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -476,31 +476,27 @@ public class DetailListView extends BaseActivity {
                             query1.getFirstInBackground(new GetCallback<ParseObject>() {
                                 @Override
                                 public void done(final ParseObject object, ParseException e) {
-//                                            Array id = new Array();
+//                                     Array id = new Array();
                                     if (object.get("myLists") == null) {
-
                                         object.put("myLists", newList);
                                         object.saveInBackground(new SaveCallback() {
                                             @Override
                                             public void done(ParseException e) {
                                                 if (e != null) {
                                                     Log.d("Parse:", e.getLocalizedMessage());
-                                                } else {
+                                                }
+                                                else {
                                                     AlertDialogFragment.grabUserList(ParseUser.getCurrentUser());
-
-                                                    Toast.makeText(DetailListView.this, "Video(s) saved", LENGTH_LONG).show();
+                                                    Toast.makeText(DetailListView.this, getString(R.string.dlv_toast_saved), LENGTH_LONG).show();
                                                 }
                                             }
                                         });
-                                    } else {
-
+                                    }
+                                    else {
                                         //set up returned list
                                         List myList = object.getList("myLists");
-
                                         for (int i = 0; i < myList.size(); i++) {
-
                                             newList.add(myList.get(i).toString());
-
                                         }
 
                                         object.put("myLists", newList);
@@ -509,10 +505,10 @@ public class DetailListView extends BaseActivity {
                                             public void done(ParseException e) {
                                                 if (e != null) {
                                                     Log.d("Parse:", e.getLocalizedMessage());
-                                                } else {
+                                                }
+                                                else {
                                                     AlertDialogFragment.grabUserList(ParseUser.getCurrentUser());
-
-                                                    Toast.makeText(DetailListView.this, "Video(s) saved", LENGTH_LONG).show();
+                                                    Toast.makeText(DetailListView.this, getString(R.string.dlv_toast_saved), LENGTH_LONG).show();
                                                     deleteBtnView.setVisibility(View.INVISIBLE);
                                                     checkActivated = false;
                                                     adapter.notifyDataSetChanged();
@@ -522,25 +518,23 @@ public class DetailListView extends BaseActivity {
                                     }
                                 }
                             });
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e) {
                             throw e;
                         }
                     }
                 });
                 AlertDialog copy = a.create();
                 copy.show();
-
             }  // onClick
-        });
+        });  // copyTo.setOnClickListener
 
-        //set move to button
+        // SET MOVE BUTTON
         Button moveTo = (Button)findViewById(R.id.move_to_btn);
         moveTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //get tapped ids
-                final List newList = getTappedIds();
+                final List newList = getTappedIds();  //get tapped ids
 
                 //get current title list and convert to new arraylist
                 ArrayList<String> listTitles = new ArrayList<String>();
@@ -552,8 +546,8 @@ public class DetailListView extends BaseActivity {
                 final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
 
                 AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
-                a.setTitle("Move to?");
-                a.setIcon(R.drawable.ic_launcher_48);
+                a.setTitle(getString(R.string.dlv_dialog_move));
+                a.setIcon(R.drawable.ic_dialog);
                 a.setItems(titles, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -564,7 +558,6 @@ public class DetailListView extends BaseActivity {
                             // get and remove objects from current list
                             Iterator<VideoItem> x = searchResults.iterator();
                             while (x.hasNext()) {
-
                                 VideoItem y = x.next();
                                 if (y.isSelected()) {
                                     x.remove();
@@ -577,7 +570,6 @@ public class DetailListView extends BaseActivity {
                             }
 
                             final String listId = convertIntentToListId(args);
-
                             ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>("Lists");
                             query2.getInBackground(listId, new GetCallback<ParseObject>() {
                                 @Override
@@ -585,7 +577,8 @@ public class DetailListView extends BaseActivity {
                                     object.put("myLists", temp);
                                     try {
                                         object.save();
-                                    } catch (ParseException e1) {
+                                    }
+                                    catch (ParseException e1) {
                                         e1.printStackTrace();
                                     }
                                 }
@@ -599,31 +592,27 @@ public class DetailListView extends BaseActivity {
                             query1.getFirstInBackground(new GetCallback<ParseObject>() {
                                 @Override
                                 public void done(final ParseObject object, ParseException e) {
-//                                            Array id = new Array();
+//                                    Array id = new Array();
                                     if (object.get("myLists") == null) {
-
                                         object.put("myLists", newList);
                                         object.saveInBackground(new SaveCallback() {
                                             @Override
                                             public void done(ParseException e) {
                                                 if (e != null) {
                                                     Log.d("Parse:", e.getLocalizedMessage());
-                                                } else {
+                                                }
+                                                else {
                                                     AlertDialogFragment.grabUserList(ParseUser.getCurrentUser());
-
-                                                    Toast.makeText(DetailListView.this, "Video(s) saved", LENGTH_LONG).show();
+                                                    Toast.makeText(DetailListView.this, getString(R.string.dlv_toast_saved), LENGTH_LONG).show();
                                                 }
                                             }
                                         });
-                                    } else {
-
-                                        //set up returned list
+                                    }
+                                    else {
+                                        // set up returned list
                                         List myList = object.getList("myLists");
-
                                         for (int i = 0; i < myList.size(); i++) {
-
                                             newList.add(myList.get(i).toString());
-
                                         }
 
                                         object.put("myLists", newList);
@@ -632,10 +621,10 @@ public class DetailListView extends BaseActivity {
                                             public void done(ParseException e) {
                                                 if (e != null) {
                                                     Log.d("Parse:", e.getLocalizedMessage());
-                                                } else {
+                                                }
+                                                else {
                                                     AlertDialogFragment.grabUserList(ParseUser.getCurrentUser());
-
-                                                    Toast.makeText(DetailListView.this, "Video(s) saved", LENGTH_LONG).show();
+                                                    Toast.makeText(DetailListView.this, getString(R.string.dlv_toast_saved), LENGTH_LONG).show();
                                                     deleteBtnView.setVisibility(View.INVISIBLE);
                                                     checkActivated = false;
                                                     adapter.notifyDataSetChanged();
@@ -645,28 +634,26 @@ public class DetailListView extends BaseActivity {
                                     }
                                 }
                             });
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e) {
                             throw e;
                         }
                     }
                 });
                 AlertDialog copy = a.create();
                 copy.show();
-
             }
         });
 
-        //set delete button
+        // SET DELETE BUTTON
         Button delete = (Button)findViewById(R.id.delete_mass_btn);
-
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
-                a.setTitle("Are you sure?");
-                a.setIcon(R.drawable.ic_launcher_48);
-                a.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                a.setTitle(getString(R.string.dlv_dialog_del_confirm));
+                a.setIcon(R.drawable.ic_dialog);
+                a.setNegativeButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final ArrayList<String> temp = new ArrayList<>();
@@ -691,7 +678,8 @@ public class DetailListView extends BaseActivity {
                             public void done(ParseObject object, ParseException e) {
                                 if (e != null) {
                                     Log.d("Parse:", e.getLocalizedMessage());
-                                } else {
+                                }
+                                else {
                                     object.put("myLists", temp);
                                     object.saveInBackground(new SaveCallback() {
                                         @Override
@@ -709,7 +697,6 @@ public class DetailListView extends BaseActivity {
                 });
                 AlertDialog del = a.create();
                 del.show();
-
             }  // onClick
         });  //  delete.setOnClickListener
     }  // addDelete
@@ -724,6 +711,6 @@ public class DetailListView extends BaseActivity {
             }
         }
         return newList;
-    }
+    }  // getTappedIds
 
-}  // END DetailListView
+}  // DetailListView
