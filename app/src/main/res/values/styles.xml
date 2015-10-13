@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
 
+
     <!-- check into overwriting these values so we can leave these as defaults -->
     <style name="Theme.Base" parent="AppTheme">
         <item name="colorPrimary">@color/primary</item>
@@ -19,6 +20,7 @@
 
     <style name="Theme.Wavlite" parent="Theme.Base" />
 
+
     <style name="ActionBarThemeOverlay" parent="">
         <item name="android:textColorPrimary">@color/primary_text</item>
         <!-- colorControlHighlight requires api 21 minimum -->
@@ -28,6 +30,7 @@
         <item name="android:background">@color/toolbar_background</item>
         <item name="android:titleTextStyle">@style/TextAppearance.AppCompat.Title</item>
      </style>
+
 
     <!-- THIS IS THE CURRENT THEME FOR THE TOOLBAR! -->
     <style name="ActionBarThemeTop" parent="">
@@ -44,16 +47,17 @@
         <item name= "android:src">@drawable/ic_menu</item>
     </style>
 
+
+    <!-- Dialog Window Theme -->
     <style name="MyDialogue" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/MyTextTitleStyle</item>
         <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:padding">4dp</item>
-
+        <item name="android:padding">5dp</item>
     </style>
 
     <style name="MyTextTitleStyle">
         <item name="android:textColor">@color/text_blue_dark</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-
     </style>
+
 </resources>
