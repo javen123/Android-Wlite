@@ -38,21 +38,20 @@ import com.wavlite.WLAndroid.YoutubeConnector;
 import java.util.List;
 
 public class SearchViewActivity extends BaseActivity {
-
-    public static final String YT_QUERY = "YTSEARCH";
-
     private SearchView mSearchView;
     private List<VideoItem> searchResults;
     private ProgressBar mProgressBar;
-    protected YoutubeConnector yc;
     private ListView videosFound;
     private Handler handler;
+
+    protected YoutubeConnector yc;
+
+    public static final String YT_QUERY = "YTSEARCH";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_view);
-
         activateToolbarWithHomeEnabled();
 
         yc = new YoutubeConnector(SearchViewActivity.this);
@@ -61,14 +60,12 @@ public class SearchViewActivity extends BaseActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
 
-
-
         searchOnYoutube(getString(R.string.ma_searchOnYoutube));
-    }
+    }  // onCreate
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_search_view, menu);
 
         SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
@@ -78,7 +75,6 @@ public class SearchViewActivity extends BaseActivity {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-
                 searchOnYoutube(s);
                 mSearchView.clearFocus();
                 return true;
@@ -90,22 +86,18 @@ public class SearchViewActivity extends BaseActivity {
                 if (nt > 2) {
                     searchOnYoutube(newText);
                 }
-
                 return true;
             }
-        });
-
+        });  // mSearchView.setOnQueryTextListener
         return true;
-    }
+    }  // onCreateOptionsMenu
+
 
     @Override
     protected void onResume() {
         super.onResume();
-
         checkYTSearchInput();
-
     }  // onResume
-
 
 
     @Override
@@ -115,19 +107,19 @@ public class SearchViewActivity extends BaseActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // no inspection Simplifiable If Statement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
+    }  // onOptionsItemSelected
+
 
     private void addItemToParseArray(int loc) {
         final String videoTitle = searchResults.get(loc).getTitle();
         final String videoId = searchResults.get(loc).getId();
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setIcon(R.drawable.ic_launcher_48);
+        alert.setIcon(R.drawable.ic_dialog);
         alert.setTitle("" + videoTitle);
         alert.setMessage(getString(R.string.ma_dialog_add));
         alert.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
@@ -141,13 +133,15 @@ public class SearchViewActivity extends BaseActivity {
                     public void done(List<ParseObject> list, ParseException e) {
                         if (e != null) {
                             Log.d("Error with list pull: ", e.getLocalizedMessage());
-                        } else {
+                        }
+                        else {
                             if (list.isEmpty()) {
                                 // If no searchlists saved for user
                                 AlertDialogFragment.addItemAndList(
                                         SearchViewActivity.this, videoId, getString(R.string.ma_dialog_congrats),
                                         getString(R.string.ma_dialog_msg_congrats));
-                            } else {
+                            }
+                            else {
                                 Log.d("ITR", "Alert should of triggered");
                                 AlertDialogFragment.adjustListItems(0, list, SearchViewActivity.this, videoId, getApplicationContext());
                             }
@@ -167,19 +161,21 @@ public class SearchViewActivity extends BaseActivity {
         alertDialog.show();
     }  // addItemToParseArray
 
-    private void checkYTSearchInput(){
 
+    private void checkYTSearchInput() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String newQuery = sharedPreferences.getString(YT_QUERY, "");
-
+        // Run default search, else run query from search input
         if (YT_QUERY == null) {
+            // This would be where we set genre buttons in a switch(?)
             searchOnYoutube("new+top+hits");
         }
         else {
             searchOnYoutube(newQuery);
             this.getSharedPreferences(YT_QUERY,0).edit().clear().commit();
         }
-    }
+    }  // checkYTSearchInput
+
 
     public void updateVideosFound() {
         final ArrayAdapter<VideoItem> adapter = new ArrayAdapter<VideoItem>(getApplicationContext(), R.layout.video_item, searchResults) {
@@ -191,6 +187,7 @@ public class SearchViewActivity extends BaseActivity {
                 // row item tapped action / send to YouTube player
                 addRowClickListener();
 
+                // Set up list display
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.title);
                 VideoItem searchResult = searchResults.get(position);
@@ -198,17 +195,17 @@ public class SearchViewActivity extends BaseActivity {
                 title.setText(searchResult.getTitle());
                 Log.i("YOU", "Update video");
                 return convertView;
-            }
+            }  // getView
         };  // final ArrayAdapter
         videosFound.setAdapter(adapter);
     }  // updateVideosFound
+
 
     private void addRowClickListener() {
         if (videosFound != null) {
             videosFound.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int pos, long id) {
-
                     List<String> vidIds = new DetailListView().convertSearchResultsToIntentIds(searchResults);
                     Intent intent = YouTubeStandalonePlayer.createVideosIntent(SearchViewActivity.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
                     startActivity(intent);
@@ -221,8 +218,10 @@ public class SearchViewActivity extends BaseActivity {
                     return true;
                 }
             });
-        }  // if (videosFound != null)
+        }  // if
     }  // addRowClickListener
+
+
     private void searchOnYoutube(final String keywords) {
         toggleProgressBar();
         new Thread() {
@@ -249,4 +248,4 @@ public class SearchViewActivity extends BaseActivity {
             videosFound.setVisibility(View.VISIBLE);
         }
     }  // toggleProgressBar
-}
+}  // SearchViewActivity
