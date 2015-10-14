@@ -17,7 +17,7 @@
     -->
 
     <!-- Multi edit container -->
-    <dimen name="multiedit_container">60dp</dimen>
+    <dimen name="multiedit_container">56dp</dimen>
 
 
     <!-- login/sign-in buttons : btn_[position(t,r,b,l)_[style] -->
@@ -61,6 +61,11 @@
     <dimen name="activity_my_lists_divider_height">1dp</dimen>
 
 
-    <!-- player activity specifics -->
+    <!-- DetailListView Bottom Edit Button Drawer -->
+    <dimen name="dlv_edit_pA">3dp</dimen>
+    <dimen name="dlv_edit_pT">3dp</dimen>
+    <dimen name="dlv_edit_pR">3dp</dimen>
+    <dimen name="dlv_edit_pB">3dp</dimen>
+    <dimen name="dlv_edit_pL">3dp</dimen>
 
 </resources>
