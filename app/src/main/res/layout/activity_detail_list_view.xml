@@ -1,9 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.wavlite.WLAndroid.ui.DetailListView"
-    android:padding="0dp">
+    android:padding="@dimen/padding_0dp">
 
 
     <include
@@ -26,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/app_bar"
-        android:dividerHeight="@dimen/activity_my_lists_divider_height"
+        android:dividerHeight="@dimen/divider_1dp"
         android:focusable="false"
         android:focusableInTouchMode="false" />
 
@@ -41,43 +42,50 @@
         android:background="@color/toolbar_background"
         android:orientation="horizontal"
         android:visibility="invisible"
-        android:weightSum="4">
+        android:weightSum="4"
+        android:paddingLeft="@dimen/dlv_edit_pL"
+        android:paddingRight="@dimen/dlv_edit_pR">
 
         <!-- CANCEL -->
         <Button
             android:id="@+id/cancel_btn"
+            android:text="@string/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/text_blue_dark"
-            android:text="@string/button_cancel" />
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/text_blue_dark" />
 
         <!-- COPY -->
         <Button
             android:id="@+id/copy_to_btn"
+            android:text="@string/button_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/text_blue_dark"
-            android:text="@string/button_copy" />
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/text_blue_dark" />
 
         <!-- MOVE -->
         <Button
             android:id="@+id/move_to_btn"
+            android:text="@string/button_move"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/text_blue_dark"
-            android:text="@string/button_move" />
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/text_blue_dark" />
 
         <!-- DELETE -->
         <Button
             android:id="@+id/delete_mass_btn"
+            android:text="@string/button_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/text_red_dark"
-            android:text="@string/button_delete" />
-    </LinearLayout>
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/text_red_dark" />
+
+    </LinearLayout><!-- /Button drawer and buttons layout -->
 
 </RelativeLayout>
