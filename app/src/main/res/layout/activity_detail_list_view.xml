@@ -10,6 +10,7 @@
         android:id="@+id/app_bar"
         layout="@layout/toolbar" />
 
+
     <ProgressBar
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyleLarge"
@@ -17,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+
 
     <!-- can I use a text view here instead? -->
     <ListView
@@ -28,6 +30,8 @@
         android:focusable="false"
         android:focusableInTouchMode="false" />
 
+
+    <!-- Button layout container with Buttons -->
     <LinearLayout
         android:id="@+id/delete_mass_view"
         android:layout_width="match_parent"
@@ -39,7 +43,7 @@
         android:visibility="invisible"
         android:weightSum="4">
 
-
+        <!-- CANCEL -->
         <Button
             android:id="@+id/cancel_btn"
             android:layout_width="wrap_content"
@@ -48,6 +52,7 @@
             android:textColor="@color/text_blue_dark"
             android:text="@string/button_cancel" />
 
+        <!-- COPY -->
         <Button
             android:id="@+id/copy_to_btn"
             android:layout_width="wrap_content"
@@ -56,6 +61,7 @@
             android:textColor="@color/text_blue_dark"
             android:text="@string/button_copy" />
 
+        <!-- MOVE -->
         <Button
             android:id="@+id/move_to_btn"
             android:layout_width="wrap_content"
@@ -64,7 +70,7 @@
             android:textColor="@color/text_blue_dark"
             android:text="@string/button_move" />
 
-
+        <!-- DELETE -->
         <Button
             android:id="@+id/delete_mass_btn"
             android:layout_width="wrap_content"
