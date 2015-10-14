@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/text_blue_dark"
-            android:text="@string/button_copy_to" />
+            android:text="@string/button_copy" />
 
         <Button
             android:id="@+id/move_to_btn"
