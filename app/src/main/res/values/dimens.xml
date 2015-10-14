@@ -58,10 +58,30 @@
     <dimen name="activity_main_divider_height">1dp</dimen>
     <dimen name="activity_main_margin_horizontal">0dp</dimen>
     <dimen name="activity_main_margin_vertical">0dp</dimen>
+
+    <!-- margin (ALL SIDES) resources -->
+    <dimen name="margin_0dp">0dp</dimen>
+    <dimen name="margin_1dp">1dp</dimen>
+    <dimen name="margin_2dp">2dp</dimen>
+    <dimen name="margin_3dp">3dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_5dp">5dp</dimen>
+
+    <!-- padding resources -->
+    <dimen name="padding_0dp">0dp</dimen>
+    <dimen name="padding_1dp">1dp</dimen>
+    <dimen name="padding_2dp">2dp</dimen>
+    <dimen name="padding_3dp">3dp</dimen>
+    <dimen name="padding_4dp">4dp</dimen>
+    <dimen name="padding_5dp">5dp</dimen>
+
+    <!-- divider height resources -->
+    <dimen name="divider_0dp">0dp</dimen>
     <dimen name="divider_1dp">1dp</dimen>
     <dimen name="divider_2dp">2dp</dimen>
     <dimen name="divider_3dp">3dp</dimen>
     <dimen name="divider_4dp">4dp</dimen>
+    <dimen name="divider_5dp">5dp</dimen>
     <!-- REMOVE - use divider_*dp (above) instead -->
     <dimen name="activity_my_lists_divider_height">1dp</dimen>
 
