@@ -23,11 +23,8 @@ import com.wavlite.WLAndroid.R;
 import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends BaseActivity {
-
-    private static final int RECOVERY_DIALOG_REQUEST = 1;
-
     private WebView webview;
-
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
     public static final String TAG = MainActivity.class.getSimpleName();
 
 
@@ -36,25 +33,24 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        //set up webview
+        // set up webview
         webview = (WebView)findViewById(R.id.webView);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.loadUrl("http://www.wavlite.com/api/videoPlayer.html");
 
-        if(isNetworkAvailable() == false){
+        if (!isNetworkAvailable()) {
             AlertDialogFragment.dataConnection(this);
         }
 
         // load toolbar
         activateToolbar();
 
-        //confirm youTube API Check
+        // confirm youTube API Check
         checkYouTubeApi();
 
         // grab current list
         ParseUser curUser = ParseUser.getCurrentUser();
-        if (curUser == null){
+        if (curUser == null) {
             parseLoginHelper();
         }
         else {
@@ -63,9 +59,9 @@ public class MainActivity extends BaseActivity {
 
     }  // onCreate
 
+
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
-
         if (errorReason.isUserRecoverableError()) {
             errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
@@ -76,18 +72,19 @@ public class MainActivity extends BaseActivity {
         }
         else if (errorReason != YouTubeInitializationResult.SUCCESS) {
             String errorMessage = String.format(getString(R.string.ma_error_player), errorReason.toString());
-            Toast.makeText(this, errorMessage, LENGTH_LONG).show();
+            Toast.makeText(this, errorMessage, LENGTH_LONG).show();  // error initializing
         }
     }  // checkYouTubeApi
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-
         return true;
     }  // onCreateOptionsMenu
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -117,14 +114,17 @@ public class MainActivity extends BaseActivity {
         }
     }  // onOptionsItemSelected
 
+
     private void navigateToLogin() {
         MyLists.myArrayTitles.clear();
         parseLoginHelper();
     }  // navigateToLogin
 
 
-    private void parseLoginHelper(){
+    private void parseLoginHelper() {
         ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
+        // ic_launcher_192 should not be used. Use ic_login (not yet available) instead
+        // These can be put into string resources as well
         Intent parseLoginIntent = builder.setAppLogo(R.drawable.ic_launcher_192)
                 .setParseLoginEnabled(true)
                 .setParseLoginButtonText("Go")
@@ -136,7 +136,8 @@ public class MainActivity extends BaseActivity {
                 .setTwitterLoginEnabled(true)
                 .build();
         startActivityForResult(parseLoginIntent, 0);
-    }
+    }  // parseLoginHelper
+
 
     private boolean isNetworkAvailable() {
         ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -145,8 +146,7 @@ public class MainActivity extends BaseActivity {
         if (networkInfo != null && networkInfo.isConnected()) {
             isAvailable = true;
         }
-
         return isAvailable;
-    }
+    }  // isNetworkAvailable
 
-}
+}  // MainActivity
