@@ -36,9 +36,9 @@ public class AlertDialogFragment extends DialogFragment {
 
     // Button text strings for static builder methods
     public static String btn_add = "ADD SEARCHLIST";
-    public static String btn_cancel = "Cancel";  // Unused. Set for future usage
+    public static String btn_cancel = "Cancel";  // Unused. Is set for possible future usage
     public static String btn_create = "CREATE NEW SEARCHLIST";
-    public static String btn_gotit = "GOT IT!";
+    public static String btn_gotIt = "GOT IT!";
     public static String btn_ok = "OK";
 
     public static String toastSaved = "Video Saved";
@@ -46,7 +46,7 @@ public class AlertDialogFragment extends DialogFragment {
     // Dialog title and message strings for static builder methods
     public static String errTitle = "Oops!";  // change to 'Something went wrong'? May be more clear
     public static String alertDataConnTitle = "Connection Problem!";
-    public static String alertDataConnMsg = "You must have a data or internet connection to continue";
+    public static String alertDataConnMsg = "You must have an internet connection to view this content";
     public static String selectTitle = "Select Searchlist";
     public static String successTitle = "Success!";
     public static String successMsg = "Your new searchlist has been created with this "
@@ -229,7 +229,7 @@ public class AlertDialogFragment extends DialogFragment {
                             final AlertDialog.Builder success = new AlertDialog.Builder(activity);
                             success.setTitle(title);
                             success.setMessage(message);
-                            success.setPositiveButton(btn_gotit, new DialogInterface.OnClickListener() {
+                            success.setPositiveButton(btn_gotIt, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     grabUserList(ParseUser.getCurrentUser());
