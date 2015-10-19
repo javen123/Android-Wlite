@@ -10,23 +10,26 @@ import com.wavlite.WLAndroid.R;
 public class BaseActivity extends AppCompatActivity {
     private Toolbar mToolbar;
 
+
     protected Toolbar activateToolbar() {
-        if(mToolbar == null) {
+        if (mToolbar == null) {
             mToolbar = (Toolbar)findViewById(R.id.app_bar);
-            if(mToolbar != null) {
+            if (mToolbar != null) {
                 setSupportActionBar(mToolbar);
                 mToolbar.setLogo(R.drawable.ic_toolbar);
-             }
+            }
         }
         return mToolbar;
-    }
+    }  // activateToolbar
 
+
+    // setDisplayHomeAsUpEnabled(true) returns back arrow in toolbar
     protected Toolbar activateToolbarWithHomeEnabled() {
         activateToolbar();
-        if(mToolbar != null) {
-            // returns back arrow for home in appbar
+        if (mToolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         return mToolbar;
-    }
-}
+    }  // activateToolbarWithHomeEnabled
+
+}  // BaseActivity
