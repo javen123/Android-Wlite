@@ -42,7 +42,28 @@
          (!) CHANGE button_edit FROM "Rename" TO "Edit", this makes more sense (!)
          (!) Locate the java resource and update it so that this "edit" button
              can be potentially be used in a future release                    (!)
+
+         *** NOTE: Button names are alphabetized by name after the btn_ prefix ***
     -->
+    <string name="btn_add">Add</string>
+    <string name="btn_blues">BLUES</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_copy">Copy</string>
+    <string name="btn_country">COUNTRY</string>
+    <string name="btn_create">Create</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_hiphop">HIP-HOP</string>
+    <string name="btn_jazz">JAZZ</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_later">Later</string>
+    <string name="btn_move">Move</string>
+    <string name="btn_rename">Rename</string>
+    <string name="btn_rnb">R &amp; B</string>
+    <string name="btn_rock">ROCK</string>
+    <string name="btn_save">Save</string>
+
+    <!-- update to "btn_* from above and remove -->
     <string name="button_add">Add</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_copy">Copy</string>
@@ -55,7 +76,7 @@
     <string name="button_rename">Rename</string>
     <string name="button_save">Save</string>
 
-    <!-- Genre Buttons -->
+    <!-- Genre Buttons (USE "btn_*" ABOVE and REMOVE) -->
     <string name="genre_blues">BLUES</string>
     <string name="genre_country">COUNTRY</string>
     <string name="genre_hiphop">HIP-HOP</string>
