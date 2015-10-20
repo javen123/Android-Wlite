@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_main_background"
+    android:background="@color/ma_main_bkgnd"
     tools:context=".MyLists">
 
     <include android:id= "@+id/app_bar" layout="@layout/toolbar"/>
@@ -17,50 +17,50 @@
         android:layout_centerVertical="true" />
 
     <ListView
+        android:id="@+id/my_list_titles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/my_list_titles"
         android:layout_below="@+id/app_bar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:visibility="invisible"
         android:longClickable="true"
-        android:dividerHeight="@dimen/divider_1dp"/>
+        android:dividerHeight="@dimen/divider_1" />
 
     <TextView
+        android:id="@+id/no_list_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/no_list_text"
-        android:id="@+id/no_list_text"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:id="@+id/delete_myLists_view"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/ml_H_80"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@color/toolbar_background"
         android:orientation="horizontal"
         android:visibility="invisible"
-        android:weightSum="2">
+        android:weightSum="@string/ws_2">
 
         <Button
             android:id="@+id/mylist_massCancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/text_blue_dark"
+            android:layout_weight="@string/ws_1"
+            android:textColor="@color/txt_blue_dark"
             android:text="@string/button_cancel" />
 
         <Button
             android:id="@+id/mylist_massDelete_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/text_red_dark"
+            android:layout_weight="@string/ws_1"
+            android:textColor="@color/txt_red_dark"
             android:text="@string/button_delete" />
     </LinearLayout>
 
