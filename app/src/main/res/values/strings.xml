@@ -34,7 +34,7 @@
     <string name="searchable_hint">Wavlite Media Search</string>
     <string name="title_activity_my_lists">My Searchlists</string>
     <string name="title_activity_detail_list_view">Detailed Searchlist View</string>
-    <string name="alert_first_list_title">Create a new Searchlist\n</string>
+    <string name="title_list_text">Medium Text</string>
     <string name="main_menu_action_list">My Searchlists</string>
 
 
@@ -54,6 +54,17 @@
     <string name="button_move">Move</string>
     <string name="button_rename">Rename</string>
     <string name="button_save">Save</string>
+
+    <!-- Genre Buttons -->
+    <string name="genre_blues">BLUES</string>
+    <string name="genre_country">COUNTRY</string>
+    <string name="genre_hiphop">HIP-HOP</string>
+    <string name="genre_jazz">JAZZ</string>
+    <string name="genre_rnb">R &amp; B</string>
+    <string name="genre_rock">ROCK</string>
+
+    <!-- button content descriptions -->
+    <string name="button_delete_cd">Close Button</string>
 
 
     <!-- Toast Messages -->
@@ -104,6 +115,7 @@
     <string name="builder_err_title">Something went wrong</string>
     <string name="errorOK">OK</string>
     <string name="title_activity_alert_new_list">AlertNewList</string>
+    <string name="dialog_create_list">Create a new Searchlist\n</string>
     <string name="dialog_title_oops">Oops!</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_create_list">Create Searchlist</string>
@@ -126,6 +138,7 @@
     <string name="ma_dialog_congrats">Congrats!</string>
     <string name="ma_dialog_msg_congrats">You\'ve created your first Searchlist!</string>
     <string name="ma_dialog_add">Add to (or create a new) Searchlist</string>
+    <string name="ma_logo_cd">Wavlite Logo (Large)</string>
 
 
     <!-- MyLists.java Dialog Boxes. All dialogs begin with ml_ -->
@@ -151,6 +164,12 @@
     <string name="parse_client_key">pmzgjReSbDsmwvZXLNoqNGXtIqo5ZCbu04WwuSrM</string>
     <string name="twitter_consumer_key">r7cJ69aO0Y7LaZuR6g8DmzBpJ</string>
     <string name="twitter_consumer_secret">AvCnihJJ0PjbvcjAM8hCjG9xxZjhcrSypJyP7bUSprInQyle3Y</string>
-    <string name="button_copy_to">Copy to</string>
+
+    <!-- ParseUI String Resources -->
+    <string name="parse_LoginButtonText">Login</string>
+    <string name="parse_SignupButtonText">Sign Up!</string>
+    <string name="parse_LoginHelpText">Forgot password?</string>
+    <string name="parse_LoginInvalid">Email and/or Password Mismatch</string>
+    <string name="parse_SignupSubmitButtonText">Register</string>
 
 </resources>
