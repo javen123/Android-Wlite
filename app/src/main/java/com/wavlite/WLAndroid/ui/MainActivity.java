@@ -127,12 +127,12 @@ public class MainActivity extends BaseActivity {
         // These can be put into string resources as well
         Intent parseLoginIntent = builder.setAppLogo(R.drawable.ic_launcher_192)
                 .setParseLoginEnabled(true)
-                .setParseLoginButtonText("Go")
-                .setParseSignupButtonText("Register")
-                .setParseLoginHelpText("Forgot password?")
-                .setParseLoginInvalidCredentialsToastText("Your email and/or password is not correct")
+                .setParseLoginButtonText(getString(R.string.parse_LoginButtonText))
+                .setParseSignupButtonText(getString(R.string.parse_SignupButtonText))
+                .setParseLoginHelpText(getString(R.string.parse_LoginHelpText))
+                .setParseLoginInvalidCredentialsToastText(getString(R.string.parse_LoginInvalid))
                 .setParseLoginEmailAsUsername(true)
-                .setParseSignupSubmitButtonText("Submit registration")
+                .setParseSignupSubmitButtonText(getString(R.string.parse_SignupSubmitButtonText))
                 .setTwitterLoginEnabled(true)
                 .build();
         startActivityForResult(parseLoginIntent, 0);
