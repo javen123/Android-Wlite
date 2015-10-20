@@ -45,8 +45,8 @@
 
 
     <!-- Main Activity styles -->
-    <color name="ma_main_background">#FF253E66</color>
-    <color name="ma_btn_view_bkgnd">#122040</color>
+    <color name="ma_main_bkgnd">#FF253E66</color>
+    <color name="ma_btnV_bkgnd">#122040</color>
 
 
     <!-- Toolbar primary and secondary text -->
