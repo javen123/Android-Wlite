@@ -1,29 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:weightSum="2" >
+    android:padding="@dimen/padding_16"
+    android:weightSum="@string/ws_2" >
 
-<!--
-    Controls the UI for the list items in MyLists (list video item is for the individuals in the
-    detailed lists view)
--->
 
+    <!--
+        Controls the UI for the list items in MyLists (list video
+        item is for the individuals in the detailed lists view)
+    -->
     <TextView
-        android:textColor="@color/text_white"
+        android:id="@+id/list_title"
+        android:textColor="@color/txt_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_title"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="@dimen/margin_8"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:maxLines="2" />
+        android:maxLines="@string/ws_2" />
+
 
     <CheckBox
+        android:id="@+id/checkBox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checkBox2"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
