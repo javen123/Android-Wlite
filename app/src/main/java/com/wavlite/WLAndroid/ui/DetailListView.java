@@ -233,18 +233,18 @@ public class DetailListView extends BaseActivity {
                         builder.setMessage("" + videoTitle + "\n ");
 
                         // DELETE SELECTED SEARCHLIST : DELETE BUTTON
-                        builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
+                        builder.setNeutralButton(getString(R.string.btn_delete), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 AlertDialog.Builder delete = new AlertDialog.Builder(DetailListView.this);
                                 delete.setTitle(getString(R.string.builder_del_sl_confirm));
-                                delete.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                                delete.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.cancel();
                                     }
                                 });
-                                delete.setPositiveButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
+                                delete.setPositiveButton(getString(R.string.btn_delete), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
@@ -268,7 +268,7 @@ public class DetailListView extends BaseActivity {
                         });  // builder.setNeutralButton
 
                         // CANCEL BUTTON
-                        builder.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                        builder.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
@@ -276,7 +276,7 @@ public class DetailListView extends BaseActivity {
                         });
 
                         // MOVE TO BUTTON
-                        builder.setPositiveButton(getString(R.string.button_move), new DialogInterface.OnClickListener() {
+                        builder.setPositiveButton(getString(R.string.btn_move), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, final int which) {
                                 final String videoId = searchResults.get(position).getId().toString();
@@ -653,7 +653,7 @@ public class DetailListView extends BaseActivity {
                 AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
                 a.setTitle(getString(R.string.builder_mdel_confirm));
                 a.setIcon(R.drawable.ic_dialog);
-                a.setNegativeButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
+                a.setNegativeButton(getString(R.string.btn_delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final ArrayList<String> temp = new ArrayList<>();

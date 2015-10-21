@@ -31,14 +31,14 @@ public class CreateLists {
         final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
         newListTitleAdd.setHint(context.getString(R.string.ml_dialog_hint_name));
 
-        newTitle.setNegativeButton(context.getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+        newTitle.setNegativeButton(context.getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });  // newTitle.setNegativeButton
 
-        newTitle.setPositiveButton(context.getString(R.string.button_save), new DialogInterface.OnClickListener() {
+        newTitle.setPositiveButton(context.getString(R.string.btn_save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final String mTitle = newListTitleAdd.getText().toString();
@@ -56,7 +56,7 @@ public class CreateLists {
                             final AlertDialog.Builder success = new AlertDialog.Builder(context);
                             success.setTitle(context.getString(R.string.ml_dialog_save));
                             success.setMessage(context.getString(R.string.ml_dialog_msg_save));
-                            success.setPositiveButton(context.getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                            success.setPositiveButton(context.getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     MyLists ml = new MyLists();

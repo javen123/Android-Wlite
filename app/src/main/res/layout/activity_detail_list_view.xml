@@ -46,7 +46,7 @@
         <!-- CANCEL -->
         <Button
             android:id="@+id/cancel_btn"
-            android:text="@string/button_cancel"
+            android:text="@string/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -56,7 +56,7 @@
         <!-- COPY -->
         <Button
             android:id="@+id/copy_to_btn"
-            android:text="@string/button_copy"
+            android:text="@string/btn_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -66,7 +66,7 @@
         <!-- MOVE -->
         <Button
             android:id="@+id/move_to_btn"
-            android:text="@string/button_move"
+            android:text="@string/btn_move"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -76,7 +76,7 @@
         <!-- DELETE -->
         <Button
             android:id="@+id/delete_mass_btn"
-            android:text="@string/button_delete"
+            android:text="@string/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

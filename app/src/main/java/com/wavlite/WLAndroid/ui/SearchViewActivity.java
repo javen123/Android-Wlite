@@ -122,7 +122,7 @@ public class SearchViewActivity extends BaseActivity {
         alert.setIcon(R.drawable.ic_dialog);
         alert.setTitle("" + videoTitle);
         alert.setMessage(getString(R.string.ma_dialog_add));
-        alert.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final ParseQuery<ParseObject> query = ParseQuery.getQuery("Lists");
@@ -151,7 +151,7 @@ public class SearchViewActivity extends BaseActivity {
             }  // onClick
         });  // alert.setPositiveButton
 
-        alert.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

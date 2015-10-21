@@ -219,12 +219,12 @@ public class MyLists extends BaseActivity {
                 builder.setMessage("" + myArrayTitles.get(position).get("listTitle").toString() + "\n ");
 
                 // DELETE SEARCHLIST
-                builder.setNeutralButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
+                builder.setNeutralButton(getString(R.string.btn_delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AlertDialog.Builder delete = new AlertDialog.Builder(MyLists.this);
                         delete.setTitle(getString(R.string.builder_del_sl_confirm));
-                        delete.setNegativeButton(getString(R.string.button_delete), new DialogInterface.OnClickListener() {
+                        delete.setNegativeButton(getString(R.string.btn_delete), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 ParseObject deletedList = myArrayTitles.get(position);
@@ -266,7 +266,7 @@ public class MyLists extends BaseActivity {
                                 });  // deletedList.deleteInBackground
                             }
                         });
-                        delete.setNeutralButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                        delete.setNeutralButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
@@ -278,7 +278,7 @@ public class MyLists extends BaseActivity {
                 });  // builder.setNeutralButton
 
 
-                builder.setPositiveButton(getString(R.string.button_rename), new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getString(R.string.btn_rename), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // pull reusable alert from layouts
@@ -290,14 +290,14 @@ public class MyLists extends BaseActivity {
                         final EditText newTitle = (EditText) v.findViewById(R.id.first_title);
                         editAlertTitle.setText(getString(R.string.ml_dialog_rename) + "\n ");
 
-                        editTitle.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                        editTitle.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
                         });  // editTitle.setNegativeButton
 
-                        editTitle.setPositiveButton(getString(R.string.button_save), new DialogInterface.OnClickListener() {
+                        editTitle.setPositiveButton(getString(R.string.btn_save), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // grab new title name from user input
@@ -321,7 +321,7 @@ public class MyLists extends BaseActivity {
                                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
                                             success.setTitle(getString(R.string.ml_dialog_updated));
                                             success.setMessage(getString((R.string.ml_dialog_msg_updated)));
-                                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                                            success.setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     adapter.notifyDataSetChanged();
@@ -339,7 +339,7 @@ public class MyLists extends BaseActivity {
                     }  // onClick
                 });  // builder.setPositiveButton
 
-                builder.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -420,14 +420,14 @@ public class MyLists extends BaseActivity {
         final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
         newListTitleAdd.setHint(getString(R.string.ml_dialog_hint_name));
 
-        newTitle.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+        newTitle.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });  // newTitle.setNegativeButton
 
-        newTitle.setPositiveButton(getString(R.string.button_save), new DialogInterface.OnClickListener() {
+        newTitle.setPositiveButton(getString(R.string.btn_save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final String mTitle = newListTitleAdd.getText().toString();
@@ -446,7 +446,7 @@ public class MyLists extends BaseActivity {
                             final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
                             success.setTitle(getString(R.string.ml_dialog_save));
                             success.setMessage(getString(R.string.ml_dialog_msg_save));
-                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                            success.setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     updatedListTitles();
