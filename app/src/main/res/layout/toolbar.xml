@@ -5,5 +5,5 @@
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
     wavlite:theme="@style/ActionBarThemeTop"
-    android:paddingRight="7dp" >
+    android:paddingRight="@dimen/dp7" >
 </android.support.v7.widget.Toolbar>
