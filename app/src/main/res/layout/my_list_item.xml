@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/dp16"
-    android:weightSum="@dimen/d_2" >
+    android:weightSum="2" >
 
 
     <!--
@@ -18,7 +18,7 @@
         android:layout_marginLeft="@dimen/dp8"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:maxLines="@dimen/d_2" />
+        android:maxLines="2" />
 
 
     <CheckBox

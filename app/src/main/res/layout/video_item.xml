@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/thumbnail"
         android:layout_marginLeft="@dimen/dp5"
-        android:maxLines="@dimen/d_3"
+        android:maxLines="3"
         android:layout_marginRight="@dimen/dp5"
         android:textColor="@color/txt_blue_xlite"
         android:gravity="center_horizontal|left" />
