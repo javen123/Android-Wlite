@@ -2,8 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding_16"
-    android:weightSum="@string/ws_2" >
+    android:padding="@dimen/dp16"
+    android:weightSum="@dimen/d_2" >
 
 
     <!--
@@ -15,10 +15,10 @@
         android:textColor="@color/txt_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_8"
+        android:layout_marginLeft="@dimen/dp8"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:maxLines="@string/ws_2" />
+        android:maxLines="@dimen/d_2" />
 
 
     <CheckBox
