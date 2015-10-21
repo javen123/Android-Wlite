@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.wavlite.WLAndroid.ui.DetailListView"
-    android:padding="@dimen/padding_0">
+    android:padding="@dimen/dp0">
 
     <include android:id="@+id/app_bar" layout="@layout/toolbar" />
 
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/app_bar"
-        android:dividerHeight="@dimen/divider_1"
+        android:dividerHeight="@dimen/dp1"
         android:focusable="false"
         android:focusableInTouchMode="false" />
 
@@ -33,15 +33,15 @@
     <LinearLayout
         android:id="@+id/delete_mass_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dlv_edit_cont_H"
+        android:layout_height="@dimen/dp56"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@color/toolbar_background"
         android:orientation="horizontal"
         android:visibility="invisible"
-        android:weightSum="@string/ws_4"
-        android:paddingLeft="@dimen/dlv_edit_pL"
-        android:paddingRight="@dimen/dlv_edit_pR">
+        android:weightSum="@dimen/d_4"
+        android:paddingLeft="@dimen/dp3"
+        android:paddingRight="@dimen/dp3">
 
         <!-- CANCEL -->
         <Button
@@ -49,7 +49,7 @@
             android:text="@string/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@string/ws_1"
+            android:layout_weight="@dimen/d_1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -59,7 +59,7 @@
             android:text="@string/button_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@string/ws_1"
+            android:layout_weight="@dimen/d_1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -69,7 +69,7 @@
             android:text="@string/button_move"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@string/ws_1"
+            android:layout_weight="@dimen/d_1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -79,7 +79,7 @@
             android:text="@string/button_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@string/ws_1"
+            android:layout_weight="@dimen/d_1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_red_dark" />
 
