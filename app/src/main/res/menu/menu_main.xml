@@ -8,14 +8,14 @@
         android:id="@+id/main_menu_search"
         android:title="@string/menu_search"
         android:icon="@drawable/ic_search"
-        android:orderInCategory="@dimen/d_1"
+        android:orderInCategory="1"
         wavlite:showAsAction="always" />
 
     <item
         android:id="@+id/main_menu_my_lists"
         android:title="@string/menu_mylists"
         android:icon="@drawable/ic_lists"
-        android:orderInCategory="@dimen/d_2"
+        android:orderInCategory="2"
         android:showAsAction="ifRoom"
         tools:ignore="AppCompatResource" />
 
@@ -23,7 +23,7 @@
         android:id="@+id/main_create_searchlist"
         android:title="@string/menu_create"
         android:icon="@drawable/ic_add"
-        android:orderInCategory="@dimen/d_3"
+        android:orderInCategory="3"
         android:showAsAction="ifRoom"
         tools:ignore="AppCompatResource" />
 
@@ -31,7 +31,7 @@
         android:id="@+id/main_action_logout"
         android:title="@string/menu_logout"
         android:icon="@drawable/ic_logout"
-        android:orderInCategory="@dimen/d_4"
+        android:orderInCategory="4"
         wavlite:showAsAction="never" />
 
 </menu>
