@@ -1,10 +1,11 @@
 <resources>
     <!--
-        All string resources for all files contained within the "/app" directory.
-        The "/ParseLoginUI" will have it's own set of string resources (but there
-        are the DEV and API keys in this resource file as well that are located
-        at the bottom) such as resource strings for the login/registration forms.
-        Each section is separated by 2 blank lines for readability
+        All string resources for all files contained within the "/app"
+        directory. The "/ParseLoginUI" will have it's own set of string
+        resources (but there are the DEV and API keys in this resource
+        file as well that are located at the bottom) such as resource
+        strings for the login/registration forms. Each section will be
+        separated by 2 blank lines for readability
     -->
 
 
@@ -20,7 +21,6 @@
          implement this as I move along through UI stuff)
     -->
     <string name="facebook_app_id">690962291030818</string>
-    <string name="searchable_label">Searchlist</string>
     <string name="searchable_hint">Wavlite Media Search</string>
     <string name="title_activity_my_lists">My Searchlists</string>
     <string name="title_activity_detail_list_view">Detailed Searchlist View</string>
@@ -37,12 +37,10 @@
     <string name="menu_settings">Settings</string>
 
 
-    <!-- Button resources for dialogs
-         (!) CHANGE button_edit FROM "Rename" TO "Edit", this makes more sense (!)
-         (!) Locate the java resource and update it so that this "edit" button
-             can be potentially be used in a future release                    (!)
-
-         *** NOTE: Button names are alphabetized by name after the btn_ prefix ***
+    <!--
+        Button resources for dialogs and layout views
+        *** NOTE: Button names are alphabetized by name
+            after the btn_ prefix (btn_[value]) ***
     -->
     <string name="btn_add">Add</string>
     <string name="btn_blues">BLUES</string>
@@ -56,8 +54,8 @@
     <string name="btn_jazz">JAZZ</string>
     <string name="btn_login">Login</string>
     <string name="btn_logout">Logout</string>
-    <string name="btn_ok">OK</string>
     <string name="btn_later">Later</string>
+    <string name="btn_ok">OK</string>
     <string name="btn_move">Move</string>
     <string name="btn_rename">Rename</string>
     <string name="btn_rnb">R &amp; B</string>
@@ -65,17 +63,8 @@
     <string name="btn_save">Save</string>
     <string name="btn_signup">Sign Up!</string>
 
-    <!-- update to "btn_* from above and remove -->
-    <string name="button_cancel">Cancel</string>
-    <string name="button_copy">Copy</string>
-    <string name="button_delete">Delete</string>
-    <string name="button_ok">OK</string>
-    <string name="button_move">Move</string>
-    <string name="button_rename">Rename</string>
-    <string name="button_save">Save</string>
-
     <!-- button content descriptions -->
-    <string name="button_delete_cd">Close Button</string>
+    <string name="btn_delete_cd">Close Button</string>
 
 
     <!-- Toast Messages -->
@@ -181,6 +170,7 @@
 
     <!-- NOT USED. TRIPLE CHECK -->
     <string name="PlayerTitle">Wavlite Player</string>
+    <string name="searchable_label">Searchlist</string>
     <string name="search_hint">search</string>
     <string name="action_search">Search</string>
     <string name="title_activity_search">Search Activity</string>

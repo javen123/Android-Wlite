@@ -1,59 +1,17 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">5dp</dimen>
-    <dimen name="activity_vertical_margin">5dp</dimen>
-    <dimen name="activity_horizontal_margin_login">30dp</dimen>
-    <dimen name="activity_vertical_margin_login">15dp</dimen>
-
     <!--
-        Default button and textbox paddings. If an activity needs a specific style that is not
-        global, then they will be defined below this global section and will be labeled by the
-        activity: [activity]_[widget [_position(t,r,b,l)]]_[style]. The t,r,b,l comes from the
-        shorthand for CSS (it has become second nature to me) which is for Top, Right, Bottom,
-        Left. So for a login activity button specifically, as seen below, would be
-        login_btn_t_margin  = login - button - top (t) - margin. I think this way there
-        is a naming consistency. Also, each individual activity will have it's own section
-        after the global section here.
+        Numeric dp units (replace all margin_/padding_ with below
+        and remove). Use these for ALL places that require dp units
+        but note that we will need to add a section for sp units to
+        be used for text/font-size dimensions. All other sections
+        have been removed to favor this as all places that used this
+        resource document had far to many "repeats" of certain units
+        that was completely unnecessary. If a measurement isn't here
+        it can very easily be added and then anything that needs a
+        dp resource, it'll all be under "@dimen/dp[size]". This is a
+        much more manageable way to handle this (ie we don't need 15
+        different dimens tags that result in 15dp)
     -->
-
-    <!-- Multi edit container -->
-
-
-    <!-- login/sign-in buttons : btn_[position(t,r,b,l)_[style] -->
-    <dimen name="form_btn_t_padding">25dp</dimen>
-    <dimen name="form_btn_r_padding">15dp</dimen>
-    <dimen name="form_btn_b_padding">25dp</dimen>
-    <dimen name="form_btn_l_padding">15dp</dimen>
-    <dimen name="form_btn_t_margin">5dp</dimen>
-    <dimen name="form_btn_r_margin">5dp</dimen>
-    <dimen name="form_btn_b_margin">5dp</dimen>
-    <dimen name="form_btn_l_margin">5dp</dimen>
-
-
-    <!-- login/sign-in textboxes : tbox_[position(t,r,b,l)_[style] -->
-    <dimen name="form_tbox_t_padding">25dp</dimen>
-    <dimen name="form_tbox_r_padding">25dp</dimen>
-    <dimen name="form_tbox_b_padding">15dp</dimen>
-    <dimen name="form_tbox_l_padding">25dp</dimen>
-    <dimen name="form_tbox_t_margin">5dp</dimen>
-    <dimen name="form_tbox_r_margin">5dp</dimen>
-    <dimen name="form_tbox_b_margin">5dp</dimen>
-    <dimen name="form_tbox_l_margin">5dp</dimen>
-
-
-    <!-- login activity specifics -->
-    <dimen name="login_btn_t_marginLI">35dp</dimen>
-    <dimen name="login_btn_textSize">20dp</dimen>
-    <!-- login activity sign-up button -->
-    <dimen name="login_sbtn_t_margin">150dp</dimen>
-    <dimen name="login_sbtn_textSize">14dp</dimen>
-
-
-    <!-- sign-up activity specifics -->
-    <dimen name="signup_btn_t_margin">25dp</dimen>
-
-
-    <!-- Numeric dp units (replace all margin_/padding_ with below and remove) -->
     <dimen name="dp0">0dp</dimen>
     <dimen name="dp1">1dp</dimen>
     <dimen name="dp2">2dp</dimen>
@@ -95,19 +53,7 @@
     <dimen name="dp221">221dp</dimen>
     <dimen name="dp320">320dp</dimen>
 
-    <!-- Dimens with NO UNITS (just numbers) -->
-    <dimen name="d_0">0</dimen>
-    <dimen name="d_1">1</dimen>
-    <dimen name="d_2">2</dimen>
-    <dimen name="d_3">3</dimen>
-    <dimen name="d_4">4</dimen>
-    <dimen name="d_5">5</dimen>
-    <dimen name="d_6">6</dimen>
-    <dimen name="d_7">7</dimen>
-    <dimen name="d_8">8</dimen>
-    <dimen name="d_9">9</dimen>
-    <dimen name="d_10">10</dimen>
-    <dimen name="d_100">100</dimen>
+    <!-- DOUBLE CHECK AND REMOVE ALL BELOW THIS LINE -->
 
     <!-- margin (ALL SIDES) resources -->
     <dimen name="margin_0">0dp</dimen>
@@ -147,50 +93,5 @@
     <dimen name="padding_14">14dp</dimen>
     <dimen name="padding_15">15dp</dimen>
     <dimen name="padding_16">16dp</dimen>
-
-    <!-- divider height resources -->
-    <dimen name="divider_0">0dp</dimen>
-    <dimen name="divider_1">1dp</dimen>
-    <dimen name="divider_2">2dp</dimen>
-    <dimen name="divider_3">3dp</dimen>
-    <dimen name="divider_4">4dp</dimen>
-    <dimen name="divider_5">5dp</dimen>
-
-
-    <!-- Number Resources (do not include units!)
-         (Technically should be in strings) -->
-    <dimen name="int_0">0</dimen>
-    <dimen name="int_1">1</dimen>
-    <dimen name="int_2">2</dimen>
-    <dimen name="int_3">3</dimen>
-    <dimen name="int_4">4</dimen>
-    <dimen name="int_5">5</dimen>
-    <dimen name="int_6">6</dimen>
-    <dimen name="int_7">7</dimen>
-    <dimen name="int_8">8</dimen>
-    <dimen name="int_9">9</dimen>
-
-
-    <!-- Main Activity (all will eventually be ma_*) -->
-    <dimen name="activity_main_divider_height">1dp</dimen>
-    <dimen name="activity_main_margin_horizontal">0dp</dimen>
-    <dimen name="activity_main_margin_vertical">0dp</dimen>
-    <dimen name="genre_view_H">56dp</dimen>
-    <dimen name="logo_placeholder_H">320dp</dimen>
-    <dimen name="webview_H">221dp</dimen>
-
-
-    <!-- My Lists View -->
-    <dimen name="ml_H_16">16dp</dimen>
-    <dimen name="ml_H_80">80dp</dimen>
-
-
-    <!-- DetailListView Bottom Edit Button Drawer -->
-    <dimen name="dlv_edit_cont_H">56dp</dimen>
-    <dimen name="dlv_edit_pA">3dp</dimen>
-    <dimen name="dlv_edit_pT">3dp</dimen>
-    <dimen name="dlv_edit_pR">3dp</dimen>
-    <dimen name="dlv_edit_pB">3dp</dimen>
-    <dimen name="dlv_edit_pL">3dp</dimen>
 
 </resources>
