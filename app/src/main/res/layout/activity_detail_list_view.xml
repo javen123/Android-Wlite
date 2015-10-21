@@ -39,7 +39,7 @@
         android:background="@color/toolbar_background"
         android:orientation="horizontal"
         android:visibility="invisible"
-        android:weightSum="@dimen/d_4"
+        android:weightSum="4"
         android:paddingLeft="@dimen/dp3"
         android:paddingRight="@dimen/dp3">
 
@@ -49,7 +49,7 @@
             android:text="@string/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -59,7 +59,7 @@
             android:text="@string/button_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -69,7 +69,7 @@
             android:text="@string/button_move"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -79,7 +79,7 @@
             android:text="@string/button_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_red_dark" />
 

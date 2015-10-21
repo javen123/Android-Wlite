@@ -56,7 +56,7 @@
         android:orientation="horizontal"
         android:paddingRight="@dimen/dp3"
         android:paddingLeft="@dimen/dp3"
-        android:weightSum="@dimen/d_3" >
+        android:weightSum="3" >
 
         <!-- ROCK -->
         <Button
@@ -64,7 +64,7 @@
             android:text="@string/btn_rock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -74,7 +74,7 @@
             android:text="@string/btn_jazz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -84,7 +84,7 @@
             android:text="@string/btn_hiphop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
     </LinearLayout>
@@ -98,7 +98,7 @@
         android:layout_below="@+id/genre_btn_view_1"
         android:background="@color/ma_btnV_bkgnd"
         android:orientation="horizontal"
-        android:weightSum="@dimen/d_3"
+        android:weightSum="3"
         android:paddingRight="@dimen/dp3"
         android:paddingLeft="@dimen/dp3" >
 
@@ -108,7 +108,7 @@
             android:text="@string/btn_country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -118,7 +118,7 @@
             android:text="@string/btn_blues"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
 
@@ -128,7 +128,7 @@
             android:text="@string/btn_rnb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1"
+            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:textColor="@color/txt_blue_dark" />
     </LinearLayout>

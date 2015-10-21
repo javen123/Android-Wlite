@@ -47,7 +47,7 @@
         android:background="@color/toolbar_background"
         android:orientation="horizontal"
         android:visibility="invisible"
-        android:weightSum="@dimen/d_2" >
+        android:weightSum="2" >
 
         <Button
             android:id="@+id/mylist_massCancel_btn"
@@ -55,7 +55,7 @@
             android:textColor="@color/txt_blue_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1" />
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/mylist_massDelete_btn"
@@ -63,7 +63,7 @@
             android:textColor="@color/txt_red_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/d_1" />
+            android:layout_weight="1" />
     </LinearLayout>
 
 </RelativeLayout>
