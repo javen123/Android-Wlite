@@ -3,13 +3,17 @@ package com.wavlite.WLAndroid.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeApiServiceUtil;
@@ -44,6 +48,9 @@ public class MainActivity extends BaseActivity {
 
         // load toolbar
         activateToolbar();
+
+        // load music genre buttons
+        loadMusicGenreButtons();
 
         // confirm youTube API Check
         checkYouTubeApi();
@@ -148,5 +155,67 @@ public class MainActivity extends BaseActivity {
         }
         return isAvailable;
     }  // isNetworkAvailable
+
+    private void loadMusicGenreButtons () {
+
+        final Intent searchIntent =  new Intent(MainActivity.this, SearchViewActivity.class);
+
+
+        Button btnRock = (Button)findViewById(R.id.btn_rock);
+        btnRock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setGenreSearchParams("top+new+rock");
+                startActivity(searchIntent);
+            }
+        });
+        Button btnJazz = (Button) findViewById(R.id.btn_jazz);
+        btnJazz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setGenreSearchParams("top+new+jazz");
+                startActivity(searchIntent);
+            }
+        });
+        Button btnHipHop = (Button)findViewById(R.id.btn_hiphop);
+        btnHipHop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setGenreSearchParams("top+new+hiphop");
+                startActivity(searchIntent);
+            }
+        });
+        Button btnCountry = (Button) findViewById(R.id.btn_country);
+        btnCountry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setGenreSearchParams("top+new+country");
+                startActivity(searchIntent);
+            }
+        });
+        Button btnBlues = (Button) findViewById(R.id.btn_blues);
+        btnBlues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setGenreSearchParams("top+new+blues");
+                startActivity(searchIntent);
+            }
+        });
+        Button btnRNB = (Button) findViewById(R.id.btn_rnb);
+        btnRNB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setGenreSearchParams("top+new+R&B");
+                startActivity(searchIntent);
+            }
+        });
+    }
+
+    private void setGenreSearchParams (String genre){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("YTSEARCH", genre);
+        editor.commit();
+    }
 
 }  // MainActivity

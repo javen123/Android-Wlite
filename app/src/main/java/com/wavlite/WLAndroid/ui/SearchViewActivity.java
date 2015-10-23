@@ -60,7 +60,8 @@ public class SearchViewActivity extends BaseActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        searchOnYoutube(getString(R.string.ma_searchOnYoutube));
+        checkYTSearchInput();
+//        searchOnYoutube(getString(R.string.ma_searchOnYoutube));
     }  // onCreate
 
 
@@ -172,7 +173,10 @@ public class SearchViewActivity extends BaseActivity {
         }
         else {
             searchOnYoutube(newQuery);
-            this.getSharedPreferences(YT_QUERY,0).edit().clear().commit();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("YTSEARCH", null);
+            editor.commit();
+
         }
     }  // checkYTSearchInput
 
