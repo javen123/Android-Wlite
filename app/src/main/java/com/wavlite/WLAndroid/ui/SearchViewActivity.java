@@ -37,6 +37,7 @@ import com.wavlite.WLAndroid.YoutubeConnector;
 
 import java.util.List;
 
+
 public class SearchViewActivity extends BaseActivity {
     private SearchView mSearchView;
     private List<VideoItem> searchResults;
@@ -48,12 +49,12 @@ public class SearchViewActivity extends BaseActivity {
 
     public static final String YT_QUERY = "YTSEARCH";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_view);
         activateToolbarWithHomeEnabled();
-
         yc = new YoutubeConnector(SearchViewActivity.this);
         videosFound = (ListView) findViewById(R.id.videos_found);
         handler = new Handler();
@@ -68,7 +69,6 @@ public class SearchViewActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search_view, menu);
-
         SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
         mSearchView = (SearchView)menu.findItem(R.id.main_search_view).getActionView();
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -101,13 +101,12 @@ public class SearchViewActivity extends BaseActivity {
     }  // onResume
 
 
+    // Handle action bar item clicks here. The action bar will automatically
+    // handle clicks on the Home/Up button, so long as you specify a parent
+    // activity in AndroidManifest.xml.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         // no inspection Simplifiable If Statement
         if (id == R.id.action_settings) {
             return true;
@@ -123,6 +122,7 @@ public class SearchViewActivity extends BaseActivity {
         alert.setIcon(R.drawable.ic_dialog);
         alert.setTitle("" + videoTitle);
         alert.setMessage(getString(R.string.ma_dialog_add));
+        // OK BUTTON
         alert.setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -151,7 +151,7 @@ public class SearchViewActivity extends BaseActivity {
                 });  // query.findInBackground
             }  // onClick
         });  // alert.setPositiveButton
-
+        // CANCEL BUTTON
         alert.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -168,7 +168,6 @@ public class SearchViewActivity extends BaseActivity {
         String newQuery = sharedPreferences.getString(YT_QUERY, "");
         // Run default search, else run query from search input
         if (YT_QUERY == null) {
-            // This would be where we set genre buttons in a switch(?)
             searchOnYoutube("new+top+hits");
         }
         else {
@@ -190,7 +189,6 @@ public class SearchViewActivity extends BaseActivity {
                 }
                 // row item tapped action / send to YouTube player
                 addRowClickListener();
-
                 // Set up list display
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.title);
@@ -252,4 +250,5 @@ public class SearchViewActivity extends BaseActivity {
             videosFound.setVisibility(View.VISIBLE);
         }
     }  // toggleProgressBar
+    
 }  // SearchViewActivity

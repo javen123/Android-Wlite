@@ -1,7 +1,6 @@
 package com.wavlite.WLAndroid;
 
 import android.app.Application;
-
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseTwitterUtils;
@@ -10,7 +9,6 @@ import com.parse.ParseTwitterUtils;
  * Created by javen on 6/19/15.
  */
 public class WLiteApplication extends Application {
-
     @Override
     public void onCreate(){
         super.onCreate();
@@ -19,4 +17,4 @@ public class WLiteApplication extends Application {
         FacebookSdk.sdkInitialize(getApplicationContext());
         ParseTwitterUtils.initialize(getString(R.string.twitter_consumer_key), getString(R.string.twitter_consumer_secret));
     }
-}
+}  // WLiteApplication

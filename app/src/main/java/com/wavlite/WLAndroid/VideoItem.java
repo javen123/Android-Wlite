@@ -2,9 +2,9 @@ package com.wavlite.WLAndroid;
 
 /**
  * Created by javen on 6/25/15.
+ * This class is the GETTERS and SETTERS for video list items
  */
 public class VideoItem {
-
     private String title;
     private String description;
     private String thumbnail;
@@ -50,4 +50,4 @@ public class VideoItem {
     public void setId(String id) {
         this.id = id;
     }
-}
+}  // VideoItem

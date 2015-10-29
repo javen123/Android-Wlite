@@ -1,6 +1,5 @@
 package com.wavlite.WLAndroid.ui;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -68,11 +67,8 @@ public class DetailListView extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_list_view);
 
-        //set progress bar
         mProgressBar2 = (ProgressBar)findViewById(R.id.progressBar2);
         mProgressBar2.setVisibility(View.INVISIBLE);
-
-        // activate toolbar
         activateToolbarWithHomeEnabled();
 
         // array handler
@@ -82,8 +78,6 @@ public class DetailListView extends BaseActivity {
         // Grab intents
         args = intent.getBundleExtra("myListids");
         String title = intent.getStringExtra("title");
-
-        // update page title
         this.setTitle(title);
 
         // convert intent ids to youtube searchable string
@@ -97,7 +91,6 @@ public class DetailListView extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail_list_view, menu);
         return true;
     }  // onCreateOptionsMenu
@@ -109,13 +102,12 @@ public class DetailListView extends BaseActivity {
     }  // onSearchPressed
 
 
+    // Handle action bar item clicks here. The action bar will automatically
+    // handle clicks on the Home/Up button, so long as you specify a parent
+    // activity in AndroidManifest.xml.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         switch (item.getItemId()) {
             case R.id.action_logout:
                 com.wavlite.WLAndroid.ui.MyLists.myArrayTitles.clear();
@@ -172,10 +164,8 @@ public class DetailListView extends BaseActivity {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 convertView = getLayoutInflater().inflate(R.layout.list_video_item, parent, false);
-
                 // row item tapped action / send to YouTube player / delete video on longPress
                 addRowClickListener();
-
                 // Update listView items
                 ImageView thumbnail = (ImageView) convertView.findViewById(R.id.detail_thumbnail);
                 TextView title = (TextView) convertView.findViewById(R.id.detail_title);
@@ -302,7 +292,6 @@ public class DetailListView extends BaseActivity {
                                                 }
                                                 finally {
                                                     searchResults.remove(position);
-
                                                     final ArrayList<String> temp = new ArrayList<>();
                                                     for(VideoItem x : searchResults){
                                                         temp.add(x.getId());
@@ -416,6 +405,7 @@ public class DetailListView extends BaseActivity {
         }
     }  // toggleProgressBar
 
+
     private void addDelete() {
         checkActivated = true;
         adapter.notifyDataSetChanged();
@@ -448,16 +438,14 @@ public class DetailListView extends BaseActivity {
             @Override
             public void onClick(View v) {
                 final List newList = getTappedIds();  // get tapped ids
-
                 //get current title list and convert to new arraylist
                 ArrayList<String> listTitles = new ArrayList<String>();
                 for (ParseObject titles : MyLists.myArrayTitles) {
                     String title = (titles.get("listTitle").toString());
                     listTitles.add(title);
                 }
-
+                
                 final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
-
                 AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
                 a.setTitle(getString(R.string.dlv_dialog_copy));
                 a.setIcon(R.drawable.ic_dialog);
@@ -467,7 +455,6 @@ public class DetailListView extends BaseActivity {
                         try {
                             // pull list title
                             String titleTapped = titles[which].toString();
-
                             //query by list title
                             ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
                             query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
@@ -535,7 +522,6 @@ public class DetailListView extends BaseActivity {
             @Override
             public void onClick(View v) {
                 final List newList = getTappedIds();  //get tapped ids
-
                 //get current title list and convert to new arraylist
                 ArrayList<String> listTitles = new ArrayList<String>();
                 for (ParseObject titles : MyLists.myArrayTitles) {
@@ -544,7 +530,6 @@ public class DetailListView extends BaseActivity {
                 }
 
                 final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
-
                 AlertDialog.Builder a = new AlertDialog.Builder(DetailListView.this);
                 a.setTitle(getString(R.string.dlv_dialog_move));
                 a.setIcon(R.drawable.ic_dialog);
@@ -700,6 +685,7 @@ public class DetailListView extends BaseActivity {
             }  // onClick
         });  //  delete.setOnClickListener
     }  // addDelete
+
 
     private List getTappedIds () {
         final ArrayList<String> temp = new ArrayList<>();

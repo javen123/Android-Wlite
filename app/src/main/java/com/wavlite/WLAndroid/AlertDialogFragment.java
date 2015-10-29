@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -19,39 +18,35 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.wavlite.WLAndroid.ui.MyLists;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static android.widget.Toast.LENGTH_LONG;
+
 
 /**
  * Created by javen on 7/7/15.
  * Edits by Jay Bardeleben
  */
 public class AlertDialogFragment extends DialogFragment {
-
-    // Button text strings for static builder methods
+    // Button text strings for static builder methods (can't use stings.xml here)
     public static String btn_add = "ADD SEARCHLIST";
-    public static String btn_cancel = "Cancel";  // Unused. Is set for possible future usage
+    public static String btn_cancel = "Cancel";  // Unused - Set for possible future usage
     public static String btn_create = "CREATE NEW SEARCHLIST";
     public static String btn_gotIt = "GOT IT!";
     public static String btn_ok = "OK";
 
-    public static String toastSaved = "Video Saved";
-
     // Dialog title and message strings for static builder methods
+    public static String toastSaved = "Video Saved";  // toasts will be with dialogs
     public static String errTitle = "Oops!";  // change to 'Something went wrong'? May be more clear
     public static String alertDataConnTitle = "Connection Problem!";
     public static String alertDataConnMsg = "You must have an internet connection to view this content";
     public static String selectTitle = "Select Searchlist";
     public static String successTitle = "Success!";
     public static String successMsg = "Your new searchlist has been created with this "
-            + "video added. You can now search Wavlite and add more to this searchlist or go to "
-            + "\"My Searchlists\" and enjoy!\n" + "";
+            + "video added. You can now search Wavlite and add more to this searchlist "
+            + "or go to \"My Searchlists\" and enjoy!\n" + "";
 
 
     public static void adjustListItems(final int pos, final List<ParseObject> list, final Activity activity, final String videoId, final Context context) {
@@ -63,7 +58,6 @@ public class AlertDialogFragment extends DialogFragment {
         }
 
         final CharSequence[] titles = listTitles.toArray(new CharSequence[listTitles.size()]);
-
         // Set text/color manipulation here?
         final AlertDialog.Builder success = new AlertDialog.Builder(activity);
         success.setIcon(R.drawable.ic_dialog);
@@ -73,12 +67,10 @@ public class AlertDialogFragment extends DialogFragment {
             public void onClick(DialogInterface dialog, final int which) {
                 try {
                     String titleTapped = titles[which].toString();  // pull list title
-
                     // convert id to Parse array type
                     final ArrayList<String> moreToAdd;
                     moreToAdd = new ArrayList<String>();
                     moreToAdd.add(videoId);
-
                     // query by list title
                     ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Lists");
                     query1.whereEqualTo("createdBy", ParseUser.getCurrentUser());
@@ -106,9 +98,7 @@ public class AlertDialogFragment extends DialogFragment {
                             else {
                                 ArrayList<String> addMore = new ArrayList<String>();
                                 JSONArray myList = object.getJSONArray("myLists");
-
-                                // if the list is empty
-                                if (myList == null) {
+                                if (myList == null) {  // empty list
                                     addMore.add(videoId);
                                 }
                                 else {
@@ -206,19 +196,16 @@ public class AlertDialogFragment extends DialogFragment {
         final AlertDialog.Builder builder = newTitle.setPositiveButton(btn_add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //get user added title from alert dialog
+                // get user added title from alert dialog
                 String mTitle = userTitleView.getText().toString();
-
-                //instantiate new array for videoId to load to Parse
+                // instantiate new array for videoId to load to Parse
                 ArrayList<String> firstIdToAdd;
                 firstIdToAdd = new ArrayList<String>();
                 firstIdToAdd.add(id);
-
                 // initiate Parse object to being adding
                 ParseObject firstList = new ParseObject("Lists");
                 firstList.put("listTitle", mTitle);
                 firstList.put("myLists", firstIdToAdd);
-
                 // create user relation
                 ParseRelation<ParseObject> relation = firstList.getRelation("createdBy");
                 relation.add(ParseUser.getCurrentUser());
@@ -251,11 +238,11 @@ public class AlertDialogFragment extends DialogFragment {
                             });
                             AlertDialog alert = success.create();
                             alert.show();
-                        }
+                        }  // if/else
                     }
-                });
-            }
-        });
+                });  // firstList.saveInBackground
+            }  // onClick
+        });  // newTitle.setPositiveButton
         AlertDialog addTitle = newTitle.create();
         addTitle.show();
     }  // listHelper

@@ -7,12 +7,10 @@ import java.util.ArrayList;
  * Created by javen on 7/21/15.
  */
 public class ListTuple implements Serializable {
-
     String objectId;
     ArrayList<String> videoIds;
-
-
-
+    
+    // GETTERS and SETTERS
     public ArrayList<String> getVideoIds() {
         return videoIds;
     }
@@ -29,8 +27,10 @@ public class ListTuple implements Serializable {
         this.objectId = objectId;
     }
 
+
+    // Constructor
     public ListTuple(String objectId, ArrayList<String> videoIds){
         this.objectId = objectId;
         this.videoIds = videoIds;
     }
-}
+}  // ListTuple

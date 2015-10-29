@@ -4,12 +4,10 @@ package com.wavlite.WLAndroid;
  * Created by javen on 7/7/15.
  */
 public class MyListItem {
-
     private String title;
     private String description;
     private String thumbnail;
     private String id;
-
 
     public String getTitle() {
         return title;
@@ -42,4 +40,4 @@ public class MyListItem {
     public void setId(String id) {
         this.id = id;
     }
-}
+}  // MyListItem

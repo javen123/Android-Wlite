@@ -4,12 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import com.wavlite.WLAndroid.R;
 
+
 /**
  * Created by javen on 6/26/15.
+ * Sets up the base activity for the application: set's toobar properties and 
+ * sets up a toolbar that also includes the internal up/home back button. Note 
+ * that setDisplayHomeAsUpEnabled(true) returns back arrow in toolbar, the 
+ * activateToolbar does not.
  */
 public class BaseActivity extends AppCompatActivity {
     private Toolbar mToolbar;
-
 
     protected Toolbar activateToolbar() {
         if (mToolbar == null) {
@@ -22,8 +26,6 @@ public class BaseActivity extends AppCompatActivity {
         return mToolbar;
     }  // activateToolbar
 
-
-    // setDisplayHomeAsUpEnabled(true) returns back arrow in toolbar
     protected Toolbar activateToolbarWithHomeEnabled() {
         activateToolbar();
         if (mToolbar != null) {
@@ -31,5 +33,4 @@ public class BaseActivity extends AppCompatActivity {
         }
         return mToolbar;
     }  // activateToolbarWithHomeEnabled
-
 }  // BaseActivity

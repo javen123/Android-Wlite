@@ -6,7 +6,6 @@ package com.wavlite.WLAndroid;
  * Static container class for holding a reference to your YouTube Developer Key.
  */
 public class DeveloperKey {
-
   /**
    * Please replace this with a valid API key which is enabled for the
    * YouTube Data API v3 service. Go to the
@@ -15,5 +14,4 @@ public class DeveloperKey {
    */
   public static final String DEVELOPER_KEY = "AIzaSyBxogZWxY0r5h5BGdVlT_7oSF0wGmPD9hI" +
           "";
-
-}
+}  // DeveloperKey

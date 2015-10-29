@@ -26,6 +26,7 @@ import com.wavlite.WLAndroid.R;
 
 import static android.widget.Toast.LENGTH_LONG;
 
+
 public class MainActivity extends BaseActivity {
     private WebView webview;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
@@ -36,26 +37,19 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // set up webview
+        
+        // load webview and check network connectivity
         webview = (WebView)findViewById(R.id.webView);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.loadUrl("http://www.wavlite.com/api/videoPlayer.html");
-
         if (!isNetworkAvailable()) {
             AlertDialogFragment.dataConnection(this);
         }
-
-        // load toolbar
+        
+        // load UI components, check yt api, and get user list
         activateToolbar();
-
-        // load music genre buttons
         loadMusicGenreButtons();
-
-        // confirm youTube API Check
         checkYouTubeApi();
-
-        // grab current list
         ParseUser curUser = ParseUser.getCurrentUser();
         if (curUser == null) {
             parseLoginHelper();
@@ -63,8 +57,18 @@ public class MainActivity extends BaseActivity {
         else {
             AlertDialogFragment.grabUserList(curUser);
         }
-
     }  // onCreate
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+        return isAvailable;
+    }  // isNetworkAvailable
 
 
     private void checkYouTubeApi() {
@@ -86,18 +90,17 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }  // onCreateOptionsMenu
 
 
+    // Handle action bar item clicks here. The action bar will automatically
+    // handle clicks on the Home/Up button, so long as you specify a parent
+    // activity in AndroidManifest.xml.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.main_action_logout:
                 com.wavlite.WLAndroid.ui.MyLists.myArrayTitles.clear();
@@ -122,44 +125,8 @@ public class MainActivity extends BaseActivity {
     }  // onOptionsItemSelected
 
 
-    private void navigateToLogin() {
-        MyLists.myArrayTitles.clear();
-        parseLoginHelper();
-    }  // navigateToLogin
-
-
-    private void parseLoginHelper() {
-        ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
-        // ic_launcher_192 should not be used. Use ic_login (not yet available) instead
-        // These can be put into string resources as well
-        Intent parseLoginIntent = builder.setAppLogo(R.drawable.ic_launcher_192)
-                .setParseLoginEnabled(true)
-                .setParseLoginButtonText(getString(R.string.parse_LoginButtonText))
-                .setParseSignupButtonText(getString(R.string.parse_SignupButtonText))
-                .setParseLoginHelpText(getString(R.string.parse_LoginHelpText))
-                .setParseLoginInvalidCredentialsToastText(getString(R.string.parse_LoginInvalid))
-                .setParseLoginEmailAsUsername(true)
-                .setParseSignupSubmitButtonText(getString(R.string.parse_SignupSubmitButtonText))
-                .setTwitterLoginEnabled(true)
-                .build();
-        startActivityForResult(parseLoginIntent, 0);
-    }  // parseLoginHelper
-
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        boolean isAvailable = false;
-        if (networkInfo != null && networkInfo.isConnected()) {
-            isAvailable = true;
-        }
-        return isAvailable;
-    }  // isNetworkAvailable
-
-    private void loadMusicGenreButtons () {
-
+    private void loadMusicGenreButtons() {
         final Intent searchIntent =  new Intent(MainActivity.this, SearchViewActivity.class);
-
 
         Button btnRock = (Button)findViewById(R.id.btn_rock);
         btnRock.setOnClickListener(new View.OnClickListener() {
@@ -209,13 +176,36 @@ public class MainActivity extends BaseActivity {
                 startActivity(searchIntent);
             }
         });
-    }
+    }  // loadMusicGenreButtons
 
-    private void setGenreSearchParams (String genre){
+
+    private void setGenreSearchParams(String genre) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("YTSEARCH", genre);
         editor.commit();
-    }
+    }  // setGenreSearchParams
+
+
+    private void navigateToLogin() {
+        MyLists.myArrayTitles.clear();
+        parseLoginHelper();
+    }  // navigateToLogin
+
+
+    private void parseLoginHelper() {
+        ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
+        Intent parseLoginIntent = builder.setAppLogo(R.drawable.ic_launcher_192)
+                .setParseLoginEnabled(true)
+                .setParseLoginButtonText(getString(R.string.parse_LoginButtonText))
+                .setParseSignupButtonText(getString(R.string.parse_SignupButtonText))
+                .setParseLoginHelpText(getString(R.string.parse_LoginHelpText))
+                .setParseLoginInvalidCredentialsToastText(getString(R.string.parse_LoginInvalid))
+                .setParseLoginEmailAsUsername(true)
+                .setParseSignupSubmitButtonText(getString(R.string.parse_SignupSubmitButtonText))
+                .setTwitterLoginEnabled(true)
+                .build();
+        startActivityForResult(parseLoginIntent, 0);
+    }  // parseLoginHelper
 
 }  // MainActivity

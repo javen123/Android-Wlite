@@ -74,8 +74,7 @@ public class MyLists extends BaseActivity {
             // NEW ARRAY set up
 //            convertParseArrayToClassItems(myArrayTitles);
 //            newLoadListItems();
-
-            //old array setup
+            // old array setup
             loadListNames();
         }
         else {
@@ -88,7 +87,8 @@ public class MyLists extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds items to the
+        // action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_my_lists, menu);
         return true;
@@ -102,18 +102,17 @@ public class MyLists extends BaseActivity {
             addNewItemToList();
             addToListFromDetail = false;
         }
-        // This should probably be removed (void method)
         else {
-            return;
+            return;  // probably should remove (void method)
         }
     }  // onResume
 
 
+    // Handle action bar item clicks here. The action bar will automatically
+    // handle clicks on the Home/Up button, so long as you specify a parent
+    // activity in AndroidManifest.xml.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         // noinspection SimplifiableIfStatement
@@ -136,6 +135,7 @@ public class MyLists extends BaseActivity {
 //        }
         return super.onOptionsItemSelected(item);
     }  // onOptionsItemSelected
+
 
     private void massDelete() {
         checkActivated = true;
@@ -276,8 +276,8 @@ public class MyLists extends BaseActivity {
                         a.show();
                     }  // onClick
                 });  // builder.setNeutralButton
-
-
+                
+                // RENAME SEARCHLIST
                 builder.setPositiveButton(getString(R.string.btn_rename), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -289,14 +289,14 @@ public class MyLists extends BaseActivity {
                         TextView editAlertTitle = (TextView) v.findViewById(R.id.alert_edit_title_text);
                         final EditText newTitle = (EditText) v.findViewById(R.id.first_title);
                         editAlertTitle.setText(getString(R.string.ml_dialog_rename) + "\n ");
-
                         editTitle.setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
                         });  // editTitle.setNegativeButton
-
+                        
+                        // SAVE BUTTON
                         editTitle.setPositiveButton(getString(R.string.btn_save), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -353,61 +353,6 @@ public class MyLists extends BaseActivity {
     }  // addRowClickListener
 
 
-//    private void addNewItemToList() {
-//        View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
-//        final AlertDialog.Builder newTitle = new AlertDialog.Builder(MyLists.this);
-//        newTitle.setView(v);
-//
-//        // Edit the searchlist title name
-//        TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
-//        newListAdd.setText(getString(R.string.ml_dialog_name));
-//        final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
-//        newListTitleAdd.setHint(getString(R.string.ml_dialog_hint_name));
-//
-//        newTitle.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });  // newTitle.setNegativeButton
-//
-//        newTitle.setPositiveButton(getString(R.string.button_save), new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                final String mTitle = newListTitleAdd.getText().toString();
-//                ParseObject newListTitle = new ParseObject("Lists");
-//                newListTitle.put("listTitle", mTitle);
-//                ParseRelation<ParseObject> relation = newListTitle.getRelation("createdBy");
-//                relation.add(ParseUser.getCurrentUser());
-//
-//                newListTitle.saveInBackground(new SaveCallback() {
-//                    @Override
-//                    public void done(ParseException e) {
-//                        if (e != null) {
-//                            // empty if body?
-//                        }
-//                        else {
-//                            final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
-//                            success.setTitle(getString(R.string.ml_dialog_save));
-//                            success.setMessage(getString(R.string.ml_dialog_msg_save));
-//                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    updatedListTitles();
-//                                }
-//                            });  // success.setPositiveButton
-//                            AlertDialog alert = success.create();
-//                            alert.show();
-//                        }
-//                    }  // done
-//                });  // newListTitle.saveInBackground
-//            }  // onClick
-//        });  // newTitle.setPositiveButton
-//        AlertDialog alert = newTitle.create();
-//        alert.show();
-//    }  // addNewItemToList
-
-
     public void addNewItemToList() {
         View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
         final AlertDialog.Builder newTitle = new AlertDialog.Builder(this);
@@ -416,7 +361,6 @@ public class MyLists extends BaseActivity {
         // Edit the searchlist title name
         TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
         newListAdd.setText(getString(R.string.ml_dialog_name));
-
         final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
         newListTitleAdd.setHint(getString(R.string.ml_dialog_hint_name));
 
@@ -426,7 +370,8 @@ public class MyLists extends BaseActivity {
                 dialog.cancel();
             }
         });  // newTitle.setNegativeButton
-
+        
+        // SAVE SEARCHLIST
         newTitle.setPositiveButton(getString(R.string.btn_save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -435,7 +380,6 @@ public class MyLists extends BaseActivity {
                 newListTitle.put("listTitle", mTitle);
                 ParseRelation<ParseObject> relation = newListTitle.getRelation("createdBy");
                 relation.add(ParseUser.getCurrentUser());
-
                 newListTitle.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -522,16 +466,13 @@ public class MyLists extends BaseActivity {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 convertView = getLayoutInflater().inflate(R.layout.my_list_item, parent, false);
-
                 TextView title = (TextView) convertView.findViewById(R.id.list_title);
                 MyListItems x = items.get(position);
                 title.setText(x.getObject().get("listTitle").toString());
 
                 // activate checkbox
                 checkBox = (CheckBox) convertView.findViewById(R.id.checkBox2);
-
-                // Toggle visibility
-                if (checkActivated) {
+                if (checkActivated) {  // Toggle visibility
                     checkBox.setVisibility(View.VISIBLE);
                     checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
@@ -581,5 +522,60 @@ public class MyLists extends BaseActivity {
             this.selected = selected;
         }  // (constructor)
     }  // MyListItems (class)
+
+
+//    private void addNewItemToList() {
+//        View v = getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
+//        final AlertDialog.Builder newTitle = new AlertDialog.Builder(MyLists.this);
+//        newTitle.setView(v);
+//
+//        // Edit the searchlist title name
+//        TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
+//        newListAdd.setText(getString(R.string.ml_dialog_name));
+//        final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
+//        newListTitleAdd.setHint(getString(R.string.ml_dialog_hint_name));
+//
+//        newTitle.setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });  // newTitle.setNegativeButton
+//
+//        newTitle.setPositiveButton(getString(R.string.button_save), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                final String mTitle = newListTitleAdd.getText().toString();
+//                ParseObject newListTitle = new ParseObject("Lists");
+//                newListTitle.put("listTitle", mTitle);
+//                ParseRelation<ParseObject> relation = newListTitle.getRelation("createdBy");
+//                relation.add(ParseUser.getCurrentUser());
+//
+//                newListTitle.saveInBackground(new SaveCallback() {
+//                    @Override
+//                    public void done(ParseException e) {
+//                        if (e != null) {
+//                            // empty if body?
+//                        }
+//                        else {
+//                            final AlertDialog.Builder success = new AlertDialog.Builder(MyLists.this);
+//                            success.setTitle(getString(R.string.ml_dialog_save));
+//                            success.setMessage(getString(R.string.ml_dialog_msg_save));
+//                            success.setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    updatedListTitles();
+//                                }
+//                            });  // success.setPositiveButton
+//                            AlertDialog alert = success.create();
+//                            alert.show();
+//                        }
+//                    }  // done
+//                });  // newListTitle.saveInBackground
+//            }  // onClick
+//        });  // newTitle.setPositiveButton
+//        AlertDialog alert = newTitle.create();
+//        alert.show();
+//    }  // addNewItemToList
 
 }  // MyLists

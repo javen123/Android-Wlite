@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.wavlite.WLAndroid.ui.MyLists;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -14,30 +13,31 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+
 /**
  * Created by javen on 8/28/15.
+ * Creates a new searchlist and adds an item to it. This allows the user to name
+ * the searchlist and when saved, will add the video if adding from the search 
+ * view or when Create Searchlist is pressed.
  */
 public class CreateLists {
-
     public void addNewItemToList(final Activity context) {
         View v = context.getLayoutInflater().inflate(R.layout.alert_first_list_title, null);
         final AlertDialog.Builder newTitle = new AlertDialog.Builder(context);
         newTitle.setView(v);
-
         // Edit the searchlist title name
         TextView newListAdd = (TextView)v.findViewById(R.id.alert_edit_title_text);
         newListAdd.setText(context.getString(R.string.ml_dialog_name));
-
         final EditText newListTitleAdd = (EditText)v.findViewById(R.id.first_title);
         newListTitleAdd.setHint(context.getString(R.string.ml_dialog_hint_name));
-
+        // CANCEL BUTTON
         newTitle.setNegativeButton(context.getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });  // newTitle.setNegativeButton
-
+        // SAVE BUTTON
         newTitle.setPositiveButton(context.getString(R.string.btn_save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -46,13 +46,13 @@ public class CreateLists {
                 newListTitle.put("listTitle", mTitle);
                 ParseRelation<ParseObject> relation = newListTitle.getRelation("createdBy");
                 relation.add(ParseUser.getCurrentUser());
-
                 newListTitle.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {
-                            // empty if body?
-                        } else {
+                            // Need to log this so we have evidence of it's existence
+                        }
+                        else {
                             final AlertDialog.Builder success = new AlertDialog.Builder(context);
                             success.setTitle(context.getString(R.string.ml_dialog_save));
                             success.setMessage(context.getString(R.string.ml_dialog_msg_save));
@@ -73,4 +73,4 @@ public class CreateLists {
         AlertDialog alert = newTitle.create();
         alert.show();
     }  // addNewItemToList
-}
+}  // CreateLists

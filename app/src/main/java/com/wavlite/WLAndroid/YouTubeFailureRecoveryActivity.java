@@ -16,21 +16,21 @@
 
 package com.wavlite.WLAndroid;
 
+import android.content.Intent;
+import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 
-import android.content.Intent;
-import android.widget.Toast;
 
 /**
- * An abstract activity which deals with recovering from errors which may occur during API
- * initialization, but can be corrected through user action.
+ * An abstract activity which deals with recovering from errors which may occur
+ * during API initialization, but can be corrected through user action.
  */
 public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity implements
-        YouTubePlayer.OnInitializedListener {
-
+                      YouTubePlayer.OnInitializedListener {
   private static final int RECOVERY_DIALOG_REQUEST = 1;
+
 
   @Override
   public void onInitializationFailure(YouTubePlayer.Provider provider,
@@ -42,7 +42,8 @@ public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity
           String errorMessage = String.format(getString(R.string.ma_error_player), errorReason.toString());
           Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
       }
-  }
+  }  // onInitializationFailure
+
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -50,7 +51,7 @@ public abstract class YouTubeFailureRecoveryActivity extends YouTubeBaseActivity
           // Retry initialization if user performed a recovery action
           getYouTubePlayerProvider().initialize(DeveloperKey.DEVELOPER_KEY, this);
       }
-  }
+  }  // onActivityResult
 
   protected abstract YouTubePlayer.Provider getYouTubePlayerProvider();
-}
+}  // YouTubeFailureRecoveryActivity
