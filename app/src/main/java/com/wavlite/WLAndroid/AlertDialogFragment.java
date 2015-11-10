@@ -164,8 +164,7 @@ public class AlertDialogFragment extends DialogFragment {
             public void done(List<ParseObject> list, ParseException e) {
                 if (e != null) {
                     Log.d("Error with list pull: ", e.getLocalizedMessage());
-                }
-                else {
+                } else {
                     listHelper(activity, vidId, title, message);
                 }
             }
@@ -275,5 +274,20 @@ public class AlertDialogFragment extends DialogFragment {
         AlertDialog alert = builder.create();
         alert.show();
     }  // dataConnection
+
+    public static void trialAlert(final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Your trial is over");
+        builder.setMessage("Please contact Wavlite to re-up");
+        builder.setNegativeButton(btn_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                activity.finish();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 }  // AlertDialogFragment

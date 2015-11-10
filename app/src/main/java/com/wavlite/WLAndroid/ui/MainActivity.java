@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,13 +24,20 @@ import com.parse.ui.ParseLoginBuilder;
 import com.wavlite.WLAndroid.AlertDialogFragment;
 import com.wavlite.WLAndroid.CreateLists;
 import com.wavlite.WLAndroid.R;
+import com.wavlite.WLAndroid.TrialPeriodTimer;
+
+import java.util.Date;
 
 import static android.widget.Toast.LENGTH_LONG;
 
 public class MainActivity extends BaseActivity {
+
+
     private WebView webview;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     public static final String TAG = MainActivity.class.getSimpleName();
+
+    TrialPeriodTimer trial = TrialPeriodTimer.getUserInstance();
 
 
     @Override
@@ -42,7 +50,11 @@ public class MainActivity extends BaseActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.loadUrl("http://www.wavlite.com/api/videoPlayer.html");
 
-        if (!isNetworkAvailable()) {
+        // trial period Status start
+        Date cal = new Date(System.currentTimeMillis());
+        trial.setStartDate(cal, this);
+
+       if (!isNetworkAvailable()) {
             AlertDialogFragment.dataConnection(this);
         }
 
@@ -66,6 +78,20 @@ public class MainActivity extends BaseActivity {
 
     }  // onCreate
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //trial period status check
+        int isTrialOver = checkForTrialStatus();
+        if (isTrialOver >=0){
+            AlertDialogFragment.trialAlert(this);
+        } else {
+            return;
+        }
+
+
+    }
 
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
@@ -216,6 +242,16 @@ public class MainActivity extends BaseActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("YTSEARCH", genre);
         editor.commit();
+    }
+
+    private int checkForTrialStatus() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Date startdate = new Date(prefs.getLong("STARTDATE", 0));
+        Date endDate = new Date(prefs.getLong("ENDDATE", 0));
+        Integer dif = startdate.compareTo(endDate);
+        Log.d("TRIAL", "Difference is " + dif);
+        return dif;
     }
 
 }  // MainActivity
