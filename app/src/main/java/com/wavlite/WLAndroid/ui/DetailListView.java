@@ -25,6 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.youtube.player.YouTubeApiServiceUtil;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -216,9 +218,17 @@ public class DetailListView extends BaseActivity {
                 detailList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> av, View v, final int pos, long id) {
-                        List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
-                        Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
-                        startActivity(intent);
+
+                        if(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(DetailListView.this).equals(YouTubeInitializationResult.SUCCESS)){
+                            List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
+                            Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
+                            startActivity(intent);
+
+                        }else{
+
+
+                        }
+
                     }
                 });  // detailList.setOnItemClickListener
 
