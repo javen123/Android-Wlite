@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity {
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    TrialPeriodTimer trial = TrialPeriodTimer.getUserInstance();
+    private TrialPeriodTimer trialPeriodTimer;
 
 
     @Override
@@ -50,9 +50,8 @@ public class MainActivity extends BaseActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.loadUrl("http://www.wavlite.com/api/videoPlayer.html");
 
-        // trial period Status start
-        Date cal = new Date(System.currentTimeMillis());
-        trial.setStartDate(cal, this);
+
+
 
        if (!isNetworkAvailable()) {
             AlertDialogFragment.dataConnection(this);
@@ -74,6 +73,12 @@ public class MainActivity extends BaseActivity {
         }
         else {
             AlertDialogFragment.grabUserList(curUser);
+
+            //set or update timer for trial period's end
+            trialPeriodTimer = new TrialPeriodTimer();
+            trialPeriodTimer.setStartDate(curUser.getCreatedAt());
+            trialPeriodTimer.setEndDate(curUser.getCreatedAt());
+
         }
 
     }  // onCreate
@@ -83,15 +88,15 @@ public class MainActivity extends BaseActivity {
         super.onResume();
 
         //trial period status check
-        int isTrialOver = checkForTrialStatus();
-        if (isTrialOver >=0){
-            AlertDialogFragment.trialAlert(this);
-        } else {
-            return;
-        }
-
-
+//        long dateToday = new Date().getTime();
+//
+//        if (trialPeriodTimer.getEnddate() < dateToday){
+//            AlertDialogFragment.trialAlert(this);
+//        } else {
+//            return;
+//        }
     }
+
 
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);

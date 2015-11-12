@@ -219,13 +219,22 @@ public class DetailListView extends BaseActivity {
                     @Override
                     public void onItemClick(AdapterView<?> av, View v, final int pos, long id) {
 
+
                         if(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(DetailListView.this).equals(YouTubeInitializationResult.SUCCESS)){
+
                             List<String> vidIds = convertSearchResultsToIntentIds(searchResults);
                             Intent intent = YouTubeStandalonePlayer.createVideosIntent(DetailListView.this, DeveloperKey.DEVELOPER_KEY, vidIds, pos, 10, true, true);
                             startActivity(intent);
 
-                        }else{
+                        }else if (YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(DetailListView.this).equals(YouTubeInitializationResult.SERVICE_INVALID)){
 
+                            AlertDialogFragment.problemWithYouTube(DetailListView.this);
+
+                        } else if (YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(DetailListView.this).equals(YouTubeInitializationResult.SERVICE_VERSION_UPDATE_REQUIRED)){
+
+                        } else if(YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(DetailListView.this).equals(YouTubeInitializationResult.SERVICE_MISSING)){
+
+                        } else if (YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(DetailListView.this).equals(YouTubeInitializationResult.SERVICE_DISABLED)){
 
                         }
 
@@ -264,8 +273,7 @@ public class DetailListView extends BaseActivity {
                                             public void done(ParseObject object, ParseException e) {
                                                 if (e != null) {
                                                     Log.d("Parse:", e.getLocalizedMessage());
-                                                }
-                                                else {
+                                                } else {
                                                     updateListView(DetailListView.this, position, object);
                                                 }
                                             }
@@ -298,23 +306,19 @@ public class DetailListView extends BaseActivity {
                                     public void done(List<ParseObject> list, ParseException e) {
                                         if (e != null) {
                                             Log.d("Error with list pull: ", e.getLocalizedMessage());
-                                        }
-                                        else {
+                                        } else {
                                             if (list.isEmpty()) {
                                                 // do something (This should be logged so there is evidence of it)
-                                            }
-                                            else {
+                                            } else {
                                                 try {
-                                                    AlertDialogFragment.adjustListItems(position,list,DetailListView.this, videoId,getApplicationContext());
-                                                }
-                                                catch (Exception e1) {
+                                                    AlertDialogFragment.adjustListItems(position, list, DetailListView.this, videoId, getApplicationContext());
+                                                } catch (Exception e1) {
                                                     throw e1;
-                                                }
-                                                finally {
+                                                } finally {
                                                     searchResults.remove(position);
 
                                                     final ArrayList<String> temp = new ArrayList<>();
-                                                    for(VideoItem x : searchResults){
+                                                    for (VideoItem x : searchResults) {
                                                         temp.add(x.getId());
                                                     }
                                                     ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>("Lists");
@@ -324,8 +328,7 @@ public class DetailListView extends BaseActivity {
                                                             object.put("myLists", temp);
                                                             try {
                                                                 object.save();
-                                                            }
-                                                            catch (ParseException e1) {
+                                                            } catch (ParseException e1) {
                                                                 e1.printStackTrace();
                                                             }
                                                         }

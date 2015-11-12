@@ -290,4 +290,19 @@ public class AlertDialogFragment extends DialogFragment {
         alert.show();
     }
 
+    public static void problemWithYouTube(final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Oops");
+        builder.setMessage("There was a problem connecting to YouTube");
+        builder.setNegativeButton(btn_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                activity.finish();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 }  // AlertDialogFragment
