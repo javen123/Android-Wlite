@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,6 +39,7 @@ public class MainActivity extends BaseActivity {
     private TrialPeriodTimer trialPeriodTimer;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +50,7 @@ public class MainActivity extends BaseActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.loadUrl("http://www.wavlite.com/api/videoPlayer.html");
 
-
-
-
-       if (!isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
             AlertDialogFragment.dataConnection(this);
         }
 
@@ -66,37 +63,36 @@ public class MainActivity extends BaseActivity {
         // confirm youTube API Check
         checkYouTubeApi();
 
-        // grab current list
-        ParseUser curUser = ParseUser.getCurrentUser();
-        if (curUser == null) {
+        // grab user info
+
+        if (ParseUser.getCurrentUser() == null){
             parseLoginHelper();
         }
-        else {
-            AlertDialogFragment.grabUserList(curUser);
-
-            //set or update timer for trial period's end
-            trialPeriodTimer = new TrialPeriodTimer();
-            trialPeriodTimer.setStartDate(curUser.getCreatedAt());
-            trialPeriodTimer.setEndDate(curUser.getCreatedAt());
-
-        }
-
     }  // onCreate
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        //trial period status check
-//        long dateToday = new Date().getTime();
-//
-//        if (trialPeriodTimer.getEnddate() < dateToday){
-//            AlertDialogFragment.trialAlert(this);
-//        } else {
-//            return;
-//        }
-    }
+        if (ParseUser.getCurrentUser() != null){
 
+            ParseUser curUser = ParseUser.getCurrentUser();
+            //        trial period status check
+            long dateToday = new Date().getTime();
+
+            trialPeriodTimer = new TrialPeriodTimer();
+            trialPeriodTimer.setEndDate(curUser.getCreatedAt());
+            trialPeriodTimer.setIsTrialOver(curUser.getBoolean("isTrialOver"));
+
+            if (trialPeriodTimer.getEnddate() < dateToday){
+                if (trialPeriodTimer.getIsTrialOver() != false){
+                    AlertDialogFragment.trialAlert(this);
+                }
+            } else {
+                return;
+            }
+        }
+    }
 
     private void checkYouTubeApi() {
         YouTubeInitializationResult errorReason = YouTubeApiServiceUtil.isYouTubeApiServiceAvailable(this);
@@ -245,18 +241,8 @@ public class MainActivity extends BaseActivity {
     private void setGenreSearchParams (String genre){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("YTSEARCH", genre);
-        editor.commit();
+        editor.putString("YTSEARCH", genre).apply();
     }
 
-    private int checkForTrialStatus() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        Date startdate = new Date(prefs.getLong("STARTDATE", 0));
-        Date endDate = new Date(prefs.getLong("ENDDATE", 0));
-        Integer dif = startdate.compareTo(endDate);
-        Log.d("TRIAL", "Difference is " + dif);
-        return dif;
-    }
 
 }  // MainActivity

@@ -147,11 +147,13 @@ public class ParseLoginBuilder {
    * Customize the toast shown when the user enters an invalid username/password
    * pair.
    *
+   *
+   * @param s
    * @param id
    *     The resource ID for the text to display on the toast.
    * @return The caller instance to allow chaining.
    */
-  public ParseLoginBuilder setParseLoginInvalidCredentialsToastText(int id) {
+  public ParseLoginBuilder setParseLoginInvalidCredentialsToastText(String s, int id) {
     return setParseLoginInvalidCredentialsToastText(maybeGetString(id));
   }
 

@@ -9,15 +9,21 @@ public class TrialPeriodTimer  {
 
     private long startDate;
     private long enddate;
-    private boolean doesHaveSpecialPermission;
+    private Boolean isTrialOver;
 
 
-    public boolean getDoesHaveSpecialPermission() {
-        return doesHaveSpecialPermission;
+    public boolean getIsTrialOver() {
+
+        if (isTrialOver == null) {
+            return true;
+        } else {
+            return isTrialOver;
+        }
+
     }
 
-    public void setDoesHaveSpecialPermission(boolean doesHaveSpecialPermission) {
-        this.doesHaveSpecialPermission = doesHaveSpecialPermission;
+    public void setIsTrialOver(boolean isTrialOver) {
+        this.isTrialOver = isTrialOver;
     }
 
     public long getEnddate() {
